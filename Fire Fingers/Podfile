@@ -1,0 +1,9 @@
+platform :ios, '13.2'
+
+target 'Fire Fingers' do
+  use_frameworks!
+
+  # Pods for Fire Fingers
+  pod 'Firebase/Auth'
+
+end

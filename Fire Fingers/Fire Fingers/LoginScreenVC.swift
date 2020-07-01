@@ -8,8 +8,9 @@
 //  Copyright © 2020 G + G. All rights reserved.
 //
 
-import UIKit
+import CoreData
 import FirebaseAuth
+import UIKit
 
 class LoginScreenVC: UIViewController {
     
@@ -30,6 +31,7 @@ class LoginScreenVC: UIViewController {
                 (user, error) in
                 // if no errors, perform segue to main view controller
                 if error == nil {
+                    self.retrieveUserSettings()
                     self.performSegue(withIdentifier: self.loginSegue, sender: nil)
                 }
                 // Otherwise, send alert of error description
@@ -59,6 +61,7 @@ class LoginScreenVC: UIViewController {
                 // If no error, automatically sign in and perform segue to main view controller
                 if error == nil {
                     Auth.auth().signIn(withEmail: email, password: password, completion: nil)
+                    self.retrieveUserSettings()
                     self.performSegue(withIdentifier: self.loginSegue, sender: nil)
                 }
                 // Otherwise, send alert of error description
@@ -90,6 +93,12 @@ class LoginScreenVC: UIViewController {
             title: "Yes",
             style: .default,
             handler: { _ in
+                do {
+                    try Auth.auth().signOut()
+                } catch {
+                    print(error)
+                }
+                self.retrieveUserSettings()
                 self.performSegue(withIdentifier: self.loginSegue, sender: nil)
             }
         ))
@@ -99,6 +108,82 @@ class LoginScreenVC: UIViewController {
             handler: nil
         ))
         self.present(controller, animated: true)
+    }
+    
+    // Retrieve user settings data from core data
+    func retrieveUserSettings() {
+        if let username = Auth.auth().currentUser?.email {
+            print("Retrieving data for", username)
+            // Set username to user email
+            loggedInUserSettings[userSettingsUsernameAttribute] = username
+            
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            let context = appDelegate.persistentContainer.viewContext
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: userSettingsEntityName)
+
+            var fetchedResults: [NSManagedObject]? = nil
+            // Filter to only select entities matching current user
+            let predicate = NSPredicate(format: "\(userSettingsUsernameAttribute) == %@", loggedInUserSettings[userSettingsUsernameAttribute]! as! CVarArg)
+            request.predicate = predicate
+
+            do {
+                try fetchedResults = context.fetch(request) as? [NSManagedObject]
+                
+                if fetchedResults!.count > 0 {
+                    print("Fetching stored setting for", username)
+                    let settings = fetchedResults?.first
+                    // Set user settings to new fetched values
+                    loggedInUserSettings[userSettingsDarkModeAttribute] = settings?.value(forKeyPath: userSettingsDarkModeAttribute)
+                    loggedInUserSettings[userSettingsVolumeAttribute] = settings?.value(forKeyPath: userSettingsVolumeAttribute)
+                    loggedInUserSettings[userSettingsIconAttribute] = settings?.value(forKeyPath: userSettingsIconAttribute)
+
+                    // Commit the changes
+                    try context.save()
+                } else {
+                    loggedInUserSettings[userSettingsDarkModeAttribute] = false
+                    loggedInUserSettings[userSettingsVolumeAttribute] = Float(1.0)
+                    loggedInUserSettings[userSettingsIconAttribute] = "icon1.png"
+                }                
+            } catch {
+                // if an error occurs
+                let nserror = error as NSError
+                NSLog("Unresolved error \(nserror), \(nserror.userInfo)")
+                abort()
+            }
+        } else {
+            loggedInUserSettings[userSettingsUsernameAttribute] = "guest"
+            loggedInUserSettings[userSettingsDarkModeAttribute] = false
+            loggedInUserSettings[userSettingsVolumeAttribute] = Float(1.0)
+            loggedInUserSettings[userSettingsIconAttribute] = "icon1.png"
+        }
+    }
+    
+    // Debugging functionality: delete all results in the user settings entity
+    func clearCoreData() {
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: userSettingsEntityName)
+        var fetchedResults: [NSManagedObject]
+        
+        do {
+            try fetchedResults = context.fetch(request) as! [NSManagedObject]
+            
+            if fetchedResults.count > 0 {
+                // Delete all fetched results
+                for result:AnyObject in fetchedResults {
+                    context.delete(result as! NSManagedObject)
+                    print("\(result.value(forKey: userSettingsEntityName)!) has been deleted")
+                }
+            }
+            try context.save()
+            
+        } catch {
+            // if an error occurs
+            let nserror = error as NSError
+            NSLog("Unresolved error \(nserror), \(nserror.userInfo)")
+            abort()
+        }
     }
     
     // Enable tapping on the background to remove software keyboard

@@ -8,22 +8,23 @@
 //  Copyright © 2020 G + G. All rights reserved.
 //
 
-import UIKit
 import FirebaseAuth
+import UIKit
 
 // Current user settings
-var loggedInUserSettings: Dictionary<String, Any> = [
-    "username": "guest",
-    "darkModeEnabled": false,
-    "volume": Float(1.0),
-    "icon": "icon1.png"]
+var loggedInUserSettings: Dictionary<String, Any> = [:]
+
+// Property names
+let userSettingsEntityName = "UserSettings"
+let userSettingsUsernameAttribute = "username"
+let userSettingsDarkModeAttribute = "darkModeEnabled"
+let userSettingsVolumeAttribute = "volume"
+let userSettingsIconAttribute = "icon"
 
 class MainVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Retrieve user settings data from core data
     }
 
 }
-

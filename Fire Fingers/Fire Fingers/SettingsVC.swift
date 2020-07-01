@@ -8,17 +8,12 @@
 //  Copyright © 2020 G + G. All rights reserved.
 //
 
-import UIKit
-import FirebaseAuth
 import CoreData
+import FirebaseAuth
+import UIKit
 
 class SettingsVC: UIViewController {
-    // Property names
-    private let userSettingsEntityName = "User Settings"
-    private let userSettingsUsernameAttribute = "username"
-    private let userSettingsDarkModeAttribute = "darkModeEnabled"
-    private let userSettingsVolumeAttribute = "volume"
-    private let userSettingsIconAttribute = "icon"
+    
     private let goToLoginSegueIdentifier = "GoToLoginSegue"
 
     @IBOutlet weak var darkModeSwitch: UISwitch!
@@ -40,6 +35,7 @@ class SettingsVC: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        print("Changing setting objects")
         // Update objects to match user settings
         // Dark Mode Switch:
         let darkModeEnabled = loggedInUserSettings[userSettingsDarkModeAttribute] as! Bool
@@ -65,7 +61,7 @@ class SettingsVC: UIViewController {
         if loggedInUserSettings[userSettingsUsernameAttribute] as! String != "guest" {
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             let context = appDelegate.persistentContainer.viewContext
-            let request = NSFetchRequest<NSFetchRequestResult>(entityName: "UserSetting")
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: userSettingsEntityName)
             
             var fetchedResults: [NSManagedObject]? = nil
             // Filter to only select entities matching current user
@@ -74,21 +70,23 @@ class SettingsVC: UIViewController {
             
             do {
                 try fetchedResults = context.fetch(request) as? [NSManagedObject]
-                let settings = fetchedResults?.first
+                var settings: NSManagedObject? = fetchedResults?.first
+                if settings == nil {
+                    settings = NSEntityDescription.insertNewObject(forEntityName: userSettingsEntityName, into: context)
+                    settings?.setValue(loggedInUserSettings[userSettingsUsernameAttribute], forKey: userSettingsUsernameAttribute)
+                }
+                
                 // Set attribute values to new setting values
+                print("Overriding stored user data for", loggedInUserSettings[userSettingsUsernameAttribute] as! String)
                 settings?.setValue(loggedInUserSettings[userSettingsDarkModeAttribute], forKey: userSettingsDarkModeAttribute)
                 settings?.setValue(loggedInUserSettings[userSettingsVolumeAttribute], forKey: userSettingsVolumeAttribute)
                 settings?.setValue(loggedInUserSettings[userSettingsIconAttribute], forKey: userSettingsIconAttribute)
                 
+                print(loggedInUserSettings[userSettingsDarkModeAttribute] as! Bool)
+                print(loggedInUserSettings[userSettingsVolumeAttribute]! as! Float)
+                print(loggedInUserSettings[userSettingsIconAttribute]! as! String)
                 // Commit the changes
-                do {
-                    try context.save()
-                } catch {
-                    // if an error occurs
-                    let nserror = error as NSError
-                    NSLog("Unresolved error \(nserror), \(nserror.userInfo)")
-                    abort()
-                }
+                try context.save()
             } catch {
                 // if an error occurs
                 let nserror = error as NSError

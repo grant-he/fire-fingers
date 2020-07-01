@@ -28,8 +28,10 @@ class HostLobbyVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        playersAllowedStepper.value = 2
     }
     
     @IBAction func instantDeathModeUpdated(_ sender: Any) {
@@ -46,40 +48,39 @@ class HostLobbyVC: UIViewController {
         if let newValue: Int = Int(playersAllowedTextField.text ?? "0") {
             // If new value is too small, send an alert
             if newValue < Int(playersAllowedStepper.minimumValue) {
-                let controller = UIAlertController(
-                    title: "Inputted value too small",
-                    message: "Please select a value between \(Int(playersAllowedStepper.minimumValue)) and \(Int(playersAllowedStepper.maximumValue))",
-                    preferredStyle: .alert
-                )
-                controller.addAction(UIAlertAction(
-                    title: "OK",
-                    style: .default,
-                    handler: nil
-                ))
-                self.present(controller, animated: true)
-                // Reset text to stepper's value
-                playersAllowedTextField.text = Int(playersAllowedStepper.value).description
+                playersAllowedValueOutOfBoundsHandler(tooLarge: false)
             }
             // If new value is too large, send an alert
-            else if newValue > Int(playersAllowedStepper.maximumValue) {let controller = UIAlertController(
-                    title: "Inputted value too large",
-                    message: "Please select a value between \(Int(playersAllowedStepper.minimumValue)) and \(Int(playersAllowedStepper.maximumValue))",
-                    preferredStyle: .alert
-                )
-                controller.addAction(UIAlertAction(
-                    title: "OK",
-                    style: .default,
-                    handler: nil
-                ))
-                self.present(controller, animated: true)
-                // Reset text to stepper value
-                playersAllowedTextField.text = Int(playersAllowedStepper.value).description
+            else if newValue > Int(playersAllowedStepper.maximumValue) {
+                playersAllowedValueOutOfBoundsHandler(tooLarge: true)
             }
             // If valid value, update stepper to reflect changes
             else {
                 playersAllowedStepper.value = Double(newValue)
             }
         }
+    }
+    
+    func playersAllowedValueOutOfBoundsHandler(tooLarge: Bool) {
+        
+        var title = "Inputted value too small"
+        if tooLarge {
+            title = "Inputted value too large"
+        }
+        
+        let controller = UIAlertController(
+            title: title,
+            message: "Please select a value between \(Int(playersAllowedStepper.minimumValue)) and \(Int(playersAllowedStepper.maximumValue))",
+            preferredStyle: .alert
+        )
+        controller.addAction(UIAlertAction(
+            title: "OK",
+            style: .default,
+            handler: nil
+        ))
+        self.present(controller, animated: true)
+        // Reset text to stepper's value
+        playersAllowedTextField.text = Int(playersAllowedStepper.value).description
     }
     
     @IBAction func playersAllowedUpdated(_ sender: Any) {
@@ -101,7 +102,7 @@ class HostLobbyVC: UIViewController {
     }
     
     @IBAction func playersAllowedToolTipButtonPressed(_ sender: Any) {
-        sendToolTipAlert(title: "Players Allowed", message: "The max number of players desired, between 1 and 4.")
+        sendToolTipAlert(title: "Players Allowed", message: "The maximum number of players, between 1 and 4.")
     }
     
     func sendToolTipAlert(title: String, message: String) {

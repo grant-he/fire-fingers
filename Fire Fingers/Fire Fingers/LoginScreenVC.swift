@@ -42,7 +42,7 @@ class LoginScreenVC: UIViewController {
                         style: .default,
                         handler: nil
                     ))
-                    self.present(controller, animated: true, completion: nil)
+                    self.present(controller, animated: true)
                 }
             })
         }
@@ -71,14 +71,32 @@ class LoginScreenVC: UIViewController {
                         style: .default,
                         handler: nil
                     ))
-                    self.present(controller, animated: true, completion: nil)
+                    self.present(controller, animated: true)
                 }
             })
         }
     }
     
     @IBAction func continueAsGuestButtonPressed(_ sender: Any) {
-        
+        // Send alert confirming guest selection
+        let controller = UIAlertController(
+            title: "Continue as guest?",
+            message: "Your scores will not be saved.",
+            preferredStyle: .alert
+        )
+        controller.addAction(UIAlertAction(
+            title: "Yes",
+            style: .default,
+            handler: { _ in
+                self.performSegue(withIdentifier: self.loginSegue, sender: nil)
+            }
+        ))
+        controller.addAction(UIAlertAction(
+            title: "Cancel",
+            style: .cancel,
+            handler: nil
+        ))
+        self.present(controller, animated: true)
     }
     
 }

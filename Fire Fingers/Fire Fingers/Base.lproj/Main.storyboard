@@ -47,7 +47,7 @@
                                     <constraint firstAttribute="width" constant="175" id="Ke8-cz-hVX"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="czI-qM-Lqi">
                                 <rect key="frame" x="128" y="483" width="38" height="30"/>
@@ -235,8 +235,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Log out"/>
                                 <connections>
-                                    <action selector="logOutButtonPressed:" destination="LZJ-mW-UbC" eventType="touchUpInside" id="d9b-2D-ZSa"/>
-                                    <action selector="logOutPressed:" destination="LZJ-mW-UbC" eventType="touchUpInside" id="dDy-So-kqa"/>
+                                    <action selector="logOutButtonPressed:" destination="LZJ-mW-UbC" eventType="touchUpInside" id="3wO-sK-XLP"/>
                                 </connections>
                             </button>
                             <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="lgL-Us-f6c">
@@ -288,8 +287,12 @@
                     <navigationItem key="navigationItem" id="CZb-jb-1im"/>
                     <connections>
                         <outlet property="darkModeSwitch" destination="rML-Hg-Te2" id="XPN-A7-JEs"/>
+                        <outlet property="iconOneButton" destination="8h1-Ty-25a" id="R2d-IN-Fc2"/>
+                        <outlet property="iconThreeButton" destination="ZD0-9W-zlF" id="BXO-2w-J0d"/>
+                        <outlet property="iconTwoButton" destination="dbp-uG-gZA" id="J68-WW-OSc"/>
+                        <outlet property="logOutButton" destination="XdM-bv-1se" id="Mrr-Tf-lWu"/>
                         <outlet property="volumeSlider" destination="lgL-Us-f6c" id="8CR-7H-ING"/>
-                        <segue destination="axl-v9-Pal" kind="show" identifier="LogOutSegue" id="vRa-p9-Cah"/>
+                        <segue destination="axl-v9-Pal" kind="show" identifier="GoToLoginSegue" id="vRa-p9-Cah"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XF2-K3-imd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -673,7 +676,7 @@
         <!--Navigation Controller-->
         <scene sceneID="8HR-qh-uvA">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="axl-v9-Pal" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" modalPresentationStyle="fullScreen" id="axl-v9-Pal" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="OOF-FU-luH"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="p58-6B-rNK">

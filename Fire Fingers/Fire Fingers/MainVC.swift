@@ -11,9 +11,9 @@
 import UIKit
 import FirebaseAuth
 
-var loggedInUserSetting: Dictionary<String, Any> = ["username": "guest",
+var loggedInUserSettings: Dictionary<String, Any> = ["username": "guest",
                                        "darkModeEnabled": false,
-                                       "volume": 1.0,
+                                       "volume": Float(1.0),
                                        "icon": "icon1.png"]
 
 class MainVC: UIViewController {

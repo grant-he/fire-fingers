@@ -11,6 +11,8 @@
 import UIKit
 import FirebaseAuth
 
+var loggedInUser:String?
+
 class MainVC: UIViewController {
 
     override func viewDidLoad() {

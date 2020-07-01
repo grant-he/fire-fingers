@@ -1,8 +1,10 @@
 //
-//  HostLobbyVC.swift
-//  Fire Fingers
+//  Project: Fire-Fingers
+//  Filename: HostLobbyVC.swift
+//  EID: gh22593 + gwe272
+//  Course: CS371L
 //
-//  Created by Grant He on 6/30/20.
+//  Created by Grant He & Garrett Egan on 6/30/20.
 //  Copyright © 2020 G + G. All rights reserved.
 //
 

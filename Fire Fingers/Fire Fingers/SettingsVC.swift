@@ -1,8 +1,10 @@
 //
-//  SettingsVC.swift
-//  Fire Fingers
+//  Project: Fire-Fingers
+//  Filename: SettingsVC.swift
+//  EID: gh22593 + gwe272
+//  Course: CS371L
 //
-//  Created by Grant He on 6/30/20.
+//  Created by Grant He & Garrett Egan on 6/30/20.
 //  Copyright © 2020 G + G. All rights reserved.
 //
 
@@ -11,16 +13,16 @@ import FirebaseAuth
 import CoreData
 
 class SettingsVC: UIViewController {
-    let userSettingsEntityName = "User Settings"
-    let userSettingsUsernameAttribute = "username"
-    let userSettingsDarkModeAttribute = "darkModeEnabled"
-    let userSettingsVolumeAttribute = "volume"
-    let userSettingsIconAttribute = "icon"
-    let goToLoginSegueIdentifier = "GoToLoginSegue"
+    // Property names
+    private let userSettingsEntityName = "User Settings"
+    private let userSettingsUsernameAttribute = "username"
+    private let userSettingsDarkModeAttribute = "darkModeEnabled"
+    private let userSettingsVolumeAttribute = "volume"
+    private let userSettingsIconAttribute = "icon"
+    private let goToLoginSegueIdentifier = "GoToLoginSegue"
 
     @IBOutlet weak var darkModeSwitch: UISwitch!
     @IBOutlet weak var volumeSlider: UISlider!
-    
     @IBOutlet weak var iconOneButton: UIButton!
     @IBOutlet weak var iconTwoButton: UIButton!
     @IBOutlet weak var iconThreeButton: UIButton!
@@ -38,12 +40,14 @@ class SettingsVC: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        // Update objects to match user settings
+        // Dark Mode Switch:
         let darkModeEnabled = loggedInUserSettings[userSettingsDarkModeAttribute] as! Bool
         darkModeSwitch.setOn(darkModeEnabled, animated: false)
-        
+        // Volume Slider:
         let volumeLevel = loggedInUserSettings[userSettingsVolumeAttribute] as! Float
         volumeSlider.setValue(volumeLevel, animated: false)
-        
+        // Icon Buttons:
         switch loggedInUserSettings[userSettingsIconAttribute] as! String {
         case "icon1.png":
             iconOneButton.layer.borderColor = CGColor(srgbRed: 0, green: 0, blue: 255, alpha: 1)
@@ -52,24 +56,26 @@ class SettingsVC: UIViewController {
         case "icon3.png":
             iconThreeButton.layer.borderColor = CGColor(srgbRed: 0, green: 0, blue: 255, alpha: 1)
         default:
-            print("error")
+            print("Icon Selection Error")
         }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        // If user is not guest, update core data to match current user settings
         if loggedInUserSettings[userSettingsUsernameAttribute] as! String != "guest" {
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             let context = appDelegate.persistentContainer.viewContext
             let request = NSFetchRequest<NSFetchRequestResult>(entityName: "UserSetting")
             
             var fetchedResults: [NSManagedObject]? = nil
-            
+            // Filter to only select entities matching current user
             let predicate = NSPredicate(format: "\(userSettingsUsernameAttribute) MATCHES '\(loggedInUserSettings[userSettingsUsernameAttribute]!)'")
             request.predicate = predicate
             
             do {
                 try fetchedResults = context.fetch(request) as? [NSManagedObject]
                 let settings = fetchedResults?.first
+                // Set attribute values to new setting values
                 settings?.setValue(loggedInUserSettings[userSettingsDarkModeAttribute], forKey: userSettingsDarkModeAttribute)
                 settings?.setValue(loggedInUserSettings[userSettingsVolumeAttribute], forKey: userSettingsVolumeAttribute)
                 settings?.setValue(loggedInUserSettings[userSettingsIconAttribute], forKey: userSettingsIconAttribute)
@@ -93,46 +99,54 @@ class SettingsVC: UIViewController {
     }
     
     @IBAction func darkModeUpdated(_ sender: Any) {
+        // Update user dark mode setting
         loggedInUserSettings[userSettingsDarkModeAttribute] = darkModeSwitch.isOn
     }
     
     @IBAction func volumeUpdated(_ sender: Any) {
+        // Update user volume setting
         loggedInUserSettings[userSettingsVolumeAttribute] = volumeSlider.value
     }
     
     @IBAction func iconOneSelected(_ sender: Any) {
+        // Clear icon selections
         clearIconSelection()
-        
+        // Select icon one and update user icon setting
         iconOneButton.layer.borderColor = CGColor(srgbRed: 0, green: 0, blue: 255, alpha: 1)
         loggedInUserSettings[userSettingsIconAttribute] = "icon1.png"
     }
     
     @IBAction func iconTwoSelected(_ sender: Any) {
+        // Clear icon selections
         clearIconSelection()
-        
+        // Select icon two and update user icon setting
         iconTwoButton.layer.borderColor = CGColor(srgbRed: 0, green: 0, blue: 255, alpha: 1)
         loggedInUserSettings[userSettingsIconAttribute] = "icon2.png"
     }
     
     @IBAction func iconThreeSelected(_ sender: Any) {
+        // Clear icon selections
         clearIconSelection()
-        
+        // Select icon three and update user icon setting
         iconThreeButton.layer.borderColor = CGColor(srgbRed: 0, green: 0, blue: 255, alpha: 1)
         loggedInUserSettings[userSettingsIconAttribute] = "icon3.png"
     }
     
     func clearIconSelection() {
+        // Set all icon button borders as clear
         iconOneButton.layer.borderColor = CGColor(srgbRed: 0, green: 0, blue: 0, alpha: 0)
         iconTwoButton.layer.borderColor = CGColor(srgbRed: 0, green: 0, blue: 0, alpha: 0)
         iconThreeButton.layer.borderColor = CGColor(srgbRed: 0, green: 0, blue: 0, alpha: 0)
     }
     
     @IBAction func logOutButtonPressed(_ sender: Any) {
+        // If user is guest, immediate proceed to login view
         if loggedInUserSettings[userSettingsUsernameAttribute] as! String == "guest" {
             self.performSegue(withIdentifier: self.goToLoginSegueIdentifier, sender: nil)
             
-        } else {
-            // Send alert confirming logout
+        }
+        // Otherwise, send alert confirming log out
+        else {
             let controller = UIAlertController(
                 title: "Are you sure you want to log out?",
                 message: nil,

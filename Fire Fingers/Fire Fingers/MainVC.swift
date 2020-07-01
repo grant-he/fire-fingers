@@ -1,6 +1,6 @@
 //
 //  Project: Fire-Fingers
-//  Filename: ViewController.swift
+//  Filename: MainVC.swift
 //  EID: gh22593 + gwe272
 //  Course: CS371L
 //
@@ -11,11 +11,10 @@
 import UIKit
 import FirebaseAuth
 
-class ViewController: UIViewController {
+class MainVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
     }
 
 }

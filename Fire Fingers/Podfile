@@ -5,5 +5,9 @@ target 'Fire Fingers' do
 
   # Pods for Fire Fingers
   pod 'Firebase/Auth'
+  pod 'Firebase/Firestore'
+
+  # MessageKit
+  pod 'MessageKit'
 
 end

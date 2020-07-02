@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E6D3978DBD5F217563ACDE81 /* Pods_Fire_Fingers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E825456057A75A61A609E58D /* Pods_Fire_Fingers.framework */; };
+		7ADD3CC524AD91DF001FDDA3 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADD3CC424AD91DF001FDDA3 /* ChatViewController.swift */; };
 		F6A7FFCE24A7CFF8002DFD00 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A7FFCD24A7CFF8002DFD00 /* AppDelegate.swift */; };
 		F6A7FFD024A7CFF8002DFD00 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A7FFCF24A7CFF8002DFD00 /* SceneDelegate.swift */; };
 		F6A7FFD224A7CFF8002DFD00 /* MainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A7FFD124A7CFF8002DFD00 /* MainVC.swift */; };
@@ -22,12 +22,13 @@
 		F6E0C6E624AC317B00C9C07A /* HostLobbyVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E0C6E524AC317B00C9C07A /* HostLobbyVC.swift */; };
 		F6E0C6E824AC318B00C9C07A /* JoinLobbyVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E0C6E724AC318B00C9C07A /* JoinLobbyVC.swift */; };
 		F6E0C6EA24AC319A00C9C07A /* PlayVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6E0C6E924AC319A00C9C07A /* PlayVC.swift */; };
+		FF924C5945317C7B3E5574EE /* Pods_Fire_Fingers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F88C30DC9B778A878E1C10B3 /* Pods_Fire_Fingers.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0EEE843ECFB883BFD249D649 /* Pods-Fire Fingers.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fire Fingers.release.xcconfig"; path = "Target Support Files/Pods-Fire Fingers/Pods-Fire Fingers.release.xcconfig"; sourceTree = "<group>"; };
-		E825456057A75A61A609E58D /* Pods_Fire_Fingers.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Fire_Fingers.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		EEE7D7FE9C739BC7DDCF3DA7 /* Pods-Fire Fingers.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fire Fingers.debug.xcconfig"; path = "Target Support Files/Pods-Fire Fingers/Pods-Fire Fingers.debug.xcconfig"; sourceTree = "<group>"; };
+		2F5DA58B0C377DD1BF6DD35F /* Pods-Fire Fingers.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fire Fingers.debug.xcconfig"; path = "Target Support Files/Pods-Fire Fingers/Pods-Fire Fingers.debug.xcconfig"; sourceTree = "<group>"; };
+		7739CE9ED7B8ED9D400A064A /* Pods-Fire Fingers.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fire Fingers.release.xcconfig"; path = "Target Support Files/Pods-Fire Fingers/Pods-Fire Fingers.release.xcconfig"; sourceTree = "<group>"; };
+		7ADD3CC424AD91DF001FDDA3 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		F6A7FFCA24A7CFF8002DFD00 /* Fire Fingers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fire Fingers.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6A7FFCD24A7CFF8002DFD00 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F6A7FFCF24A7CFF8002DFD00 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -45,6 +46,7 @@
 		F6E0C6E524AC317B00C9C07A /* HostLobbyVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostLobbyVC.swift; sourceTree = "<group>"; };
 		F6E0C6E724AC318B00C9C07A /* JoinLobbyVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinLobbyVC.swift; sourceTree = "<group>"; };
 		F6E0C6E924AC319A00C9C07A /* PlayVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayVC.swift; sourceTree = "<group>"; };
+		F88C30DC9B778A878E1C10B3 /* Pods_Fire_Fingers.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Fire_Fingers.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,28 +54,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E6D3978DBD5F217563ACDE81 /* Pods_Fire_Fingers.framework in Frameworks */,
+				FF924C5945317C7B3E5574EE /* Pods_Fire_Fingers.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3D7D15961C004971FB43AD69 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				E825456057A75A61A609E58D /* Pods_Fire_Fingers.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		44B9214F5AC0C5F7E02A0B63 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				EEE7D7FE9C739BC7DDCF3DA7 /* Pods-Fire Fingers.debug.xcconfig */,
-				0EEE843ECFB883BFD249D649 /* Pods-Fire Fingers.release.xcconfig */,
+				2F5DA58B0C377DD1BF6DD35F /* Pods-Fire Fingers.debug.xcconfig */,
+				7739CE9ED7B8ED9D400A064A /* Pods-Fire Fingers.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		6C4D31C95791BC50D040E6F1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F88C30DC9B778A878E1C10B3 /* Pods_Fire_Fingers.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		F6A7FFC124A7CFF8002DFD00 = {
@@ -82,7 +84,7 @@
 				F6A7FFCC24A7CFF8002DFD00 /* Fire Fingers */,
 				F6A7FFCB24A7CFF8002DFD00 /* Products */,
 				44B9214F5AC0C5F7E02A0B63 /* Pods */,
-				3D7D15961C004971FB43AD69 /* Frameworks */,
+				6C4D31C95791BC50D040E6F1 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -109,6 +111,7 @@
 				F6E0C6E724AC318B00C9C07A /* JoinLobbyVC.swift */,
 				F6E0C6E924AC319A00C9C07A /* PlayVC.swift */,
 				F6A7FFD324A7CFF8002DFD00 /* Main.storyboard */,
+				7ADD3CC424AD91DF001FDDA3 /* ChatViewController.swift */,
 				F6A7FFD924A7CFF9002DFD00 /* Assets.xcassets */,
 				F6A7FFDB24A7CFF9002DFD00 /* LaunchScreen.storyboard */,
 				F6A7FFDE24A7CFF9002DFD00 /* Info.plist */,
@@ -124,11 +127,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F6A7FFE124A7CFF9002DFD00 /* Build configuration list for PBXNativeTarget "Fire Fingers" */;
 			buildPhases = (
-				B8D0FC0CA2CD744610261011 /* [CP] Check Pods Manifest.lock */,
+				0A1BCD28380E80545D870B01 /* [CP] Check Pods Manifest.lock */,
 				F6A7FFC624A7CFF8002DFD00 /* Sources */,
 				F6A7FFC724A7CFF8002DFD00 /* Frameworks */,
 				F6A7FFC824A7CFF8002DFD00 /* Resources */,
-				F2FC700FFF1F146F142AEAA9 /* [CP] Embed Pods Frameworks */,
+				38100E34DD193A63BCB5445A /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -187,7 +190,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		B8D0FC0CA2CD744610261011 /* [CP] Check Pods Manifest.lock */ = {
+		0A1BCD28380E80545D870B01 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -209,7 +212,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F2FC700FFF1F146F142AEAA9 /* [CP] Embed Pods Frameworks */ = {
+		38100E34DD193A63BCB5445A /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -235,6 +238,7 @@
 			files = (
 				F6E0C6E024AC313C00C9C07A /* LoginScreenVC.swift in Sources */,
 				F6A7FFD824A7CFF8002DFD00 /* Fire_Fingers.xcdatamodeld in Sources */,
+				7ADD3CC524AD91DF001FDDA3 /* ChatViewController.swift in Sources */,
 				F6E0C6EA24AC319A00C9C07A /* PlayVC.swift in Sources */,
 				F6A7FFD224A7CFF8002DFD00 /* MainVC.swift in Sources */,
 				F6E0C6E624AC317B00C9C07A /* HostLobbyVC.swift in Sources */,
@@ -384,7 +388,7 @@
 		};
 		F6A7FFE224A7CFF9002DFD00 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EEE7D7FE9C739BC7DDCF3DA7 /* Pods-Fire Fingers.debug.xcconfig */;
+			baseConfigurationReference = 2F5DA58B0C377DD1BF6DD35F /* Pods-Fire Fingers.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "Fire Fingers/Fire Fingers.entitlements";
@@ -403,7 +407,7 @@
 		};
 		F6A7FFE324A7CFF9002DFD00 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0EEE843ECFB883BFD249D649 /* Pods-Fire Fingers.release.xcconfig */;
+			baseConfigurationReference = 7739CE9ED7B8ED9D400A064A /* Pods-Fire Fingers.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "Fire Fingers/Fire Fingers.entitlements";

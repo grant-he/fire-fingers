@@ -9,9 +9,21 @@
 //
 
 import UIKit
+import FirebaseAuth
+import FirebaseFirestore
 
 class HostLobbyVC: UIViewController {
-
+    private let chatLobbySegue = "ChatLobbySegue"
+    private let db = Firestore.firestore()
+    internal let globalUser = Auth.auth().currentUser
+    
+    private var lobbiesReference: CollectionReference {
+      return db.collection("lobbies")
+    }
+    
+    private var chatLobbyReference: DocumentReference?
+    private var chatLobby: Lobby?
+    
     // Instant Death Mode
     @IBOutlet weak var instantDeathModeToolTipButton: UIButton!
     
@@ -25,13 +37,33 @@ class HostLobbyVC: UIViewController {
     @IBOutlet weak var playersAllowedToolTipButton: UIButton!
     @IBOutlet weak var playersAllowedTextField: UITextField!
     @IBOutlet weak var playersAllowedStepper: UIStepper!
+    @IBOutlet weak var chatContainerView: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        let user = Auth.auth().currentUser!
+        chatLobby = createLobbyChat(name: "\(user.email!)'s Lobby")
+
+        let chatViewController = ChatViewController(user: user, lobby: chatLobby!)
+        
+        addChild(chatViewController)
+        chatContainerView.addSubview(chatViewController.view)
+        
+        chatViewController.didMove(toParent: self)
+        chatViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        chatViewController.view.topAnchor.constraint(equalTo: chatContainerView.safeAreaLayoutGuide.topAnchor).isActive = true
+        chatViewController.view.leadingAnchor.constraint(equalTo: chatContainerView.leadingAnchor).isActive = true
+        chatViewController.view.trailingAnchor.constraint(equalTo: chatContainerView.trailingAnchor).isActive = true
+        chatViewController.view.bottomAnchor.constraint(equalTo: chatContainerView.bottomAnchor).isActive = true
         playersAllowedStepper.value = 2
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        deleteLobbyChat()
     }
     
     @IBAction func instantDeathModeUpdated(_ sender: Any) {
@@ -129,4 +161,20 @@ class HostLobbyVC: UIViewController {
         self.view.endEditing(true)
     }
 
+    private func createLobbyChat(name:String) -> Lobby{
+        print("Creating chat lobby '\(name)")
+        var lobby = Lobby(name: name)
+        chatLobbyReference = lobbiesReference.addDocument(data: lobby.representation) { error in
+            if let e = error {
+                print("Error saving chat lobby: \(e.localizedDescription)")
+            }
+          }
+        lobby.id = chatLobbyReference?.documentID
+        return lobby
+    }
+    
+    private func deleteLobbyChat(){
+        print("Deleting chat lobby '\(chatLobby!.name)'")
+        chatLobbyReference?.delete()
+    }
 }

@@ -454,11 +454,6 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WMz-y6-f6B">
-                                <rect key="frame" x="302" y="593" width="48" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="READY"/>
-                            </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="oGK-9J-9BQ">
                                 <rect key="frame" x="70" y="211.33333333333337" width="294" height="185"/>
                                 <subviews>
@@ -565,32 +560,34 @@
                                 </subviews>
                             </stackView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vcm-3a-REW">
-                                <rect key="frame" x="20" y="425" width="374" height="160"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="374" id="6R3-qZ-VLD"/>
-                                    <constraint firstAttribute="height" constant="160" id="WQM-kg-Blc"/>
-                                </constraints>
-                                <connections>
-                                    <segue destination="x5z-yp-RWf" kind="embed" id="1Ht-ks-8e5"/>
-                                </connections>
+                                <rect key="frame" x="20" y="459" width="374" height="403"/>
                             </containerView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WMz-y6-f6B">
+                                <rect key="frame" x="316" y="421" width="48" height="30"/>
+                                <state key="normal" title="READY"/>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="cW2-vm-tVb" firstAttribute="centerY" secondItem="2TS-8z-ofj" secondAttribute="centerY" constant="-320" id="2ND-GY-46I"/>
                             <constraint firstItem="oGK-9J-9BQ" firstAttribute="leading" secondItem="4cg-Hx-TP3" secondAttribute="leading" constant="70" id="5b5-Rr-Pgh"/>
-                            <constraint firstItem="vcm-3a-REW" firstAttribute="top" secondItem="oGK-9J-9BQ" secondAttribute="bottom" constant="28.670000000000002" id="8SR-zY-GLR"/>
                             <constraint firstItem="rfE-Hz-xJz" firstAttribute="top" secondItem="4cg-Hx-TP3" secondAttribute="top" constant="89" id="8q6-pE-IXL"/>
+                            <constraint firstItem="vcm-3a-REW" firstAttribute="leading" secondItem="4cg-Hx-TP3" secondAttribute="leading" constant="20" id="JLI-GZ-d8I"/>
+                            <constraint firstItem="vcm-3a-REW" firstAttribute="bottom" secondItem="4cg-Hx-TP3" secondAttribute="bottom" id="PDN-M2-sYu"/>
                             <constraint firstItem="oGK-9J-9BQ" firstAttribute="top" secondItem="rfE-Hz-xJz" secondAttribute="bottom" constant="14" id="PM9-uG-htz"/>
                             <constraint firstItem="cW2-vm-tVb" firstAttribute="centerX" secondItem="2TS-8z-ofj" secondAttribute="centerX" id="Pij-xY-Kau"/>
                             <constraint firstItem="4cg-Hx-TP3" firstAttribute="trailing" secondItem="oGK-9J-9BQ" secondAttribute="trailing" constant="50" id="S1D-fI-uEX"/>
-                            <constraint firstItem="vcm-3a-REW" firstAttribute="leading" secondItem="4cg-Hx-TP3" secondAttribute="leading" constant="20" id="YYh-Uk-a0e"/>
+                            <constraint firstItem="4cg-Hx-TP3" firstAttribute="trailing" secondItem="vcm-3a-REW" secondAttribute="trailing" constant="20" id="Sor-kS-c6m"/>
+                            <constraint firstItem="WMz-y6-f6B" firstAttribute="leading" secondItem="4cg-Hx-TP3" secondAttribute="leading" constant="316" id="UIa-Zo-dWw"/>
+                            <constraint firstItem="vcm-3a-REW" firstAttribute="top" secondItem="WMz-y6-f6B" secondAttribute="bottom" constant="8" id="Z6Q-Ie-hKc"/>
                             <constraint firstItem="rfE-Hz-xJz" firstAttribute="leading" secondItem="4cg-Hx-TP3" secondAttribute="leading" constant="60" id="kZ9-Ow-QRs"/>
+                            <constraint firstItem="WMz-y6-f6B" firstAttribute="top" secondItem="oGK-9J-9BQ" secondAttribute="bottom" constant="24.670000000000002" id="lop-xT-9NA"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="4cg-Hx-TP3"/>
                     </view>
                     <navigationItem key="navigationItem" id="5Hq-cV-CPx"/>
                     <connections>
+                        <outlet property="chatContainerView" destination="vcm-3a-REW" id="8Oz-rI-P5B"/>
                         <outlet property="earthquakeModeToolTipButton" destination="jN8-om-ona" id="UW7-Lz-qwe"/>
                         <outlet property="emojiPromptsToolTipButton" destination="fzS-hV-dzf" id="1FB-Tj-tvA"/>
                         <outlet property="instantDeathModeToolTipButton" destination="m9T-uF-syn" id="J5T-Lh-wUo"/>
@@ -603,21 +600,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gTV-y9-Xsr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3689.8550724637685" y="-194.19642857142856"/>
-        </scene>
-        <!--Chat View Controller-->
-        <scene sceneID="c9t-Fo-uxg">
-            <objects>
-                <viewController id="x5z-yp-RWf" customClass="ChatViewController" customModule="Fire_Fingers" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Bxi-So-9E4">
-                        <rect key="frame" x="0.0" y="0.0" width="374" height="160"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <viewLayoutGuide key="safeArea" id="qqg-wu-LHh"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="d9p-gb-ODh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4506" y="-506"/>
         </scene>
         <!--PlayVC-->
         <scene sceneID="Ua7-90-SyC">

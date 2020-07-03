@@ -14,15 +14,23 @@ import FirebaseFirestore
 
 class HostLobbyVC: UIViewController {
     private let chatLobbySegue = "ChatLobbySegue"
-    private let db = Firestore.firestore()
-    internal let globalUser = Auth.auth().currentUser
     
+    // database
+    private let db = Firestore.firestore()
+    
+    // reference to lobbies section of database
     private var lobbiesReference: CollectionReference {
       return db.collection("lobbies")
     }
     
+    // reference to current chat lobby in db
     private var chatLobbyReference: DocumentReference?
+    
+    // chat Lobby for this lobby
     private var chatLobby: Lobby?
+    
+    // ChatViewController of chat view
+    private var chatViewController: ChatViewController!
     
     // Instant Death Mode
     @IBOutlet weak var instantDeathModeToolTipButton: UIButton!
@@ -39,16 +47,13 @@ class HostLobbyVC: UIViewController {
     @IBOutlet weak var playersAllowedStepper: UIStepper!
     @IBOutlet weak var chatContainerView: UIView!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
+        
+        // create a chat lobby and add it to the view
         let user = Auth.auth().currentUser!
         chatLobby = createLobbyChat(name: "\(user.email!)'s Lobby")
 
-        let chatViewController = ChatViewController(user: user, lobby: chatLobby!)
+        chatViewController = ChatViewController(user: user, lobby: chatLobby!)
         
         addChild(chatViewController)
         chatContainerView.addSubview(chatViewController.view)
@@ -59,10 +64,15 @@ class HostLobbyVC: UIViewController {
         chatViewController.view.leadingAnchor.constraint(equalTo: chatContainerView.leadingAnchor).isActive = true
         chatViewController.view.trailingAnchor.constraint(equalTo: chatContainerView.trailingAnchor).isActive = true
         chatViewController.view.bottomAnchor.constraint(equalTo: chatContainerView.bottomAnchor).isActive = true
+        
+        // initialize number of players
         playersAllowedStepper.value = 2
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        // as host, delete lobby when leaving the host view
         deleteLobbyChat()
     }
     
@@ -151,16 +161,12 @@ class HostLobbyVC: UIViewController {
         self.present(controller, animated: true)
     }
     
-    // Enable tapping on the background to remove software keyboard
-    func textFieldShouldReturn(textField:UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-    
+    // when background is touched, dismiss keyboard but not inputBar
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
+        chatViewController.messageInputBar.inputTextView.resignFirstResponder()
     }
 
+    // create a new chat lobby
     private func createLobbyChat(name:String) -> Lobby{
         print("Creating chat lobby '\(name)")
         var lobby = Lobby(name: name)
@@ -173,6 +179,7 @@ class HostLobbyVC: UIViewController {
         return lobby
     }
     
+    // delete our chat lobby
     private func deleteLobbyChat(){
         print("Deleting chat lobby '\(chatLobby!.name)'")
         chatLobbyReference?.delete()

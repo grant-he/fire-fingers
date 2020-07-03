@@ -38,29 +38,36 @@ import InputBarAccessoryView
 
 final class ChatViewController: MessagesViewController {
   
-    let primaryColor = UIColor(red: 1 / 255, green: 93 / 255, blue: 48 / 255, alpha: 1)
-    let incominMessageColor = UIColor(red: 230 / 255, green: 230 / 255, blue: 230 / 255, alpha: 1)
+    // Color for send button
+    let sendButtonColor = UIColor(red: 1 / 255, green: 93 / 255, blue: 48 / 255, alpha: 1)
   
-  private let db = Firestore.firestore()
-  private var reference: CollectionReference?
+    // Datatbase
+    private let db = Firestore.firestore()
+    
+    // Reference to lobbies section of database
+    private var reference: CollectionReference?
 
-  private var messages: [Message] = []
-  private var messageListener: ListenerRegistration?
+    // Message container
+    private var messages: [Message] = []
+    
+    // listens for changes to lobbies section of database
+    private var messageListener: ListenerRegistration?
   
-  let user: User?
-  let lobby: Lobby?
+    // Signed in auth user
+    let user: User?
+    
+    // Sobby we are connected to
+    let lobby: Lobby?
   
-  deinit {
+    deinit {
     messageListener?.remove()
-  }
+    }
 
-  init(user: User, lobby: Lobby) {
-    self.user = user
-    self.lobby = lobby
-    super.init(nibName: nil, bundle: nil)
-
-    title = lobby.name
-  }
+    init(user: User, lobby: Lobby) {
+        self.user = user
+        self.lobby = lobby
+        super.init(nibName: nil, bundle: nil)
+    }
   
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
@@ -68,16 +75,16 @@ final class ChatViewController: MessagesViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-
-    title = lobby!.name
+    
+    // connect to db
     guard let id = lobby!.id else {
       navigationController?.popViewController(animated: true)
         print("failed to find lobby id")
       return
     }
-
     reference = db.collection(["lobbies", id, "thread"].joined(separator: "/"))
     
+    // listen for db changes
     messageListener = reference?.addSnapshotListener { querySnapshot, error in
       guard let snapshot = querySnapshot else {
         print("Error listening for lobby updates: \(error?.localizedDescription ?? "No error")")
@@ -89,32 +96,36 @@ final class ChatViewController: MessagesViewController {
       }
     }
     
-    navigationItem.largeTitleDisplayMode = .never
+//    navigationItem.largeTitleDisplayMode = .always
     
-    maintainPositionOnKeyboardFrameChanged = true
-    messageInputBar.inputTextView.tintColor = primaryColor
-    messageInputBar.sendButton.setTitleColor(primaryColor, for: .normal)
-    
+    // set ourself as necessary delegates
     messageInputBar.delegate = self
     messagesCollectionView.messagesDataSource = self
     messagesCollectionView.messagesLayoutDelegate = self
     messagesCollectionView.messagesDisplayDelegate = self
     
+    // When keyboard opened, scroll down so same message is displayed as before
+    maintainPositionOnKeyboardFrameChanged = true
     
-    messageInputBar.leftStackView.alignment = .center
-    messageInputBar.setLeftStackViewWidthConstant(to: 50, animated: false)
-    messageInputBar.setStackViewItems([], forStack: .left, animated: false) // 3
+    // Customize look of messageInputBar
+    messageInputBar.inputTextView.tintColor = sendButtonColor
+    messageInputBar.sendButton.setTitleColor(sendButtonColor, for: .normal)
     
     if let layout = messagesCollectionView.collectionViewLayout as? MessagesCollectionViewFlowLayout {
+        
+        // do not display avatars
         layout.attributedTextMessageSizeCalculator.outgoingAvatarSize = .zero
         layout.attributedTextMessageSizeCalculator.incomingAvatarSize = .zero
-        layout.collectionView?.backgroundColor = .red
+        
+        // for testing - makes bounds of view obvious
+//        layout.collectionView?.backgroundColor = .red
     }
 }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        // must be first responder in order for messageInputView to appear
         if !self.isFirstResponder {
             self.becomeFirstResponder()
         }
@@ -122,66 +133,66 @@ final class ChatViewController: MessagesViewController {
   
   // MARK: - Helpers
   
-  private func save(_ message: Message) {
-    reference?.addDocument(data: message.representation) { error in
-      if let e = error {
-        print("Error sending message: \(e.localizedDescription)")
-        return
-      }
-      self.messagesCollectionView.scrollToBottom()
+    // "sends" message by saving it to the db
+    private func save(_ message: Message) {
+        reference?.addDocument(data: message.representation) { error in
+            if let e = error {
+                print("Error sending message: \(e.localizedDescription)")
+                return
+            }
+            self.messagesCollectionView.scrollToBottom()
+        }
     }
-  }
   
-  private func insertNewMessage(_ message: Message) {
-    guard !messages.contains(message) else {
-        print("message already in messages")
-      return
+    // puts a message into the message container
+    private func insertNewMessage(_ message: Message) {
+        guard !messages.contains(message) else {
+            print("message already in messages")
+            return
+        }
+
+        messages.append(message)
+        messages.sort()
+
+        let isLatestMessage = messages.firstIndex(of: message) == (messages.count - 1)
+        let shouldScrollToBottom = messagesCollectionView.isAtBottom && isLatestMessage
+
+        messagesCollectionView.reloadData()
+
+        if shouldScrollToBottom {
+            DispatchQueue.main.async {
+                self.messagesCollectionView.scrollToBottom(animated: true)
+            }
+        }
     }
-    
-    messages.append(message)
-    messages.sort()
-    
-    let isLatestMessage = messages.firstIndex(of: message) == (messages.count - 1)
-    let shouldScrollToBottom = messagesCollectionView.isAtBottom && isLatestMessage
-    
-    messagesCollectionView.reloadData()
-    
-    if shouldScrollToBottom {
-      DispatchQueue.main.async {
-        self.messagesCollectionView.scrollToBottom(animated: true)
-      }
-    }
-  }
   
-  private func handleDocumentChange(_ change: DocumentChange) {
-    guard let message = Message(document: change.document) else {
-        print("message could not be created")
-        print(change.document)
-      return
+    // handles updates from the database
+    private func handleDocumentChange(_ change: DocumentChange) {
+        guard let message = Message(document: change.document) else {
+            print("message could not be created")
+            print(change.document)
+            return
+        }
+
+        switch change.type {
+            case .added:
+                insertNewMessage(message)
+
+            default:
+                break
+            }
+        }
     }
-    
-    switch change.type {
-    case .added:
-        insertNewMessage(message)
-      
-    default:
-        break
-    }
-  }
-}
 
 // MARK: - MessagesDisplayDelegate
 
 extension ChatViewController: MessagesDisplayDelegate {
   
-  func shouldDisplayHeader(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> Bool {
-    return false
-  }
-  
-  func messageStyle(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageStyle {
-    let corner: MessageStyle.TailCorner = isFromCurrentSender(message: message) ? .bottomRight : .bottomLeft
-    return .bubbleTail(corner, .curved)
-  }
+    // dictates the style of a message
+    func messageStyle(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageStyle {
+        let corner: MessageStyle.TailCorner = isFromCurrentSender(message: message) ? .bottomRight : .bottomLeft
+        return .bubbleTail(corner, .curved)
+    }
   
 }
 
@@ -189,43 +200,44 @@ extension ChatViewController: MessagesDisplayDelegate {
 
 extension ChatViewController: MessagesLayoutDelegate {
   
-  func footerViewSize(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGSize {
-    return CGSize(width: 0, height: 8)
-  }
-  
-  func cellTopLabelHeight(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
-    
-    return 15
-  }
+    // dictates the height of the cell top (sender name)
+    func cellTopLabelHeight(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
+        return 15
+    }
   
 }
 
 // MARK: - MessagesDataSource
 
 extension ChatViewController: MessagesDataSource {
+    
+    // represents the our user as a message sender
     func currentSender() -> SenderType {
         return FireFingersSender(senderId: user!.uid, displayName: user!.email!)
     }
     
+    // each message is its own section
     func numberOfSections(in messagesCollectionView: MessagesCollectionView) -> Int {
         print("num messages \(messages.count)")
         return messages.count
     }
   
-  func messageForItem(at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageType {
-    return messages[indexPath.section]
-  }
+    // ordering of messages
+    func messageForItem(at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageType {
+        return messages[indexPath.section]
+    }
   
-  func cellTopLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
-    let name = message.sender.displayName
-    return NSAttributedString(
-      string: name,
-      attributes: [
-        .font: UIFont.preferredFont(forTextStyle: .caption1),
-        .foregroundColor: UIColor(white: 0.3, alpha: 1)
-      ]
-    )
-  }
+    // the text to display above each message (sender name)
+    func cellTopLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
+        let name = message.sender.displayName
+        return NSAttributedString(
+          string: name,
+          attributes: [
+            .font: UIFont.preferredFont(forTextStyle: .caption1),
+            .foregroundColor: UIColor(white: 0.3, alpha: 1)
+          ]
+        )
+    }
   
 }
 
@@ -233,12 +245,13 @@ extension ChatViewController: MessagesDataSource {
 
 extension ChatViewController: InputBarAccessoryViewDelegate {
   
+    // initiates message send
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
         print("registered send press with '\(text)'")
     let message = Message(user: user!, content: text)
 
     save(message)
     inputBar.inputTextView.text = ""
-  }
+    }
   
 }

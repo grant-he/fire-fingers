@@ -30,7 +30,7 @@ import Firebase
 import MessageKit
 import FirebaseFirestore
 
-struct Message: MessageType {
+class Message: MessageType {
   let id: String?
   let content: String
   let sentDate: Date
@@ -71,15 +71,15 @@ struct Message: MessageType {
     let data = document.data()
     
     guard let sentDate = (data["created"] as? Timestamp)?.dateValue() else {
-        print("message failed to convert created date '\(data["created"])'")
+        print("message failed to convert created date '\(String(describing: data["created"]))'")
       return nil
     }
     guard let senderID = data["senderID"] as? String else {
-        print("message failed to convert sender id '\(data["senderID"])'")
+        print("message failed to convert sender id '\(String(describing: data["senderID"]))'")
       return nil
     }
     guard let senderName = data["senderName"] as? String else {
-        print("message failed to convert sender name '\(data["senderName"])'")
+        print("message failed to convert sender name '\(String(describing: data["senderName"]))'")
       return nil
     }
     
@@ -95,7 +95,7 @@ struct Message: MessageType {
       downloadURL = url
       content = ""
     } else {
-        print("message failed to convert content '\(data["content"])'")
+        print("message failed to convert content '\(String(describing: data["content"]))'")
       return nil
     }
   }

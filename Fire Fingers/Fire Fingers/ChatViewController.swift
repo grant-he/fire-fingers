@@ -44,7 +44,7 @@ final class ChatViewController: MessagesViewController {
     // Datatbase
     private let db = Firestore.firestore()
     
-    // Reference to lobbies section of database
+    // Reference to message thread
     private var reference: CollectionReference?
 
     // Message container
@@ -56,16 +56,16 @@ final class ChatViewController: MessagesViewController {
     // Signed in auth user
     let user: User?
     
-    // Sobby we are connected to
-    let lobby: Lobby?
+    // ChatLobby we are connected to
+    let chatLobby: ChatLobby?
   
     deinit {
     messageListener?.remove()
     }
 
-    init(user: User, lobby: Lobby) {
+    init(user: User, chatLobby: ChatLobby) {
         self.user = user
-        self.lobby = lobby
+        self.chatLobby = chatLobby
         super.init(nibName: nil, bundle: nil)
     }
   
@@ -77,12 +77,12 @@ final class ChatViewController: MessagesViewController {
     super.viewDidLoad()
     
     // connect to db
-    guard let id = lobby!.id else {
+    guard let id = chatLobby!.id else {
       navigationController?.popViewController(animated: true)
-        print("failed to find lobby id")
+        print("failed to find chat lobby id")
       return
     }
-    reference = db.collection(["lobbies", id, "thread"].joined(separator: "/"))
+    reference = db.collection(["chatLobbies", id, "thread"].joined(separator: "/"))
     
     // listen for db changes
     messageListener = reference?.addSnapshotListener { querySnapshot, error in
@@ -218,7 +218,6 @@ extension ChatViewController: MessagesDataSource {
     
     // each message is its own section
     func numberOfSections(in messagesCollectionView: MessagesCollectionView) -> Int {
-        print("num messages \(messages.count)")
         return messages.count
     }
   
@@ -248,10 +247,10 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
     // initiates message send
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
         print("registered send press with '\(text)'")
-    let message = Message(user: user!, content: text)
+        let message = Message(user: user!, content: text)
 
-    save(message)
-    inputBar.inputTextView.text = ""
+        save(message)
+        inputBar.inputTextView.text = ""
     }
   
 }

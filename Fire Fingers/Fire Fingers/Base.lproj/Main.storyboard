@@ -178,7 +178,7 @@
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                 </state>
                                 <connections>
-                                    <segue destination="qHy-l2-5kT" kind="show" identifier="JoinLobbySegue" id="UR4-FT-Bqv"/>
+                                    <action selector="joinLobbyButtonPressed:" destination="cUK-Ob-QMG" eventType="touchUpInside" id="fiV-Sk-0Ki"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -198,10 +198,13 @@
                         <viewLayoutGuide key="safeArea" id="wgB-ID-Wuo"/>
                     </view>
                     <navigationItem key="navigationItem" id="TaD-Gv-mA9"/>
+                    <connections>
+                        <segue destination="qHy-l2-5kT" kind="show" identifier="JoinLobbySegue" id="cVD-q0-r4t"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YM2-hz-YCo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2744.9275362318845" y="124.55357142857142"/>
+            <point key="canvasLocation" x="2745" y="125"/>
         </scene>
         <!--SettingsVC-->
         <scene sceneID="4OW-Ao-jHJ">
@@ -448,12 +451,6 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lobby code:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cW2-vm-tVb">
-                                <rect key="frame" x="160" y="117.99999999999999" width="94.333333333333314" height="20.333333333333329"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="oGK-9J-9BQ">
                                 <rect key="frame" x="70" y="211.33333333333337" width="294" height="185"/>
                                 <subviews>
@@ -559,27 +556,21 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vcm-3a-REW">
-                                <rect key="frame" x="20" y="459" width="374" height="403"/>
-                            </containerView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WMz-y6-f6B">
-                                <rect key="frame" x="316" y="421" width="48" height="30"/>
-                                <state key="normal" title="READY"/>
+                                <rect key="frame" x="316" y="421" width="56" height="30"/>
+                                <state key="normal" title="CREATE"/>
+                                <connections>
+                                    <action selector="createLobbyButtonPressed:" destination="nd0-TT-63a" eventType="touchUpInside" id="HcY-6w-AZw"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="cW2-vm-tVb" firstAttribute="centerY" secondItem="2TS-8z-ofj" secondAttribute="centerY" constant="-320" id="2ND-GY-46I"/>
                             <constraint firstItem="oGK-9J-9BQ" firstAttribute="leading" secondItem="4cg-Hx-TP3" secondAttribute="leading" constant="70" id="5b5-Rr-Pgh"/>
                             <constraint firstItem="rfE-Hz-xJz" firstAttribute="top" secondItem="4cg-Hx-TP3" secondAttribute="top" constant="89" id="8q6-pE-IXL"/>
-                            <constraint firstItem="vcm-3a-REW" firstAttribute="leading" secondItem="4cg-Hx-TP3" secondAttribute="leading" constant="20" id="JLI-GZ-d8I"/>
-                            <constraint firstItem="vcm-3a-REW" firstAttribute="bottom" secondItem="4cg-Hx-TP3" secondAttribute="bottom" id="PDN-M2-sYu"/>
                             <constraint firstItem="oGK-9J-9BQ" firstAttribute="top" secondItem="rfE-Hz-xJz" secondAttribute="bottom" constant="14" id="PM9-uG-htz"/>
-                            <constraint firstItem="cW2-vm-tVb" firstAttribute="centerX" secondItem="2TS-8z-ofj" secondAttribute="centerX" id="Pij-xY-Kau"/>
                             <constraint firstItem="4cg-Hx-TP3" firstAttribute="trailing" secondItem="oGK-9J-9BQ" secondAttribute="trailing" constant="50" id="S1D-fI-uEX"/>
-                            <constraint firstItem="4cg-Hx-TP3" firstAttribute="trailing" secondItem="vcm-3a-REW" secondAttribute="trailing" constant="20" id="Sor-kS-c6m"/>
                             <constraint firstItem="WMz-y6-f6B" firstAttribute="leading" secondItem="4cg-Hx-TP3" secondAttribute="leading" constant="316" id="UIa-Zo-dWw"/>
-                            <constraint firstItem="vcm-3a-REW" firstAttribute="top" secondItem="WMz-y6-f6B" secondAttribute="bottom" constant="8" id="Z6Q-Ie-hKc"/>
                             <constraint firstItem="rfE-Hz-xJz" firstAttribute="leading" secondItem="4cg-Hx-TP3" secondAttribute="leading" constant="60" id="kZ9-Ow-QRs"/>
                             <constraint firstItem="WMz-y6-f6B" firstAttribute="top" secondItem="oGK-9J-9BQ" secondAttribute="bottom" constant="24.670000000000002" id="lop-xT-9NA"/>
                         </constraints>
@@ -587,14 +578,12 @@
                     </view>
                     <navigationItem key="navigationItem" id="5Hq-cV-CPx"/>
                     <connections>
-                        <outlet property="chatContainerView" destination="vcm-3a-REW" id="8Oz-rI-P5B"/>
-                        <outlet property="earthquakeModeToolTipButton" destination="jN8-om-ona" id="UW7-Lz-qwe"/>
-                        <outlet property="emojiPromptsToolTipButton" destination="fzS-hV-dzf" id="1FB-Tj-tvA"/>
-                        <outlet property="instantDeathModeToolTipButton" destination="m9T-uF-syn" id="J5T-Lh-wUo"/>
+                        <outlet property="earthQuakeModeSwitch" destination="3vq-Gv-l4n" id="PV6-3A-6fM"/>
+                        <outlet property="emojiPromptsSwitch" destination="Hxx-LP-D3c" id="Qxd-kY-t6x"/>
+                        <outlet property="instantDeathModeSwitch" destination="1Yv-rw-Hfr" id="r3E-go-z5X"/>
                         <outlet property="playersAllowedStepper" destination="nYm-xu-gat" id="rhz-cm-AdE"/>
                         <outlet property="playersAllowedTextField" destination="Ytl-IM-AOe" id="Cui-ga-ejG"/>
-                        <outlet property="playersAllowedToolTipButton" destination="6Lx-cn-Cfs" id="Gbl-fU-cyE"/>
-                        <segue destination="17o-mb-50b" kind="show" identifier="HostLobbyToPlaySegue" id="7dy-en-QZx"/>
+                        <segue destination="qHy-l2-5kT" kind="show" identifier="JoinLobbySegue" id="bwe-HN-Ypn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gTV-y9-Xsr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -708,17 +697,6 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9Ni-cs-3d2">
-                                <rect key="frame" x="179" y="104" width="97" height="34"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tqj-k1-t1L">
-                                <rect key="frame" x="330" y="108" width="30" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Join"/>
-                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Lobby code:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gfD-mm-Y8I">
                                 <rect key="frame" x="63" y="111" width="95" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -727,16 +705,21 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kco-Da-JZV">
-                                <rect key="frame" x="274" y="678" width="48" height="30"/>
+                                <rect key="frame" x="312" y="338" width="48" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="READY"/>
                             </button>
+                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eud-1Z-gRS">
+                                <rect key="frame" x="20" y="459" width="374" height="403"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </containerView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="sfI-Ge-VlA"/>
                     </view>
                     <navigationItem key="navigationItem" id="2k6-qM-qmd"/>
                     <connections>
+                        <outlet property="chatContainerView" destination="eud-1Z-gRS" id="gUr-eZ-lNZ"/>
                         <segue destination="17o-mb-50b" kind="show" identifier="JoinLobbyToPlaySegue" id="PrP-n6-Xmg"/>
                     </connections>
                 </viewController>
@@ -784,6 +767,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="7dy-en-QZx"/>
+        <segue reference="bwe-HN-Ypn"/>
     </inferredMetricsTieBreakers>
 </document>

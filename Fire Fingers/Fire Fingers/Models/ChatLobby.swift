@@ -28,33 +28,29 @@
 
 import FirebaseFirestore
 
-struct Lobby {
+class ChatLobby {
   
-  var id: String?
-  let name: String
-  
-  init(name: String) {
-    id = nil
-    self.name = name
-  }
-  
-  init?(document: QueryDocumentSnapshot) {
-    let data = document.data()
-    
-    guard let name = data["name"] as? String else {
-      return nil
+    var id: String?
+
+    init() {
+        id = nil
     }
     
-    id = document.documentID
-    self.name = name
-  }
-  
+    init?(data: [String : Any]) {
+      
+      guard let id = (data["id"] as? String) else {
+          print("ChatLobby failed to convert id '\(String(describing: data["id"]))'")
+        return nil
+      }
+      
+      self.id = id
+    }
 }
 
-extension Lobby: DatabaseRepresentation {
+extension ChatLobby: DatabaseRepresentation {
   
   var representation: [String : Any] {
-    var rep = ["name": name]
+    var rep: [String : Any] = [:]
     
     if let id = id {
       rep["id"] = id
@@ -62,17 +58,4 @@ extension Lobby: DatabaseRepresentation {
     
     return rep
   }
-  
-}
-
-extension Lobby: Comparable {
-  
-  static func == (lhs: Lobby, rhs: Lobby) -> Bool {
-    return lhs.id == rhs.id
-  }
-  
-  static func < (lhs: Lobby, rhs: Lobby) -> Bool {
-    return lhs.name < rhs.name
-  }
-
 }

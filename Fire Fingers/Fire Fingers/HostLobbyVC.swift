@@ -13,67 +13,32 @@ import FirebaseAuth
 import FirebaseFirestore
 
 class HostLobbyVC: UIViewController {
-    private let chatLobbySegue = "ChatLobbySegue"
+    let joinLobbySegue = "JoinLobbySegue"
     
     // database
     private let db = Firestore.firestore()
     
-    // reference to lobbies section of database
-    private var lobbiesReference: CollectionReference {
-      return db.collection("lobbies")
-    }
-    
-    // reference to current chat lobby in db
-    private var chatLobbyReference: DocumentReference?
-    
     // chat Lobby for this lobby
-    private var chatLobby: Lobby?
-    
-    // ChatViewController of chat view
-    private var chatViewController: ChatViewController!
+    private var gameLobby: GameLobby?
     
     // Instant Death Mode
-    @IBOutlet weak var instantDeathModeToolTipButton: UIButton!
+    @IBOutlet weak var instantDeathModeSwitch: UISwitch!
     
     // Earthquake Mode
-    @IBOutlet weak var earthquakeModeToolTipButton: UIButton!
+    @IBOutlet weak var earthQuakeModeSwitch: UISwitch!
     
     // Emoji Prompts
-    @IBOutlet weak var emojiPromptsToolTipButton: UIButton!
+    @IBOutlet weak var emojiPromptsSwitch: UISwitch!
     
     // Players Allowed
-    @IBOutlet weak var playersAllowedToolTipButton: UIButton!
+    
     @IBOutlet weak var playersAllowedTextField: UITextField!
     @IBOutlet weak var playersAllowedStepper: UIStepper!
-    @IBOutlet weak var chatContainerView: UIView!
     
     override func viewWillAppear(_ animated: Bool) {
         
-        // create a chat lobby and add it to the view
-        let user = Auth.auth().currentUser!
-        chatLobby = createLobbyChat(name: "\(user.email!)'s Lobby")
-
-        chatViewController = ChatViewController(user: user, lobby: chatLobby!)
-        
-        addChild(chatViewController)
-        chatContainerView.addSubview(chatViewController.view)
-        
-        chatViewController.didMove(toParent: self)
-        chatViewController.view.translatesAutoresizingMaskIntoConstraints = false
-        chatViewController.view.topAnchor.constraint(equalTo: chatContainerView.safeAreaLayoutGuide.topAnchor).isActive = true
-        chatViewController.view.leadingAnchor.constraint(equalTo: chatContainerView.leadingAnchor).isActive = true
-        chatViewController.view.trailingAnchor.constraint(equalTo: chatContainerView.trailingAnchor).isActive = true
-        chatViewController.view.bottomAnchor.constraint(equalTo: chatContainerView.bottomAnchor).isActive = true
-        
         // initialize number of players
         playersAllowedStepper.value = 2
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        // as host, delete lobby when leaving the host view
-        deleteLobbyChat()
     }
     
     @IBAction func instantDeathModeUpdated(_ sender: Any) {
@@ -161,27 +126,48 @@ class HostLobbyVC: UIViewController {
         self.present(controller, animated: true)
     }
     
-    // when background is touched, dismiss keyboard but not inputBar
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        chatViewController.messageInputBar.inputTextView.resignFirstResponder()
+    @IBAction func createLobbyButtonPressed(_ sender: Any) {
+        gameLobby = createGameLobby()
+        performSegue(withIdentifier: joinLobbySegue, sender: self)
     }
 
-    // create a new chat lobby
-    private func createLobbyChat(name:String) -> Lobby{
-        print("Creating chat lobby '\(name)")
-        var lobby = Lobby(name: name)
-        chatLobbyReference = lobbiesReference.addDocument(data: lobby.representation) { error in
+    // create a new game lobby
+    private func createGameLobby() -> GameLobby {
+        let chatLobby = createChatLobby()
+        
+        print("Creating game lobby")
+        let gameSettings = GameSettings(instantDeathModeEnabled: instantDeathModeSwitch.isOn, earthQuakeModeEnabled: earthQuakeModeSwitch.isOn, emojisAllowed: emojiPromptsSwitch.isOn, playersCount: Int8(playersAllowedTextField.text!)!)
+        let lobby = GameLobby(chatLobbyID: chatLobby.id!, gameSettings: gameSettings)
+        let gameLobbyReference = db.collection("gameLobbies").addDocument(data: lobby.representation) { error in
             if let e = error {
                 print("Error saving chat lobby: \(e.localizedDescription)")
             }
           }
-        lobby.id = chatLobbyReference?.documentID
+        lobby.id = gameLobbyReference.documentID
+        gameLobbyReference.setData(lobby.representation)
+        print("game lobby id: \(String(describing: lobby.id))")
         return lobby
     }
     
-    // delete our chat lobby
-    private func deleteLobbyChat(){
-        print("Deleting chat lobby '\(chatLobby!.name)'")
-        chatLobbyReference?.delete()
+    // create a new chat lobby
+    private func createChatLobby() -> ChatLobby{
+        print("Creating chat lobby")
+        let lobby = ChatLobby()
+        let chatLobbyReference = db.collection("chatLobbies").addDocument(data: lobby.representation) { error in
+            if let e = error {
+                print("Error saving chat lobby: \(e.localizedDescription)")
+            }
+          }
+        lobby.id = chatLobbyReference.documentID
+        chatLobbyReference.setData(lobby.representation)
+        return lobby
+    }
+    
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == joinLobbySegue,
+            let destination = segue.destination as? JoinLobbyVC {
+            destination.gameLobby = gameLobby
+        }
     }
 }

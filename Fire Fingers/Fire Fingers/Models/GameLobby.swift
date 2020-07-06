@@ -49,7 +49,8 @@ extension GameLobby: DatabaseRepresentation {
     
         var rep: [String : Any] = [
             "chatLobbyID" : chatLobbyID,
-            "gameSettings" : gameSettings.representation]
+            "gameSettings" : gameSettings.representation
+        ]
     
         if let id = id {
             rep["id"] = id

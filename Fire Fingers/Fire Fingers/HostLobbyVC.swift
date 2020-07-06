@@ -157,12 +157,11 @@ class HostLobbyVC: UIViewController {
             if let e = error {
                 print("Error saving chat lobby: \(e.localizedDescription)")
             }
-          }
+        }
         lobby.id = chatLobbyReference.documentID
         chatLobbyReference.setData(lobby.representation)
         return lobby
     }
-    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == joinLobbySegue,

@@ -32,48 +32,50 @@ class Player {
     }
     
     init?(document: QueryDocumentSnapshot) {
-      let data = document.data()
-      
-      guard let uuid = (data["uuid"] as? String) else {
-          print("Player failed to convert uuid '\(String(describing: data["uuid"]))'")
-        return nil
-      }
-      guard let displayName = data["displayName"] as? String else {
-          print("Player failed to convert displayName '\(String(describing: data["displayName"]))'")
-        return nil
-      }
-      guard let currentWord = data["currentWord"] as? Int else {
-          print("Player failed to convert currentWord '\(String(describing: data["currentWord"]))'")
-        return nil
-      }
-      guard let icon = data["icon"] as? Int else {
-          print("Player failed to convert icon '\(String(describing: data["icon"]))'")
-        return nil
-      }
-      
-      self.uuid = uuid
-      self.displayName = displayName
-      self.currentWord = currentWord
-      self.icon = icon
+        let data = document.data()
+        
+        guard let uuid = (data["uuid"] as? String) else {
+            print("Player failed to convert uuid '\(String(describing: data["uuid"]))'")
+            return nil
+        }
+        
+        guard let displayName = data["displayName"] as? String else {
+            print("Player failed to convert displayName '\(String(describing: data["displayName"]))'")
+            return nil
+        }
+        
+        guard let currentWord = data["currentWord"] as? Int else {
+            print("Player failed to convert currentWord '\(String(describing: data["currentWord"]))'")
+            return nil
+        }
+        
+        guard let icon = data["icon"] as? Int else {
+            print("Player failed to convert icon '\(String(describing: data["icon"]))'")
+            return nil
+        }
+        
+        self.uuid = uuid
+        self.displayName = displayName
+        self.currentWord = currentWord
+        self.icon = icon
     }
 }
 
 extension Player: DatabaseRepresentation {
-  
-  var representation: [String : Any] {
-    return [
-      "uuid": uuid,
-      "displayName": displayName,
-      "currentWord": currentWord,
-      "icon": icon
-    ]
-  }
-  
+    
+    var representation: [String : Any] {
+        return [
+            "uuid": uuid,
+            "displayName": displayName,
+            "currentWord": currentWord,
+            "icon": icon
+        ]
+    }
 }
 
 extension Player: Equatable {
-  
-  static func == (lhs: Player, rhs: Player) -> Bool {
-    return lhs.uuid == rhs.uuid
-  }
+    
+    static func == (lhs: Player, rhs: Player) -> Bool {
+        return lhs.uuid == rhs.uuid
+    }
 }

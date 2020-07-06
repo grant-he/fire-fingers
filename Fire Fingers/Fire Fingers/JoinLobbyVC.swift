@@ -42,7 +42,7 @@ class JoinLobbyVC: UIViewController {
     
     @IBOutlet weak var lobbyCodeLabel: UILabel!
     @IBOutlet weak var instantDeathModeLabel: UILabel!
-    @IBOutlet weak var earthquakeMode: UILabel!
+    @IBOutlet weak var earthquakeModeLabel: UILabel!
     @IBOutlet weak var emojiPromptsLabel: UILabel!
     @IBOutlet weak var playersAllowedLabel: UILabel!
     
@@ -56,56 +56,58 @@ class JoinLobbyVC: UIViewController {
         
         let chatLobbyRef = db.collection("chatLobbies").document(gameLobby.chatLobbyID)
         chatLobbyRef.getDocument( completion: { (document, error) in
-           if let document = document, document.exists {
-               let dataDescription = document.data()!
-               guard let chatLobbyObj = ChatLobby(data: dataDescription) else {
-                print("Failed to create ChatLobby for lobby code \(self.gameLobby.chatLobbyID)")
-                   return
-               }
-               self.chatLobby = chatLobbyObj
-               self.createChatView()
-           } else {
-               print("Found game lobby \(self.gameLobby.id!) with uninitialized chat lobby \(self.gameLobby.chatLobbyID)")
-               return
-           }
-       })
+            if let document = document, document.exists {
+                let dataDescription = document.data()!
+                guard let chatLobbyObj = ChatLobby(data: dataDescription) else {
+                    print("Failed to create ChatLobby for lobby code \(self.gameLobby.chatLobbyID)")
+                    return
+                }
+                self.chatLobby = chatLobbyObj
+                self.createChatView()
+            } else {
+                print("Found game lobby \(self.gameLobby.id!) with uninitialized chat lobby \(self.gameLobby.chatLobbyID)")
+                return
+            }
+        })
         
         // connect to db
         guard let id = gameLobby!.id else {
-          navigationController?.popViewController(animated: true)
+            navigationController?.popViewController(animated: true)
             print("failed to find game lobby id")
-          return
+            return
         }
         
         // put ourself in the database
         playersReference = db.collection(["gameLobbies", id, "players"].joined(separator: "/"))
-        let tempPlayer = Player(uuid: "", displayName: Auth.auth().currentUser!.isAnonymous ? "Guest" : Auth.auth().currentUser!.email!, icon: loggedInUserSettings[userSettingsIconAttribute] as! Int)
+        let tempPlayer = Player(
+            uuid: "",
+            displayName: Auth.auth().currentUser!.isAnonymous ? "Guest" : Auth.auth().currentUser!.email!,
+            icon: loggedInUserSettings[userSettingsIconAttribute] as! Int)
         let playerReference = playersReference.addDocument(data: tempPlayer.representation) { error in
-                   if let e = error {
-                       print("Error saving player: \(e.localizedDescription)")
-                   }
-                 }
+            if let e = error {
+                print("Error saving player: \(e.localizedDescription)")
+            }
+        }
         player = Player(uuid: playerReference.documentID, displayName: tempPlayer.displayName, icon: tempPlayer.icon)
         playerReference.setData(player.representation)
         players.append(player)
         
-        
         // listen for db changes
         playersListener = playersReference?.addSnapshotListener { querySnapshot, error in
-          guard let snapshot = querySnapshot else {
-            print("Error listening for players updates: \(error?.localizedDescription ?? "No error")")
-            return
-          }
-          
-          snapshot.documentChanges.forEach { change in
-            self.handlePlayersChange(change)
-          }
+            guard let snapshot = querySnapshot else {
+                print("Error listening for players updates: \(error?.localizedDescription ?? "No error")")
+                return
+            }
+            
+            snapshot.documentChanges.forEach { change in
+                self.handlePlayersChange(change)
+            }
         }
         
         // set label contents
         lobbyCodeLabel.text = gameLobby.id!
         instantDeathModeLabel.text = gameLobby.gameSettings.instantDeathModeEnabled ? "On" : "Off"
-        earthquakeMode.text = gameLobby.gameSettings.earthQuakeModeEnabled ? "On" : "Off"
+        earthquakeModeLabel.text = gameLobby.gameSettings.earthQuakeModeEnabled ? "On" : "Off"
         emojiPromptsLabel.text = gameLobby.gameSettings.emojisAllowed ? "On" : "Off"
         playersAllowedLabel.text = String(gameLobby.gameSettings.playersCount)
     }
@@ -134,10 +136,40 @@ class JoinLobbyVC: UIViewController {
         if players.count == 1 {
             deleteChatLobby()
             deleteGameLobby()
-        }
-        else {
+        } else {
             playersReference.document(player.uuid).delete()
         }
+    }
+    
+    // Tool Tips
+    @IBAction func instantDeathModeToolTipButtonPressed(_ sender: Any) {
+        sendToolTipAlert(title: "Instant Death Mode", message: "Any typo will immediately end your attempt.")
+    }
+    
+    @IBAction func earthquakeModeToolTipButtonPressed(_ sender: Any) {
+        sendToolTipAlert(title: "Earthquake Mode", message: "Enables haptics for added chaos. Shaking becomes more frequent as players approach the finish. Hatari!")
+    }
+    
+    @IBAction func emojiPromptsToolTipButtonPressed(_ sender: Any) {
+        sendToolTipAlert(title: "Emoji Prompts", message: "Emojis may appear in game prompt. 😱")
+    }
+    
+    @IBAction func playersAllowedToolTipButtonPressed(_ sender: Any) {
+        sendToolTipAlert(title: "Players Allowed", message: "The maximum number of players, between 1 and 4.")
+    }
+    
+    func sendToolTipAlert(title: String, message: String) {
+        let controller = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
+        controller.addAction(UIAlertAction(
+            title: "OK",
+            style: .default,
+            handler: nil
+        ))
+        self.present(controller, animated: true)
     }
     
     // when background is touched, dismiss keyboard but not inputBar
@@ -156,17 +188,17 @@ class JoinLobbyVC: UIViewController {
         }
 
         switch change.type {
-            case .added:
-                addPlayer(player)
-            case .removed:
-                    removePlayer(player)
-            case .modified:
-                addPlayer(player)
-            default:
-                print("unexpected change type \(change.type)")
-                break
-            }
+        case .added:
+            addPlayer(player)
+        case .removed:
+            removePlayer(player)
+        case .modified:
+            addPlayer(player)
+        default:
+            print("unexpected change type \(change.type)")
+            break
         }
+    }
 
     private func addPlayer(_ player: Player) {
         if player.uuid == "" {
@@ -186,18 +218,17 @@ class JoinLobbyVC: UIViewController {
     }
     
     private func removePlayer(_ player: Player) {
-            guard players.contains(player), let playerIndex = players.firstIndex(of: player) else {
-                print("player is not currently in players")
-                return
-            }
-
-            players.remove(at: playerIndex)
-            print("\(players.count) current players")
-            
-    //        need to reload view of player list
-    //        ... .reloadData()
+        guard players.contains(player), let playerIndex = players.firstIndex(of: player) else {
+            print("player is not currently in players")
+            return
         }
-    
+        
+        players.remove(at: playerIndex)
+        print("\(players.count) current players")
+            
+//        need to reload view of player list
+//        ... .reloadData()
+        }
     
     // do any necessary cleanup after a game is played
     func doPostGameCleanup() {
@@ -205,14 +236,14 @@ class JoinLobbyVC: UIViewController {
         playerReference.setData(player.representation)
     }
     
-    // delete our chat lobby
-    private func deleteChatLobby(){
+    // delete the chat lobby
+    private func deleteChatLobby() {
         print("Deleting chat lobby '\(gameLobby.chatLobbyID)'")
         db.document(["chatLobbies", gameLobby.chatLobbyID].joined(separator: "/")).delete()
     }
     
-    // delete our chat lobby
-    private func deleteGameLobby(){
+    // delete the game lobby
+    private func deleteGameLobby() {
         print("Deleting game lobby '\(gameLobby.id!)'")
         db.document(["gameLobbies", gameLobby.id!].joined(separator: "/")).delete()
     }

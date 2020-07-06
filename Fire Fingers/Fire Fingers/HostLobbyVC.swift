@@ -136,7 +136,7 @@ class HostLobbyVC: UIViewController {
         let chatLobby = createChatLobby()
         
         print("Creating game lobby")
-        let gameSettings = GameSettings(instantDeathModeEnabled: instantDeathModeSwitch.isOn, earthQuakeModeEnabled: earthQuakeModeSwitch.isOn, emojisAllowed: emojiPromptsSwitch.isOn, playersCount: Int8(playersAllowedTextField.text!)!)
+        let gameSettings = GameSettings(instantDeathModeEnabled: instantDeathModeSwitch.isOn, earthQuakeModeEnabled: earthQuakeModeSwitch.isOn, emojisAllowed: emojiPromptsSwitch.isOn, playersCount: Int(playersAllowedTextField.text!)!)
         let lobby = GameLobby(chatLobbyID: chatLobby.id!, gameSettings: gameSettings)
         let gameLobbyReference = db.collection("gameLobbies").addDocument(data: lobby.representation) { error in
             if let e = error {

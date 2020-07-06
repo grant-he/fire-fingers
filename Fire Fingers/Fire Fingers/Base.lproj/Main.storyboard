@@ -602,6 +602,16 @@
                                 <rect key="frame" x="87" y="128" width="240" height="128"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PlayerProgressCell" id="iYR-Hd-EYn">
+                                        <rect key="frame" x="0.0" y="28" width="240" height="43.666667938232422"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="iYR-Hd-EYn" id="kxw-AD-vgU">
+                                            <rect key="frame" x="0.0" y="0.0" width="240" height="43.666667938232422"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
                             </tableView>
                             <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9Ia-88-sVa">
                                 <rect key="frame" x="159" y="521" width="97" height="34"/>
@@ -621,10 +631,15 @@
                         <viewLayoutGuide key="safeArea" id="FyW-GJ-Q2A"/>
                     </view>
                     <navigationItem key="navigationItem" id="x4V-zg-6VQ"/>
+                    <connections>
+                        <outlet property="inputField" destination="9Ia-88-sVa" id="Ovd-9w-GsS"/>
+                        <outlet property="promptLabel" destination="mjx-Sc-tj4" id="Mqy-4p-1f3"/>
+                        <outlet property="tableView" destination="giA-U9-S24" id="RNG-a7-1tY"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6B4-b3-rln" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4690" y="125"/>
+            <point key="canvasLocation" x="4689.8550724637689" y="124.55357142857142"/>
         </scene>
         <!--Join LobbyVC-->
         <scene sceneID="exR-cJ-GSC">
@@ -697,9 +712,8 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Lobby code:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gfD-mm-Y8I">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lobby code:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gfD-mm-Y8I">
                                 <rect key="frame" x="63" y="111" width="95" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -710,22 +724,42 @@
                                 <state key="normal" title="READY"/>
                             </button>
                             <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eud-1Z-gRS">
-                                <rect key="frame" x="20" y="459" width="374" height="403"/>
+                                <rect key="frame" x="20" y="376" width="374" height="486"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </containerView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dLc-PV-JgQ">
+                                <rect key="frame" x="166" y="111" width="198" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="198" id="7Qg-6R-6ff"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="dLc-PV-JgQ" firstAttribute="top" secondItem="sfI-Ge-VlA" secondAttribute="top" constant="23" id="FUf-x7-Hdc"/>
+                            <constraint firstItem="gfD-mm-Y8I" firstAttribute="leading" secondItem="sfI-Ge-VlA" secondAttribute="leading" constant="63" id="PF5-Z7-yEz"/>
+                            <constraint firstItem="dLc-PV-JgQ" firstAttribute="leading" secondItem="gfD-mm-Y8I" secondAttribute="trailing" constant="8" id="ReG-oE-8z9"/>
+                            <constraint firstItem="gfD-mm-Y8I" firstAttribute="top" secondItem="sfI-Ge-VlA" secondAttribute="top" constant="23" id="z09-AR-l5Z"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="sfI-Ge-VlA"/>
                     </view>
                     <navigationItem key="navigationItem" id="2k6-qM-qmd"/>
                     <connections>
                         <outlet property="chatContainerView" destination="eud-1Z-gRS" id="gUr-eZ-lNZ"/>
+                        <outlet property="earthquakeMode" destination="n55-EI-yoC" id="xe4-YB-k9r"/>
+                        <outlet property="emojiPromptsLabel" destination="3sc-p2-3Aa" id="x2P-et-x8r"/>
+                        <outlet property="instantDeathModeLabel" destination="8f3-Qj-Dkf" id="75L-Ux-0Tu"/>
+                        <outlet property="lobbyCodeLabel" destination="dLc-PV-JgQ" id="LHc-1Q-3au"/>
+                        <outlet property="playersAllowedLabel" destination="kPa-L2-j5l" id="Ota-AK-wtu"/>
                         <segue destination="17o-mb-50b" kind="show" identifier="JoinLobbyToPlaySegue" id="PrP-n6-Xmg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="z3I-xN-y6d" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3690" y="566"/>
+            <point key="canvasLocation" x="3689.8550724637685" y="565.17857142857144"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="8HR-qh-uvA">

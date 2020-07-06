@@ -11,7 +11,11 @@
 import UIKit
 
 class PlayVC: UIViewController {
-
+    let playerCellIdentifier = "PlayerProgessCell"
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var promptLabel: UILabel!
+    @IBOutlet weak var inputField: UITextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 

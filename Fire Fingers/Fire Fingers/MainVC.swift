@@ -71,8 +71,21 @@ class MainVC: UIViewController {
                     print("Failed to create GameLobby for lobby code \(String(describing: lobbyCode))")
                     return
                 }
-                self.gameLobby = gameLobbyObj
-                self.performSegue(withIdentifier: self.joinLobbySegue, sender: self)
+                let playersReference = self.db.collection(["gameLobbies", lobbyCode!, "players"].joined(separator: "/"))
+                playersReference.getDocuments() { (querySnapshot, err) in
+                    if let err = err {
+                        print("Error getting documents: \(err)")
+                        return
+                    } else {
+                        let playersInLobby = querySnapshot!.count
+                        guard playersInLobby < gameLobbyObj.gameSettings.playersCount else {
+                            self.showJoinLobbyAlert(message: "Lobby full")
+                            return
+                        }
+                        self.gameLobby = gameLobbyObj
+                        self.performSegue(withIdentifier: self.joinLobbySegue, sender: self)
+                    }
+                }
             } else {
                 self.showJoinLobbyAlert(message: "Invalid lobby code, please try again")
                 return

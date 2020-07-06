@@ -14,9 +14,9 @@ class GameSettings {
     let instantDeathModeEnabled: Bool
     let earthQuakeModeEnabled: Bool
     let emojisAllowed: Bool
-    let playersCount: Int8
+    let playersCount: Int
     
-    init(instantDeathModeEnabled: Bool, earthQuakeModeEnabled: Bool, emojisAllowed: Bool, playersCount: Int8) {
+    init(instantDeathModeEnabled: Bool, earthQuakeModeEnabled: Bool, emojisAllowed: Bool, playersCount: Int) {
         self.instantDeathModeEnabled = instantDeathModeEnabled
         self.earthQuakeModeEnabled = earthQuakeModeEnabled
         self.emojisAllowed = emojisAllowed
@@ -36,7 +36,7 @@ class GameSettings {
           print("GameSettings failed to convert emojisAllowed '\(String(describing: data["emojisAllowed"]))'")
         return nil
       }
-      guard let playersCount = data["playersCount"] as? Int8 else {
+      guard let playersCount = data["playersCount"] as? Int else {
           print("GameSettings failed to convert playersCount '\(String(describing: data["playersCount"]))'")
         return nil
       }

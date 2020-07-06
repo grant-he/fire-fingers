@@ -40,6 +40,12 @@ class JoinLobbyVC: UIViewController {
     
     @IBOutlet weak var chatContainerView: UIView!
     
+    @IBOutlet weak var lobbyCodeLabel: UILabel!
+    @IBOutlet weak var instantDeathModeLabel: UILabel!
+    @IBOutlet weak var earthquakeMode: UILabel!
+    @IBOutlet weak var emojiPromptsLabel: UILabel!
+    @IBOutlet weak var playersAllowedLabel: UILabel!
+    
     // MAKE SURE THIS WORKS EVEN IF LOBBY DELETED
     deinit {
         playersListener?.remove()
@@ -95,6 +101,13 @@ class JoinLobbyVC: UIViewController {
             self.handlePlayersChange(change)
           }
         }
+        
+        // set label contents
+        lobbyCodeLabel.text = gameLobby.id!
+        instantDeathModeLabel.text = gameLobby.gameSettings.instantDeathModeEnabled ? "On" : "Off"
+        earthquakeMode.text = gameLobby.gameSettings.earthQuakeModeEnabled ? "On" : "Off"
+        emojiPromptsLabel.text = gameLobby.gameSettings.emojisAllowed ? "On" : "Off"
+        playersAllowedLabel.text = String(gameLobby.gameSettings.playersCount)
     }
     
     func createChatView() {

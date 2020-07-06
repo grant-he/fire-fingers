@@ -111,7 +111,7 @@ class SettingsVC: UIViewController {
         clearIconSelection()
         // Select icon one and update user icon setting
         iconOneButton.layer.borderColor = CGColor(srgbRed: 0, green: 0, blue: 255, alpha: 1)
-        loggedInUserSettings[userSettingsIconAttribute] = Int8(0)
+        loggedInUserSettings[userSettingsIconAttribute] = 0
     }
     
     @IBAction func iconTwoSelected(_ sender: Any) {
@@ -119,7 +119,7 @@ class SettingsVC: UIViewController {
         clearIconSelection()
         // Select icon two and update user icon setting
         iconTwoButton.layer.borderColor = CGColor(srgbRed: 0, green: 0, blue: 255, alpha: 1)
-        loggedInUserSettings[userSettingsIconAttribute] = Int8(1)
+        loggedInUserSettings[userSettingsIconAttribute] = 1
     }
     
     @IBAction func iconThreeSelected(_ sender: Any) {
@@ -127,7 +127,7 @@ class SettingsVC: UIViewController {
         clearIconSelection()
         // Select icon three and update user icon setting
         iconThreeButton.layer.borderColor = CGColor(srgbRed: 0, green: 0, blue: 255, alpha: 1)
-        loggedInUserSettings[userSettingsIconAttribute] = Int8(2)
+        loggedInUserSettings[userSettingsIconAttribute] = 2
     }
     
     func clearIconSelection() {

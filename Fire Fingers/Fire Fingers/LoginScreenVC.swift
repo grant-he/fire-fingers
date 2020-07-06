@@ -145,7 +145,7 @@ class LoginScreenVC: UIViewController {
                 } else {
                     loggedInUserSettings[userSettingsDarkModeAttribute] = false
                     loggedInUserSettings[userSettingsVolumeAttribute] = Float(1.0)
-                    loggedInUserSettings[userSettingsIconAttribute] = "icon1.png"
+                    loggedInUserSettings[userSettingsIconAttribute] = 0
                 }                
             } catch {
                 // if an error occurs
@@ -158,7 +158,7 @@ class LoginScreenVC: UIViewController {
             loggedInUserSettings[userSettingsUsernameAttribute] = "guest"
             loggedInUserSettings[userSettingsDarkModeAttribute] = false
             loggedInUserSettings[userSettingsVolumeAttribute] = Float(1.0)
-            loggedInUserSettings[userSettingsIconAttribute] = "icon1.png"
+            loggedInUserSettings[userSettingsIconAttribute] = 0
         }
     }
     

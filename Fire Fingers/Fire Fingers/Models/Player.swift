@@ -19,12 +19,12 @@ class Player {
     let displayName: String
     
     // index of player's icon
-    let icon: Int8
+    let icon: Int
     
     // index of word player is on in prompt
     var currentWord: Int
     
-    init(uuid: String, displayName: String, icon: Int8) {
+    init(uuid: String, displayName: String, icon: Int) {
         self.uuid = uuid
         self.displayName = displayName
         self.currentWord = 0
@@ -46,7 +46,7 @@ class Player {
           print("Player failed to convert currentWord '\(String(describing: data["currentWord"]))'")
         return nil
       }
-      guard let icon = data["icon"] as? Int8 else {
+      guard let icon = data["icon"] as? Int else {
           print("Player failed to convert icon '\(String(describing: data["icon"]))'")
         return nil
       }

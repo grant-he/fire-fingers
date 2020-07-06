@@ -17,16 +17,6 @@ class JoinLobbyVC: UIViewController {
     // database
     private let db = Firestore.firestore()
     
-    // reference to game lobbies section of database
-//    private var gameLobbiesReference: CollectionReference {
-//      return db.collection("gameLobbies")
-//    }
-    
-//    // reference to chat lobbies section of database
-//    private var chatLobbiesReference: CollectionReference {
-//      return db.collection("chatLobbies")
-//    }
-    
     // Player container
     private var players: [Player] = []
     
@@ -34,14 +24,11 @@ class JoinLobbyVC: UIViewController {
     private var playersListener: ListenerRegistration?
 
     // reference to players collection of lobby
-    private var playersReference: CollectionReference?
+    private var playersReference: CollectionReference!
     
-//    // reference to current chat lobby in db
-//    private var chatLobbyReference: DocumentReference?
-//
     // chat Lobby for this lobby
     private var chatLobby: ChatLobby!
-//
+
     // ChatViewController of chat view
     private var chatViewController: ChatViewController!
     
@@ -77,17 +64,25 @@ class JoinLobbyVC: UIViewController {
            }
        })
         
-//        chatLobby = ChatLobby(name: "name")
-//        chatLobby!.id = "PcqDKKPYTCAnAL6cz7lf"
-//        gameLobby = GameLobby(chatLobbyID: chatLobby!.id!, gameSettings: GameSettings(instantDeathModeEnabled: false, earthQuakeModeEnabled: false, emojisAllowed: false, playersCount: 3))
-//        gameLobby!.id = "gameLobbyId"
         // connect to db
         guard let id = gameLobby!.id else {
           navigationController?.popViewController(animated: true)
             print("failed to find game lobby id")
           return
         }
+        
+        // put ourself in the database
         playersReference = db.collection(["gameLobbies", id, "players"].joined(separator: "/"))
+        let tempPlayer = Player(uuid: "", displayName: Auth.auth().currentUser!.isAnonymous ? "Guest" : Auth.auth().currentUser!.email!, icon: loggedInUserSettings[userSettingsIconAttribute] as! Int)
+        let playerReference = playersReference.addDocument(data: tempPlayer.representation) { error in
+                   if let e = error {
+                       print("Error saving player: \(e.localizedDescription)")
+                   }
+                 }
+        player = Player(uuid: playerReference.documentID, displayName: tempPlayer.displayName, icon: tempPlayer.icon)
+        playerReference.setData(player.representation)
+        players.append(player)
+        
         
         // listen for db changes
         playersListener = playersReference?.addSnapshotListener { querySnapshot, error in
@@ -123,19 +118,24 @@ class JoinLobbyVC: UIViewController {
         super.viewWillDisappear(animated)
         
         // delete lobby when leaving the view if only player in lobby
-        if players.count == 0 {
+        if players.count == 1 {
             deleteChatLobby()
             deleteGameLobby()
+        }
+        else {
+            playersReference.document(player.uuid).delete()
         }
     }
     
     // when background is touched, dismiss keyboard but not inputBar
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         chatViewController.messageInputBar.inputTextView.resignFirstResponder()
+        print("number of current players: \(players.count)")
     }
     
     // handles updates to players from the database
     private func handlePlayersChange(_ change: DocumentChange) {
+        print("players changed, handling now")
         guard let player = Player(document: change.document) else {
             print("player could not be created")
             print(change.document)
@@ -145,13 +145,21 @@ class JoinLobbyVC: UIViewController {
         switch change.type {
             case .added:
                 addPlayer(player)
-
+            case .removed:
+                    removePlayer(player)
+            case .modified:
+                addPlayer(player)
             default:
+                print("unexpected change type \(change.type)")
                 break
             }
         }
 
     private func addPlayer(_ player: Player) {
+        if player.uuid == "" {
+            return
+        }
+        
         guard !players.contains(player) else {
             print("player already in players")
             return
@@ -164,6 +172,19 @@ class JoinLobbyVC: UIViewController {
 //        ... .reloadData()
     }
     
+    private func removePlayer(_ player: Player) {
+            guard players.contains(player), let playerIndex = players.firstIndex(of: player) else {
+                print("player is not currently in players")
+                return
+            }
+
+            players.remove(at: playerIndex)
+            print("\(players.count) current players")
+            
+    //        need to reload view of player list
+    //        ... .reloadData()
+        }
+    
     
     // do any necessary cleanup after a game is played
     func doPostGameCleanup() {
@@ -174,7 +195,6 @@ class JoinLobbyVC: UIViewController {
     // delete our chat lobby
     private func deleteChatLobby(){
         print("Deleting chat lobby '\(gameLobby.chatLobbyID)'")
-        // TODO: Figure out why this doesn't work
         db.document(["chatLobbies", gameLobby.chatLobbyID].joined(separator: "/")).delete()
     }
     

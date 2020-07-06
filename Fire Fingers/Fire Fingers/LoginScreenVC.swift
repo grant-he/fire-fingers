@@ -93,13 +93,16 @@ class LoginScreenVC: UIViewController {
             title: "Yes",
             style: .default,
             handler: { _ in
-                do {
-                    try Auth.auth().signOut()
-                } catch {
-                    print(error)
-                }
-                self.retrieveUserSettings()
-                self.performSegue(withIdentifier: self.loginSegue, sender: nil)
+                Auth.auth().signInAnonymously(completion: {
+                    (authResult, error) in
+                    if error == nil {
+                        self.retrieveUserSettings()
+                        self.performSegue(withIdentifier: self.loginSegue, sender: nil)
+                    }
+                    else {
+                        print(error!.localizedDescription)
+                    }
+                })
             }
         ))
         controller.addAction(UIAlertAction(
@@ -151,6 +154,7 @@ class LoginScreenVC: UIViewController {
                 abort()
             }
         } else {
+            print("retrieving info as guest")
             loggedInUserSettings[userSettingsUsernameAttribute] = "guest"
             loggedInUserSettings[userSettingsDarkModeAttribute] = false
             loggedInUserSettings[userSettingsVolumeAttribute] = Float(1.0)

@@ -11,7 +11,7 @@
 		7A54DFAA24B0564C00279B5D /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A54DFA924B0564C00279B5D /* Player.swift */; };
 		7A54DFAC24B05A4400279B5D /* GameSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A54DFAB24B05A4400279B5D /* GameSettings.swift */; };
 		7A54DFAE24B05EB300279B5D /* DatabaseRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A54DFAD24B05EB300279B5D /* DatabaseRepresentation.swift */; };
-		7ADD3CC524AD91DF001FDDA3 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADD3CC424AD91DF001FDDA3 /* ChatViewController.swift */; };
+		7ADD3CC524AD91DF001FDDA3 /* ChatVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADD3CC424AD91DF001FDDA3 /* ChatVC.swift */; };
 		7ADD3CD924AD9DA5001FDDA3 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADD3CD624AD9DA5001FDDA3 /* Message.swift */; };
 		7ADD3CDA24AD9DA5001FDDA3 /* ChatLobby.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADD3CD724AD9DA5001FDDA3 /* ChatLobby.swift */; };
 		7ADD3CE124AD9DB0001FDDA3 /* UIImage+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADD3CDD24AD9DB0001FDDA3 /* UIImage+Additions.swift */; };
@@ -42,7 +42,7 @@
 		7A54DFA924B0564C00279B5D /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		7A54DFAB24B05A4400279B5D /* GameSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSettings.swift; sourceTree = "<group>"; };
 		7A54DFAD24B05EB300279B5D /* DatabaseRepresentation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseRepresentation.swift; sourceTree = "<group>"; };
-		7ADD3CC424AD91DF001FDDA3 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		7ADD3CC424AD91DF001FDDA3 /* ChatVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatVC.swift; sourceTree = "<group>"; };
 		7ADD3CD624AD9DA5001FDDA3 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		7ADD3CD724AD9DA5001FDDA3 /* ChatLobby.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatLobby.swift; sourceTree = "<group>"; };
 		7ADD3CDD24AD9DB0001FDDA3 /* UIImage+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Additions.swift"; sourceTree = "<group>"; };
@@ -156,8 +156,8 @@
 				F6E0C6E524AC317B00C9C07A /* HostLobbyVC.swift */,
 				F6E0C6E724AC318B00C9C07A /* JoinLobbyVC.swift */,
 				F6E0C6E924AC319A00C9C07A /* PlayVC.swift */,
+				7ADD3CC424AD91DF001FDDA3 /* ChatVC.swift */,
 				F6A7FFD324A7CFF8002DFD00 /* Main.storyboard */,
-				7ADD3CC424AD91DF001FDDA3 /* ChatViewController.swift */,
 				F6A7FFD924A7CFF9002DFD00 /* Assets.xcassets */,
 				F6A7FFDB24A7CFF9002DFD00 /* LaunchScreen.storyboard */,
 				F6A7FFDE24A7CFF9002DFD00 /* Info.plist */,
@@ -284,7 +284,7 @@
 			files = (
 				F6E0C6E024AC313C00C9C07A /* LoginScreenVC.swift in Sources */,
 				F6A7FFD824A7CFF8002DFD00 /* Fire_Fingers.xcdatamodeld in Sources */,
-				7ADD3CC524AD91DF001FDDA3 /* ChatViewController.swift in Sources */,
+				7ADD3CC524AD91DF001FDDA3 /* ChatVC.swift in Sources */,
 				7ADD3CDA24AD9DA5001FDDA3 /* ChatLobby.swift in Sources */,
 				7ADD3CE224AD9DB0001FDDA3 /* UIView+Additions.swift in Sources */,
 				7A54DFA824B055DC00279B5D /* GameLobby.swift in Sources */,

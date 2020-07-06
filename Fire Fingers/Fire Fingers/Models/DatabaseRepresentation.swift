@@ -1,3 +1,12 @@
+//
+//  Project: Fire-Fingers
+//  Filename: DatabaseRepresentation.swift
+//  EID: gh22593 + gwe272
+//  Course: CS371L
+//
+//  Created by Grant He & Garrett Egan on 7/4/20.
+//  Copyright © 2020 G + G. All rights reserved.
+//
 /// Copyright (c) 2018 Razeware LLC
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -29,5 +38,5 @@
 import Foundation
 
 protocol DatabaseRepresentation {
-  var representation: [String: Any] { get }
+    var representation: [String: Any] { get }
 }

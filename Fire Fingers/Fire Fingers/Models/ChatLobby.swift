@@ -1,3 +1,12 @@
+//
+//  Project: Fire-Fingers
+//  Filename: ChatLobby.swift
+//  EID: gh22593 + gwe272
+//  Course: CS371L
+//
+//  Created by Grant He & Garrett Egan on 7/4/20.
+//  Copyright © 2020 G + G. All rights reserved.
+//
 /// Copyright (c) 2018 Razeware LLC
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -37,25 +46,25 @@ class ChatLobby {
     }
     
     init?(data: [String : Any]) {
-      
-      guard let id = (data["id"] as? String) else {
-          print("ChatLobby failed to convert id '\(String(describing: data["id"]))'")
-        return nil
-      }
-      
-      self.id = id
+        
+        guard let id = (data["id"] as? String) else {
+            print("ChatLobby failed to convert id '\(String(describing: data["id"]))'")
+            return nil
+        }
+        
+        self.id = id
     }
 }
 
 extension ChatLobby: DatabaseRepresentation {
-  
-  var representation: [String : Any] {
-    var rep: [String : Any] = [:]
     
-    if let id = id {
-      rep["id"] = id
+    var representation: [String : Any] {
+        var rep: [String : Any] = [:]
+        
+        if let id = id {
+            rep["id"] = id
+        }
+        
+        return rep
     }
-    
-    return rep
-  }
 }

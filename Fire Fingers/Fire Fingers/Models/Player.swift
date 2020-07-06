@@ -1,8 +1,10 @@
 //
-//  Player.swift
-//  Fire Fingers
+//  Project: Fire-Fingers
+//  Filename: Player.swift
+//  EID: gh22593 + gwe272
+//  Course: CS371L
 //
-//  Created by Garrett Egan on 7/4/20.
+//  Created by Grant He & Garrett Egan on 7/4/20.
 //  Copyright © 2020 G + G. All rights reserved.
 //
 

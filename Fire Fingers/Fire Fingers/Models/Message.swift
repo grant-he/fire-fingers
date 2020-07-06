@@ -1,3 +1,12 @@
+//
+//  Project: Fire-Fingers
+//  Filename: Message.swift
+//  EID: gh22593 + gwe272
+//  Course: CS371L
+//
+//  Created by Grant He & Garrett Egan on 7/4/20.
+//  Copyright © 2020 G + G. All rights reserved.
+//
 /// Copyright (c) 2018 Razeware LLC
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -31,105 +40,93 @@ import MessageKit
 import FirebaseFirestore
 
 class Message: MessageType {
-  let id: String?
-  let content: String
-  let sentDate: Date
-  let sender: SenderType
-  
-  var kind: MessageKind {
-    return .attributedText(NSAttributedString(string: content))
-//    if let image = image {
-//      return .photo(image)
-//    } else {
-//      return .text(content)
-//    }
-  }
-  
-  var messageId: String {
-    return id ?? UUID().uuidString
-  }
-  
-  var image: UIImage? = nil
-  var downloadURL: URL? = nil
-  
-  init(user: User, content: String) {
-    sender = FireFingersSender(senderId: user.uid, displayName: user.email!)
-    self.content = content
-    sentDate = Date()
-    id = nil
-  }
-  
-//  init(user: User, image: UIImage) {
-//    sender = FireFingersSender(user: user)
-//    self.image = image
-//    content = ""
-//    sentDate = Date()
-//    id = nil
-//  }
-  
-  init?(document: QueryDocumentSnapshot) {
-    let data = document.data()
+    let id: String?
+    let content: String
+    let sentDate: Date
+    let sender: SenderType
     
-    guard let sentDate = (data["created"] as? Timestamp)?.dateValue() else {
-        print("message failed to convert created date '\(String(describing: data["created"]))'")
-      return nil
-    }
-    guard let senderID = data["senderID"] as? String else {
-        print("message failed to convert sender id '\(String(describing: data["senderID"]))'")
-      return nil
-    }
-    guard let senderName = data["senderName"] as? String else {
-        print("message failed to convert sender name '\(String(describing: data["senderName"]))'")
-      return nil
+    var kind: MessageKind {
+        return .attributedText(NSAttributedString(string: content))
     }
     
-    id = document.documentID
-    
-    self.sentDate = sentDate
-    sender = FireFingersSender(senderId: senderID, displayName: senderName)
-    
-    if let content = data["content"] as? String {
-      self.content = content
-      downloadURL = nil
-    } else if let urlString = data["url"] as? String, let url = URL(string: urlString) {
-      downloadURL = url
-      content = ""
-    } else {
-        print("message failed to convert content '\(String(describing: data["content"]))'")
-      return nil
+    var messageId: String {
+        return id ?? UUID().uuidString
     }
-  }
-  
+    
+    var image: UIImage? = nil
+    var downloadURL: URL? = nil
+    
+    init(user: User, content: String) {
+        sender = FireFingersSender(senderId: user.uid, displayName: user.email ?? "Guest")
+        self.content = content
+        sentDate = Date()
+        id = nil
+    }
+    
+    init?(document: QueryDocumentSnapshot) {
+        
+        let data = document.data()
+        
+        guard let sentDate = (data["created"] as? Timestamp)?.dateValue() else {
+            print("message failed to convert created date '\(String(describing: data["created"]))'")
+            return nil
+        }
+        
+        guard let senderID = data["senderID"] as? String else {
+            print("message failed to convert sender id '\(String(describing: data["senderID"]))'")
+            return nil
+        }
+        
+        guard let senderName = data["senderName"] as? String else {
+            print("message failed to convert sender name '\(String(describing: data["senderName"]))'")
+            return nil
+        }
+        
+        id = document.documentID
+        
+        self.sentDate = sentDate
+        sender = FireFingersSender(senderId: senderID, displayName: senderName)
+        
+        if let content = data["content"] as? String {
+            self.content = content
+            downloadURL = nil
+        } else if let urlString = data["url"] as? String, let url = URL(string: urlString) {
+            downloadURL = url
+            content = ""
+        } else {
+            print("message failed to convert content '\(String(describing: data["content"]))'")
+            return nil
+        }
+    }
 }
 
 extension Message: DatabaseRepresentation {
-  
-  var representation: [String : Any] {
-    var rep: [String : Any] = [
-      "created": sentDate,
-      "senderID": sender.senderId,
-      "senderName": sender.displayName
-    ]
     
-    if let url = downloadURL {
-      rep["url"] = url.absoluteString
-    } else {
-      rep["content"] = content
+    var representation: [String : Any] {
+        var rep: [String : Any] = [
+            "created": sentDate,
+            "senderID": sender.senderId,
+            "senderName": sender.displayName
+        ]
+        
+        if let url = downloadURL {
+            rep["url"] = url.absoluteString
+        } else {
+            rep["content"] = content
+        }
+        
+        return rep
     }
-    
-    return rep
-  }
-  
 }
 
 extension Message: Comparable {
-  
-  static func == (lhs: Message, rhs: Message) -> Bool {
-    return lhs.id == rhs.id
-  }
-  
-  static func < (lhs: Message, rhs: Message) -> Bool {
-    return lhs.sentDate < rhs.sentDate
-  }
+    
+    static func == (lhs: Message, rhs: Message) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
+    static func < (lhs: Message, rhs: Message) -> Bool {
+        return lhs.sentDate < rhs.sentDate
+    }
   
 }

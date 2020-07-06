@@ -588,7 +588,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="5Hq-cV-CPx"/>
                     <connections>
-                        <outlet property="earthQuakeModeSwitch" destination="3vq-Gv-l4n" id="PV6-3A-6fM"/>
+                        <outlet property="earthQuakeModeSwitch" destination="3vq-Gv-l4n" id="x6e-gL-tD9"/>
                         <outlet property="emojiPromptsSwitch" destination="Hxx-LP-D3c" id="Qxd-kY-t6x"/>
                         <outlet property="instantDeathModeSwitch" destination="1Yv-rw-Hfr" id="r3E-go-z5X"/>
                         <outlet property="playersAllowedStepper" destination="nYm-xu-gat" id="rhz-cm-AdE"/>
@@ -815,8 +815,7 @@
                     <navigationItem key="navigationItem" id="2k6-qM-qmd"/>
                     <connections>
                         <outlet property="chatContainerView" destination="eud-1Z-gRS" id="gUr-eZ-lNZ"/>
-                        <outlet property="earthquakeMode" destination="n55-EI-yoC" id="xe4-YB-k9r"/>
-                        <outlet property="earthquakeModeLabel" destination="n55-EI-yoC" id="iIP-fh-HG0"/>
+                        <outlet property="earthquakeModeLabel" destination="n55-EI-yoC" id="iSB-cX-PSO"/>
                         <outlet property="emojiPromptsLabel" destination="3sc-p2-3Aa" id="YEt-R0-eGY"/>
                         <outlet property="instantDeathModeLabel" destination="8f3-Qj-Dkf" id="ICs-RZ-sra"/>
                         <outlet property="lobbyCodeLabel" destination="dLc-PV-JgQ" id="LHc-1Q-3au"/>

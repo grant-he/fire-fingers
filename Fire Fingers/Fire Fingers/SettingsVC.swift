@@ -44,12 +44,12 @@ class SettingsVC: UIViewController {
         let volumeLevel = loggedInUserSettings[userSettingsVolumeAttribute] as! Float
         volumeSlider.setValue(volumeLevel, animated: false)
         // Icon Buttons:
-        switch loggedInUserSettings[userSettingsIconAttribute] as! String {
-        case "icon1.png":
+        switch loggedInUserSettings[userSettingsIconAttribute] as! Int {
+        case 0:
             iconOneButton.layer.borderColor = CGColor(srgbRed: 0, green: 0, blue: 255, alpha: 1)
-        case "icon2.png":
+        case 1:
             iconTwoButton.layer.borderColor = CGColor(srgbRed: 0, green: 0, blue: 255, alpha: 1)
-        case "icon3.png":
+        case 2:
             iconThreeButton.layer.borderColor = CGColor(srgbRed: 0, green: 0, blue: 255, alpha: 1)
         default:
             print("Icon Selection Error")

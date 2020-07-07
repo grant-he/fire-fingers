@@ -19,8 +19,11 @@ class HostLobbyVC: UIViewController {
     // database
     private let db = Firestore.firestore()
     
-    // chat Lobby for this lobby
+    // Lobby stuff
     private var gameLobby: GameLobby?
+    private var chatLobby: ChatLobby?
+    private var emojiPrompts: Bool!
+    private var prompt: Prompt?
     
     // Instant Death Mode
     @IBOutlet weak var instantDeathModeSwitch: UISwitch!
@@ -35,15 +38,6 @@ class HostLobbyVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         // initialize number of players
         playersAllowedStepper.value = 2
-    }
-    
-    @IBAction func instantDeathModeUpdated(_ sender: Any) {
-    }
-    
-    @IBAction func earthquakeModeUpdated(_ sender: Any) {
-    }
-    
-    @IBAction func emojiPromptsUpdated(_ sender: Any) {
     }
     
     @IBAction func playersAllowedTextFieldUpdated(_ sender: Any) {
@@ -123,30 +117,106 @@ class HostLobbyVC: UIViewController {
     }
     
     @IBAction func createLobbyButtonPressed(_ sender: Any) {
-        gameLobby = createGameLobby()
-        performSegue(withIdentifier: joinLobbySegue, sender: self)
+        createGameLobby()
     }
 
     // create a new game lobby
-    private func createGameLobby() -> GameLobby {
-        let chatLobby = createChatLobby()
-        
+    private func createGameLobby() {
+        createChatLobby()
         print("Creating game lobby")
-        let gameSettings = GameSettings(instantDeathModeEnabled: instantDeathModeSwitch.isOn, earthQuakeModeEnabled: earthQuakeModeSwitch.isOn, emojisAllowed: emojiPromptsSwitch.isOn, playersCount: Int(playersAllowedTextField.text!)!)
-        let lobby = GameLobby(chatLobbyID: chatLobby.id!, gameSettings: gameSettings)
+        // Find appropriate prompt
+        self.emojiPrompts = emojiPromptsSwitch.isOn
+        findAppropriatePrompt()
+    }
+    
+    private func findAppropriatePrompt() {
+        print("Finding appropriate prompt!")
+        // load and process all the prompts data
+        let promptsReference = self.db.collection("prompts")
+        promptsReference.getDocuments() { (querySnapshot, err) in
+            print("Getting documents: \(String(describing: querySnapshot.debugDescription))")
+            if let e = err {
+                print("Error getting documents: \(e)")
+                return
+            } else {
+                print("Processing prompts data")
+                self.processPromptsData(documents: querySnapshot!.documents)
+            }
+        }
+    }
+    
+    // takes all the prompt records in the database
+    func processPromptsData(documents: [QueryDocumentSnapshot]) {
+        // Count up number of prompts and number of prompts without emojis
+        var numPrompts: Int = 0
+        var numNonEmojis: Int = 0
+        for document in documents {
+            guard let result = Prompt(document: document) else {
+                print("failed to create Prompt, skipping")
+                continue
+            }
+            
+            if !result.hasEmojis {
+                numNonEmojis += 1
+            }
+            numPrompts += 1
+        }
+        
+        // If emoji prompts are available select a random prompt
+        if emojiPrompts {
+            var indexRemaining = Int.random(in: 0..<numPrompts)
+            for document in documents {
+                guard let result = Prompt(document: document) else {
+                    print("failed to create Prompt, skipping")
+                    continue
+                }
+                if indexRemaining == 0 {
+                    prompt = result
+                    print("Selected prompt \(String(describing: prompt))")
+                    finishGameLobby()
+                    return
+                }
+                indexRemaining -= 1
+            }
+        }
+        // Otherwise, select a random prompt with no emojis
+        else {
+            var indexRemaining = Int.random(in: 0..<numNonEmojis)
+            for document in documents {
+                guard let result = Prompt(document: document) else {
+                    print("failed to create Prompt, skipping")
+                    continue
+                }
+                if !result.hasEmojis {
+                    if indexRemaining == 0 {
+                        prompt = result
+                        print("Selected prompt \(String(describing: prompt))")
+                        finishGameLobby()
+                        return
+                    }
+                    indexRemaining -= 1
+                }
+            }
+        }
+    }
+    
+    private func finishGameLobby() {
+        let gameSettings = GameSettings(instantDeathModeEnabled: instantDeathModeSwitch.isOn, earthQuakeModeEnabled: earthQuakeModeSwitch.isOn, emojisAllowed: emojiPrompts, playersCount: Int(playersAllowedTextField.text!)!)
+        let lobby = GameLobby(chatLobbyID: self.chatLobby!.id!, prompt: self.prompt!, gameSettings: gameSettings)
         let gameLobbyReference = db.collection("gameLobbies").addDocument(data: lobby.representation) { error in
             if let e = error {
                 print("Error saving chat lobby: \(e.localizedDescription)")
             }
-          }
+        }
         lobby.id = gameLobbyReference.documentID
         gameLobbyReference.setData(lobby.representation)
+        self.gameLobby = lobby
         print("game lobby id: \(String(describing: lobby.id))")
-        return lobby
+        performSegue(withIdentifier: joinLobbySegue, sender: self)
     }
     
     // create a new chat lobby
-    private func createChatLobby() -> ChatLobby{
+    private func createChatLobby() {
         print("Creating chat lobby")
         let lobby = ChatLobby()
         let chatLobbyReference = db.collection("chatLobbies").addDocument(data: lobby.representation) { error in
@@ -156,13 +226,13 @@ class HostLobbyVC: UIViewController {
         }
         lobby.id = chatLobbyReference.documentID
         chatLobbyReference.setData(lobby.representation)
-        return lobby
+        self.chatLobby = lobby
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == joinLobbySegue,
             let destination = segue.destination as? JoinLobbyVC {
-            destination.gameLobby = gameLobby
+            destination.gameLobby = self.gameLobby
         }
     }
 }

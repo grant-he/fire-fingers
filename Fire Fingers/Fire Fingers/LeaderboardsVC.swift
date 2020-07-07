@@ -52,7 +52,7 @@ class LeaderboardsVC: UIViewController {
     }
     
     // takes all the game records in the database and creates a leaderboard
-    func processGamesData(documents: [QueryDocumentSnapshot]){
+    func processGamesData(documents: [QueryDocumentSnapshot]) {
         for document in documents {
             guard let result = GameResult(document: document) else {
                 print("failed to create GameResult for leaderboards, skipping")
@@ -119,9 +119,7 @@ extension LeaderboardsVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "LeaderboardCell", for: indexPath)
-        
         let row = indexPath.row
-        
         let leaderboardEntry = orderedPlayerRankings[row]
         
         cell.textLabel?.text = "\(row + 1)    " + String(format: "%.2f", leaderboardEntry.bestWPM) + "        " + String(format: "%.2f", leaderboardEntry.avgWPM)
@@ -134,7 +132,7 @@ extension LeaderboardsVC: UITableViewDelegate, UITableViewDataSource {
 
 // inserting stuff
 extension LeaderboardsVC {
-    func insertData(){
+    func insertData() {
         uploadGameResult(results: GameResult(user: "garrettegan@utexas.edu", wordCount: 30, time: 5.5))
         uploadGameResult(results: GameResult(user: "garrettegan@utexas.edu", wordCount: 30, time: 4.5))
         uploadGameResult(results: GameResult(user: "garrettegan@utexas.edu", wordCount: 30, time: 3.5))
@@ -146,9 +144,9 @@ extension LeaderboardsVC {
     func uploadGameResult(results: GameResult) {
         let gamesReference = db.collection("GameResults")
         gamesReference.addDocument(data: results.representation) { error in
-                   if let e = error {
-                       print("Error saving player: \(e.localizedDescription)")
-                   }
-               }
+            if let e = error {
+                print("Error saving player: \(e.localizedDescription)")
+            }
+        }
     }
 }

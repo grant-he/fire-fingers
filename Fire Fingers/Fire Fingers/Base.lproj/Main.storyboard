@@ -484,9 +484,6 @@
                                             </button>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="1Yv-rw-Hfr">
                                                 <rect key="frame" x="250" y="0.0" width="51" height="31"/>
-                                                <connections>
-                                                    <action selector="instantDeathModeUpdated:" destination="nd0-TT-63a" eventType="valueChanged" id="oIR-SR-fwC"/>
-                                                </connections>
                                             </switch>
                                         </subviews>
                                     </stackView>
@@ -507,9 +504,6 @@
                                             </button>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="3vq-Gv-l4n">
                                                 <rect key="frame" x="250" y="0.0" width="51" height="31"/>
-                                                <connections>
-                                                    <action selector="earthquakeModeUpdated:" destination="nd0-TT-63a" eventType="valueChanged" id="h3p-En-K2P"/>
-                                                </connections>
                                             </switch>
                                         </subviews>
                                     </stackView>
@@ -530,9 +524,6 @@
                                             </button>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Hxx-LP-D3c">
                                                 <rect key="frame" x="250" y="0.0" width="51" height="31"/>
-                                                <connections>
-                                                    <action selector="emojiPromptsUpdated:" destination="nd0-TT-63a" eventType="valueChanged" id="V38-Dp-BOR"/>
-                                                </connections>
                                             </switch>
                                         </subviews>
                                     </stackView>
@@ -917,6 +908,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="cVD-q0-r4t"/>
+        <segue reference="bwe-HN-Ypn"/>
     </inferredMetricsTieBreakers>
 </document>

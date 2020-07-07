@@ -1,11 +1,15 @@
 //
-//  GameResult.swift
-//  Fire Fingers
+//  Project: Fire-Fingers
+//  Filename: GameResult.swift
+//  EID: gh22593 + gwe272
+//  Course: CS371L
 //
-//  Created by Garrett Egan on 7/7/20.
+//  Created by Grant He & Garrett Egan on 7/7/20.
 //  Copyright © 2020 G + G. All rights reserved.
 //
+
 import FirebaseFirestore
+
 class GameResult {
     let user: String
     let wordCount: Int
@@ -41,14 +45,14 @@ class GameResult {
     }
 }
 
-    extension GameResult: DatabaseRepresentation {
+extension GameResult: DatabaseRepresentation {
+
+    var representation: [String : Any] {
         
-        var representation: [String : Any] {
-        
-            return [
-                "user" : user,
-                "wordCount" : wordCount,
-                "time" : time
-            ]
-        }
+        return [
+            "user" : user,
+            "wordCount" : wordCount,
+            "time" : time
+        ]
     }
+}

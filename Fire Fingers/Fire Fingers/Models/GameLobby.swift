@@ -13,10 +13,12 @@ import FirebaseFirestore
 class GameLobby {
     var id: String?
     var chatLobbyID: String
+    var prompt: Prompt
     let gameSettings: GameSettings
     
-    init(chatLobbyID: String, gameSettings: GameSettings) {
+    init(chatLobbyID: String, prompt: Prompt, gameSettings: GameSettings) {
         self.chatLobbyID = chatLobbyID
+        self.prompt = prompt
         self.gameSettings = gameSettings
     }
     
@@ -32,6 +34,11 @@ class GameLobby {
             return nil
         }
         
+        guard let prompt = Prompt(data: data["prompt"] as! [String : Any]) else {
+            print("GameLobby failed to convert prompt '\(String(describing: data["prompt"]))'")
+            return nil
+        }
+        
         guard let gameSettings = GameSettings(data: data["gameSettings"] as! [String : Any]) else {
             print("GameLobby failed to convert gameSettings '\(String(describing: data["gameSettings"]))'")
             return nil
@@ -39,6 +46,7 @@ class GameLobby {
         
         self.id = id
         self.chatLobbyID = chatLobbyID
+        self.prompt = prompt
         self.gameSettings = gameSettings
     }
 }
@@ -49,6 +57,7 @@ extension GameLobby: DatabaseRepresentation {
     
         var rep: [String : Any] = [
             "chatLobbyID" : chatLobbyID,
+            "prompt" : prompt.representation,
             "gameSettings" : gameSettings.representation
         ]
     

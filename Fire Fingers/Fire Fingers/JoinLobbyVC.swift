@@ -133,6 +133,7 @@ class JoinLobbyVC: UIViewController {
         chatViewController.view.bottomAnchor.constraint(equalTo: chatContainerView.bottomAnchor).isActive = true
     }
     
+    // TODO: FIX THIS!!! ONLY CALL THIS WHEN BACK SEGUE IS CALLED
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
@@ -279,7 +280,6 @@ class JoinLobbyVC: UIViewController {
     
     // when background is touched, dismiss keyboard but not inputBar
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
         chatViewController.messageInputBar.inputTextView.resignFirstResponder()
         print("number of current players: \(players.count)")
     }

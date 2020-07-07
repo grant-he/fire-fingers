@@ -83,8 +83,8 @@ class SettingsVC: UIViewController {
                 settings?.setValue(loggedInUserSettings[userSettingsIconAttribute], forKey: userSettingsIconAttribute)
                 
                 print(loggedInUserSettings[userSettingsDarkModeAttribute] as! Bool)
-                print(loggedInUserSettings[userSettingsVolumeAttribute]! as! Float)
-                print(loggedInUserSettings[userSettingsIconAttribute]! as! String)
+                print(loggedInUserSettings[userSettingsVolumeAttribute] as! Float)
+                print(loggedInUserSettings[userSettingsIconAttribute] as! Int)
                 // Commit the changes
                 try context.save()
             } catch {

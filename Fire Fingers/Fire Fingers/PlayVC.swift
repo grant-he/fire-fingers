@@ -25,7 +25,8 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet weak var promptLabel: UILabel!
     @IBOutlet weak var inputField: UITextField!
     
-    // Player container
+    // Game Lobby and related objects
+    var gameLobby: GameLobby!
     private var players: [Player] = []
     
     // Prompt-related variables
@@ -92,7 +93,6 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     @IBAction func inputFieldChanged(_ sender: Any) {
         print("Input field changed... still looking for \(currWord)")
-
         
         if let inputText = inputField.text {
             

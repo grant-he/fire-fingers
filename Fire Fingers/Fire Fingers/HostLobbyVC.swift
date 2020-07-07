@@ -13,7 +13,8 @@ import FirebaseAuth
 import FirebaseFirestore
 
 class HostLobbyVC: UIViewController {
-    let joinLobbySegue = "JoinLobbySegue"
+    
+    private let joinLobbySegue = "JoinLobbySegue"
     
     // database
     private let db = Firestore.firestore()
@@ -23,20 +24,15 @@ class HostLobbyVC: UIViewController {
     
     // Instant Death Mode
     @IBOutlet weak var instantDeathModeSwitch: UISwitch!
-    
     // Earthquake Mode
     @IBOutlet weak var earthQuakeModeSwitch: UISwitch!
-    
     // Emoji Prompts
     @IBOutlet weak var emojiPromptsSwitch: UISwitch!
-    
     // Players Allowed
-    
     @IBOutlet weak var playersAllowedTextField: UITextField!
     @IBOutlet weak var playersAllowedStepper: UIStepper!
     
     override func viewWillAppear(_ animated: Bool) {
-        
         // initialize number of players
         playersAllowedStepper.value = 2
     }

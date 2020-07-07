@@ -24,11 +24,15 @@ class Player {
     // index of word player is on in prompt
     var currentWord: Int
     
+    // player is ready
+    var ready: Bool
+    
     init(uuid: String, displayName: String, icon: Int) {
         self.uuid = uuid
         self.displayName = displayName
         self.currentWord = 0
         self.icon = icon
+        self.ready = false
     }
     
     init?(document: QueryDocumentSnapshot) {
@@ -54,10 +58,16 @@ class Player {
             return nil
         }
         
+        guard let ready = data["ready"] as? Bool else {
+            print("Player failed to convert ready '\(String(describing: data["ready"]))'")
+            return nil
+        }
+        
         self.uuid = uuid
         self.displayName = displayName
         self.currentWord = currentWord
         self.icon = icon
+        self.ready = ready
     }
 }
 
@@ -68,7 +78,8 @@ extension Player: DatabaseRepresentation {
             "uuid": uuid,
             "displayName": displayName,
             "currentWord": currentWord,
-            "icon": icon
+            "icon": icon,
+            "ready": ready
         ]
     }
 }

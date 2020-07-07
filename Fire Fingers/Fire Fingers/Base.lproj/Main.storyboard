@@ -693,7 +693,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kco-Da-JZV">
-                                <rect key="frame" x="315" y="330.33333333333331" width="65" height="30"/>
+                                <rect key="frame" x="315" y="315.33333333333331" width="65" height="30"/>
                                 <color key="backgroundColor" systemColor="systemGray4Color" red="0.81960784310000001" green="0.81960784310000001" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="65" id="GCn-F5-xBy"/>
@@ -701,28 +701,22 @@
                                 <state key="normal" title="Ready">
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                 </state>
+                                <connections>
+                                    <action selector="readyButtonPressed:" destination="qHy-l2-5kT" eventType="touchUpInside" id="JQN-mF-2VT"/>
+                                </connections>
                             </button>
                             <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eud-1Z-gRS">
-                                <rect key="frame" x="20" y="376" width="374" height="486"/>
+                                <rect key="frame" x="20" y="369" width="374" height="493"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </containerView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[Lobby Code]" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dLc-PV-JgQ">
-                                <rect key="frame" x="152.33333333333334" y="111" width="198.00000000000003" height="20.333333333333343"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="198" id="7Qg-6R-6ff"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Game Options" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vLh-8v-VWO">
                                 <rect key="frame" x="50.000000000000007" y="141.33333333333334" width="109.66666666666669" height="20.333333333333343"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="LzK-Wp-Qlg">
-                                <rect key="frame" x="65" y="175.66666666666669" width="299" height="139.66666666666669"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="LzK-Wp-Qlg">
+                                <rect key="frame" x="65" y="175.66666666666666" width="299" height="124.66666666666666"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="PeM-8m-ndC">
                                         <rect key="frame" x="0.0" y="0.0" width="299" height="23.666666666666668"/>
@@ -749,7 +743,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="fGs-VV-r0I">
-                                        <rect key="frame" x="0.0" y="38.666666666666686" width="299" height="23.666666666666671"/>
+                                        <rect key="frame" x="0.0" y="33.666666666666686" width="299" height="23.666666666666671"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Earthquake Mode" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TBs-LZ-Op6">
                                                 <rect key="frame" x="0.0" y="0.0" width="121" height="23.666666666666668"/>
@@ -773,7 +767,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="EPt-VK-qfI">
-                                        <rect key="frame" x="0.0" y="77.333333333333343" width="299" height="23.666666666666671"/>
+                                        <rect key="frame" x="0.0" y="67.333333333333343" width="299" height="23.666666666666671"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Emoji Prompts Allowed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8nr-iq-ged">
                                                 <rect key="frame" x="0.0" y="0.0" width="156.66666666666666" height="23.666666666666668"/>
@@ -797,7 +791,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="qfL-Co-adc">
-                                        <rect key="frame" x="0.0" y="116.00000000000003" width="299" height="23.666666666666657"/>
+                                        <rect key="frame" x="0.0" y="101.00000000000003" width="299" height="23.666666666666671"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Players Allowed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eBs-OU-Rj2">
                                                 <rect key="frame" x="0.0" y="0.0" width="107.33333333333333" height="23.666666666666668"/>
@@ -822,18 +816,45 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="[Lobby Code]" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NUk-rJ-rLg" userLabel="Lobby Code Text View">
+                                <rect key="frame" x="152.33333333333337" y="107" width="240" height="28"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="240" id="Lp5-p5-8zU"/>
+                                    <constraint firstAttribute="height" constant="28" id="Vtt-jh-WGP"/>
+                                </constraints>
+                                <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Players Ready:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tU8-Jw-ut6">
+                                <rect key="frame" x="50" y="320" width="112" height="20.333333333333314"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Azq-2K-It0">
+                                <rect key="frame" x="174" y="320" width="10.333333333333343" height="20.333333333333314"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="vLh-8v-VWO" firstAttribute="top" secondItem="gfD-mm-Y8I" secondAttribute="bottom" constant="10" id="8hb-e3-li5"/>
                             <constraint firstItem="Kco-Da-JZV" firstAttribute="top" secondItem="LzK-Wp-Qlg" secondAttribute="bottom" constant="15" id="AuW-3G-JAK"/>
                             <constraint firstItem="sfI-Ge-VlA" firstAttribute="trailing" secondItem="LzK-Wp-Qlg" secondAttribute="trailing" constant="50" id="BGt-9d-Qvq"/>
-                            <constraint firstItem="dLc-PV-JgQ" firstAttribute="top" secondItem="sfI-Ge-VlA" secondAttribute="top" constant="23" id="FUf-x7-Hdc"/>
                             <constraint firstItem="vLh-8v-VWO" firstAttribute="leading" secondItem="sfI-Ge-VlA" secondAttribute="leading" constant="50" id="Fp6-22-Qxi"/>
                             <constraint firstItem="gfD-mm-Y8I" firstAttribute="leading" secondItem="sfI-Ge-VlA" secondAttribute="leading" constant="50" id="PF5-Z7-yEz"/>
-                            <constraint firstItem="dLc-PV-JgQ" firstAttribute="leading" secondItem="gfD-mm-Y8I" secondAttribute="trailing" constant="8" id="ReG-oE-8z9"/>
+                            <constraint firstItem="NUk-rJ-rLg" firstAttribute="leading" secondItem="gfD-mm-Y8I" secondAttribute="trailing" constant="8" id="TVa-ay-91b"/>
                             <constraint firstItem="LzK-Wp-Qlg" firstAttribute="leading" secondItem="sfI-Ge-VlA" secondAttribute="leading" constant="65" id="h7N-Gk-wkP"/>
+                            <constraint firstItem="Azq-2K-It0" firstAttribute="leading" secondItem="tU8-Jw-ut6" secondAttribute="trailing" constant="12" id="ioc-g8-z7W"/>
+                            <constraint firstItem="tU8-Jw-ut6" firstAttribute="top" secondItem="LzK-Wp-Qlg" secondAttribute="bottom" constant="19.670000000000002" id="n1L-lY-vhz"/>
+                            <constraint firstItem="Azq-2K-It0" firstAttribute="top" secondItem="LzK-Wp-Qlg" secondAttribute="bottom" constant="19.670000000000002" id="pHo-eF-2WU"/>
+                            <constraint firstItem="tU8-Jw-ut6" firstAttribute="leading" secondItem="sfI-Ge-VlA" secondAttribute="leading" constant="50" id="pck-4T-lS4"/>
                             <constraint firstItem="LzK-Wp-Qlg" firstAttribute="top" secondItem="vLh-8v-VWO" secondAttribute="bottom" constant="14" id="qZe-bt-KiA"/>
+                            <constraint firstItem="NUk-rJ-rLg" firstAttribute="top" secondItem="sfI-Ge-VlA" secondAttribute="top" constant="19" id="vhd-HK-dAV"/>
                             <constraint firstItem="Kco-Da-JZV" firstAttribute="leading" secondItem="sfI-Ge-VlA" secondAttribute="leading" constant="315" id="wZM-tK-ljr"/>
                             <constraint firstItem="gfD-mm-Y8I" firstAttribute="top" secondItem="sfI-Ge-VlA" secondAttribute="top" constant="23" id="z09-AR-l5Z"/>
                         </constraints>
@@ -845,8 +866,10 @@
                         <outlet property="earthquakeModeLabel" destination="n55-EI-yoC" id="iSB-cX-PSO"/>
                         <outlet property="emojiPromptsLabel" destination="3sc-p2-3Aa" id="YEt-R0-eGY"/>
                         <outlet property="instantDeathModeLabel" destination="8f3-Qj-Dkf" id="ICs-RZ-sra"/>
-                        <outlet property="lobbyCodeLabel" destination="dLc-PV-JgQ" id="LHc-1Q-3au"/>
+                        <outlet property="lobbyCodeTextView" destination="NUk-rJ-rLg" id="EAC-3t-Qxr"/>
                         <outlet property="playersAllowedLabel" destination="kPa-L2-j5l" id="e10-H8-Mzv"/>
+                        <outlet property="playersReadyLabel" destination="Azq-2K-It0" id="YoG-TD-kiR"/>
+                        <outlet property="readyButton" destination="Kco-Da-JZV" id="qvm-AX-B30"/>
                         <segue destination="17o-mb-50b" kind="show" identifier="JoinLobbyToPlaySegue" id="PrP-n6-Xmg"/>
                     </connections>
                 </viewController>
@@ -894,6 +917,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="bwe-HN-Ypn"/>
+        <segue reference="cVD-q0-r4t"/>
     </inferredMetricsTieBreakers>
 </document>

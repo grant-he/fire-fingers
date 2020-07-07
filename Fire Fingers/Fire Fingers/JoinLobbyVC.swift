@@ -14,6 +14,8 @@ import FirebaseAuth
 
 class JoinLobbyVC: UIViewController {
     
+    private let playSegue = "JoinLobbyToPlaySegue"
+    
     // database
     private let db = Firestore.firestore()
     
@@ -35,16 +37,18 @@ class JoinLobbyVC: UIViewController {
     var gameLobby: GameLobby!
     
     var player: Player!
-    
+    var playerReady = false
     var playerReference: DocumentReference!
     
     @IBOutlet weak var chatContainerView: UIView!
     
-    @IBOutlet weak var lobbyCodeLabel: UILabel!
+    @IBOutlet weak var lobbyCodeTextView: UITextView!
     @IBOutlet weak var instantDeathModeLabel: UILabel!
     @IBOutlet weak var earthquakeModeLabel: UILabel!
     @IBOutlet weak var emojiPromptsLabel: UILabel!
     @IBOutlet weak var playersAllowedLabel: UILabel!
+    @IBOutlet weak var playersReadyLabel: UILabel!
+    @IBOutlet weak var readyButton: UIButton!
     
     // MAKE SURE THIS WORKS EVEN IF LOBBY DELETED
     deinit {
@@ -83,7 +87,7 @@ class JoinLobbyVC: UIViewController {
             uuid: "",
             displayName: Auth.auth().currentUser!.isAnonymous ? "Guest" : Auth.auth().currentUser!.email!,
             icon: loggedInUserSettings[userSettingsIconAttribute] as! Int)
-        let playerReference = playersReference.addDocument(data: tempPlayer.representation) { error in
+        playerReference = playersReference.addDocument(data: tempPlayer.representation) { error in
             if let e = error {
                 print("Error saving player: \(e.localizedDescription)")
             }
@@ -105,7 +109,7 @@ class JoinLobbyVC: UIViewController {
         }
         
         // set label contents
-        lobbyCodeLabel.text = gameLobby.id!
+        lobbyCodeTextView.text = gameLobby.id!
         instantDeathModeLabel.text = gameLobby.gameSettings.instantDeathModeEnabled ? "On" : "Off"
         earthquakeModeLabel.text = gameLobby.gameSettings.earthQuakeModeEnabled ? "On" : "Off"
         emojiPromptsLabel.text = gameLobby.gameSettings.emojisAllowed ? "On" : "Off"
@@ -172,10 +176,20 @@ class JoinLobbyVC: UIViewController {
         self.present(controller, animated: true)
     }
     
-    // when background is touched, dismiss keyboard but not inputBar
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        chatViewController.messageInputBar.inputTextView.resignFirstResponder()
-        print("number of current players: \(players.count)")
+    @IBAction func readyButtonPressed(_ sender: Any) {
+        if playerReady {
+            print("Player not ready.")
+            playerReady = false
+            readyButton.setTitleColor(UIColor.black, for: .normal)
+            readyButton.backgroundColor = UIColor.systemGray4
+        } else {
+            print("Player ready!")
+            playerReady = true
+            readyButton.setTitleColor(UIColor.lightGray, for: .normal)
+            readyButton.backgroundColor = UIColor.green
+        }
+        player.ready = playerReady
+        playerReference.setData(player.representation)
     }
     
     // handles updates to players from the database
@@ -205,16 +219,15 @@ class JoinLobbyVC: UIViewController {
             return
         }
         
-        guard !players.contains(player) else {
+        if !players.contains(player) {
+            players.append(player)
+            print("\(players.count) current players")
+        } else {
             print("player already in players")
-            return
+            players[players.firstIndex(of: player)!] = player
         }
-
-        players.append(player)
-        print("\(players.count) current players")
         
-//        need to reload view of player list
-//        ... .reloadData()
+        updateReadyData()
     }
     
     private func removePlayer(_ player: Player) {
@@ -225,10 +238,26 @@ class JoinLobbyVC: UIViewController {
         
         players.remove(at: playerIndex)
         print("\(players.count) current players")
-            
-//        need to reload view of player list
-//        ... .reloadData()
+        
+        updateReadyData()
+    }
+    
+    func updateReadyData() {
+        // Count the number of players ready
+        var numReady: Int = 0
+        for aPlayer in players {
+            if aPlayer.ready {
+                numReady += 1
+            }
         }
+        // Update players ready label
+        playersReadyLabel.text = String(numReady)
+        
+        // If all players are ready, perform segue to PlayVC
+        if numReady == gameLobby.gameSettings.playersCount {
+            performSegue(withIdentifier: playSegue, sender: nil)
+        }
+    }
     
     // do any necessary cleanup after a game is played
     func doPostGameCleanup() {
@@ -246,5 +275,20 @@ class JoinLobbyVC: UIViewController {
     private func deleteGameLobby() {
         print("Deleting game lobby '\(gameLobby.id!)'")
         db.document(["gameLobbies", gameLobby.id!].joined(separator: "/")).delete()
+    }
+    
+    // when background is touched, dismiss keyboard but not inputBar
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+        chatViewController.messageInputBar.inputTextView.resignFirstResponder()
+        print("number of current players: \(players.count)")
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Send game lobby data
+        if segue.identifier == playSegue,
+            let playVC = segue.destination as? PlayVC {
+            playVC.gameLobby = gameLobby
+        }
     }
 }

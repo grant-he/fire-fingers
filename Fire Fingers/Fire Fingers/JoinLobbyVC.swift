@@ -42,7 +42,7 @@ class JoinLobbyVC: UIViewController {
     
     @IBOutlet weak var chatContainerView: UIView!
     
-    @IBOutlet weak var lobbyCodeTextView: UITextView!
+    @IBOutlet weak var lobbyCodeLabel: UILabel!
     @IBOutlet weak var instantDeathModeLabel: UILabel!
     @IBOutlet weak var earthquakeModeLabel: UILabel!
     @IBOutlet weak var emojiPromptsLabel: UILabel!
@@ -109,7 +109,7 @@ class JoinLobbyVC: UIViewController {
         }
         
         // set label contents
-        lobbyCodeTextView.text = gameLobby.id!
+        lobbyCodeLabel.text = gameLobby.id!
         instantDeathModeLabel.text = gameLobby.gameSettings.instantDeathModeEnabled ? "On" : "Off"
         earthquakeModeLabel.text = gameLobby.gameSettings.earthQuakeModeEnabled ? "On" : "Off"
         emojiPromptsLabel.text = gameLobby.gameSettings.emojisAllowed ? "On" : "Off"
@@ -276,6 +276,11 @@ class JoinLobbyVC: UIViewController {
     private func deleteGameLobby() {
         print("Deleting game lobby '\(gameLobby.id!)'")
         db.document(["gameLobbies", gameLobby.id!].joined(separator: "/")).delete()
+    }
+    
+    @IBAction func clipboardButtonPressed(_ sender: Any) {
+        UIPasteboard.general.string = lobbyCodeLabel.text ?? ""
+        sendToolTipAlert(title: "Lobby Code Copied", message: "Lobby code \(lobbyCodeLabel.text!) copied to clipboard.")
     }
     
     // when background is touched, dismiss keyboard but not inputBar

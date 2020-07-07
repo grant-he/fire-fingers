@@ -14,6 +14,7 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     private let playerCellIdentifier = "PlayerProgessCell"
     
+    // Attributes
     private let completedAttributes = [NSAttributedString.Key.backgroundColor: UIColor.green, NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.underlineColor: UIColor.clear]
     private let correctLetterAttribute = [NSAttributedString.Key.backgroundColor: UIColor.green]
     private let clearBackgroundLetterAttribute = [NSAttributedString.Key.backgroundColor: UIColor.clear]
@@ -27,12 +28,18 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     // Player container
     private var players: [Player] = []
     
+    // Prompt-related variables
     private var attributedPrompt: NSMutableAttributedString = NSMutableAttributedString()
     private var promptWords: Array<Substring> = Array()
     private var currWord: Substring = ""
     private var currWordCount: Int = 0
     private var currWordIndex: Int = 0
     private var totalPromptCharacters: Int = 0
+    
+    // Timing Variables
+    private var startingTime: DispatchTime = DispatchTime(uptimeNanoseconds: 0)
+    private var endingTime: DispatchTime = DispatchTime(uptimeNanoseconds: 0)
+    
     let currWordGroup: DispatchGroup = DispatchGroup()
     
     override func viewDidLoad() {
@@ -44,6 +51,7 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         // Trigger 3 second countdown timer
         
         // Begin game!!
+        startingTime = DispatchTime.now()
         
         // for debugging
         promptLabel.text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
@@ -68,7 +76,9 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             print("New word: \(currWord)")
             currWordGroup.wait()
         }
-        print("YOU DID IT~!!!")
+        endingTime = DispatchTime.now()
+        let difference = Double(endingTime.uptimeNanoseconds - startingTime.uptimeNanoseconds) / 1_000_000_000
+        print("YOU DID IT~!!! It only took \(difference) seconds.")
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -104,9 +114,7 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
                 let wrongStartIndex = currWordIndex + upToCorrect
                 var lastCorrectToInputEndLength = inputText.count - upToCorrect
                 lastCorrectToInputEndLength = min(lastCorrectToInputEndLength, currWordToPromptEndLength-currWordToLastCorrectLength)
-//                print("currWordToPromptEndLength: \(currWordToPromptEndLength)")
-//                print("currWordToLastCorrectLength: \(currWordToLastCorrectLength)")
-//                print("lastCorrectToInputEndLength: \(lastCorrectToInputEndLength)")
+                
                 // Clear attributes up to end of prompt before marking correct and wrong letters
                 attributedPrompt.addAttributes(clearBackgroundLetterAttribute, range: NSRange(location: currWordIndex, length: currWordToPromptEndLength))
                 attributedPrompt.addAttributes(correctLetterAttribute, range: NSRange(location: currWordIndex, length: currWordToLastCorrectLength))

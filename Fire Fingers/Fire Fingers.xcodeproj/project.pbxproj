@@ -22,6 +22,7 @@
 		7ADD3CE624AD9F95001FDDA3 /* FireFingersSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADD3CE524AD9F95001FDDA3 /* FireFingersSender.swift */; };
 		F68F7C8724B45274005E1A96 /* StringProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68F7C8624B45274005E1A96 /* StringProtocol.swift */; };
 		F68F7C8924B51D93005E1A96 /* Prompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68F7C8824B51D93005E1A96 /* Prompt.swift */; };
+		F68F7C8B24B578BC005E1A96 /* PlayerProgressViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68F7C8A24B578BC005E1A96 /* PlayerProgressViewCell.swift */; };
 		F6A7FFCE24A7CFF8002DFD00 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A7FFCD24A7CFF8002DFD00 /* AppDelegate.swift */; };
 		F6A7FFD024A7CFF8002DFD00 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A7FFCF24A7CFF8002DFD00 /* SceneDelegate.swift */; };
 		F6A7FFD224A7CFF8002DFD00 /* MainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A7FFD124A7CFF8002DFD00 /* MainVC.swift */; };
@@ -57,6 +58,7 @@
 		7ADD3CE524AD9F95001FDDA3 /* FireFingersSender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireFingersSender.swift; sourceTree = "<group>"; };
 		F68F7C8624B45274005E1A96 /* StringProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringProtocol.swift; sourceTree = "<group>"; };
 		F68F7C8824B51D93005E1A96 /* Prompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Prompt.swift; sourceTree = "<group>"; };
+		F68F7C8A24B578BC005E1A96 /* PlayerProgressViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerProgressViewCell.swift; sourceTree = "<group>"; };
 		F6A7FFCA24A7CFF8002DFD00 /* Fire Fingers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fire Fingers.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6A7FFCD24A7CFF8002DFD00 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F6A7FFCF24A7CFF8002DFD00 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -161,6 +163,7 @@
 				F6E0C6DE24AC28C900C9C07A /* Fire Fingers.entitlements */,
 				F6A7FFE624A7D500002DFD00 /* GoogleService-Info.plist */,
 				F6A7FFCF24A7CFF8002DFD00 /* SceneDelegate.swift */,
+				F68F7C8A24B578BC005E1A96 /* PlayerProgressViewCell.swift */,
 				F6E0C6DF24AC313C00C9C07A /* LoginScreenVC.swift */,
 				F6A7FFD124A7CFF8002DFD00 /* MainVC.swift */,
 				F6E0C6E124AC315A00C9C07A /* SettingsVC.swift */,
@@ -294,6 +297,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F68F7C8B24B578BC005E1A96 /* PlayerProgressViewCell.swift in Sources */,
 				F6E0C6E024AC313C00C9C07A /* LoginScreenVC.swift in Sources */,
 				F6A7FFD824A7CFF8002DFD00 /* Fire_Fingers.xcdatamodeld in Sources */,
 				7ADD3CC524AD91DF001FDDA3 /* ChatVC.swift in Sources */,

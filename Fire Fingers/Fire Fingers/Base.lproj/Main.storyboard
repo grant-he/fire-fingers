@@ -612,13 +612,30 @@
                                 <rect key="frame" x="40" y="108.00000000000003" width="334" height="309.66666666666674"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PlayerProgressCell" id="iYR-Hd-EYn">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PlayerProgessCell" id="iYR-Hd-EYn" customClass="PlayerProgressViewCell" customModule="Fire_Fingers" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="334" height="43.666667938232422"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="iYR-Hd-EYn" id="kxw-AD-vgU">
                                             <rect key="frame" x="0.0" y="0.0" width="334" height="43.666667938232422"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="780-lT-RIt">
+                                                    <rect key="frame" x="78" y="17.999999999999972" width="236" height="3"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </progressView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bBw-da-8oE">
+                                                    <rect key="frame" x="20" y="11" width="38" height="22"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="playerNameLabel" destination="bBw-da-8oE" id="9ZR-cp-eGP"/>
+                                            <outlet property="playerProgress" destination="780-lT-RIt" id="Nty-UG-ztJ"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>

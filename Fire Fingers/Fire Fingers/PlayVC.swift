@@ -39,6 +39,7 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     private var currWordCount: Int = 0 {
         didSet {
             player.currentWord = currWordCount
+            playerReference.setData(player.representation)
         }
     }
     private var currWordIndex: Int = 0
@@ -56,10 +57,11 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.dataSource = self
+        tableView.delegate = self
+        
         print("PlayVC loaded")
-        
-        // Check all players are here
-        
+        print("Number of players: \(players.count)")
         // Trigger 3 second countdown timer
         showAlert()
         
@@ -97,11 +99,19 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print(players.count)
         return players.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: playerCellIdentifier, for: indexPath as IndexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: playerCellIdentifier, for: indexPath as IndexPath) as! PlayerProgressViewCell
+        
+        let aPlayer = players[indexPath.row]
+        
+        cell.playerNameLabel?.text = aPlayer.displayName
+        cell.playerProgress?.transform.scaledBy(x: 1, y: 5)
+        cell.playerProgress?.progress = Float(aPlayer.currentWord) / Float(self.gameLobby.prompt.numWords)
+        
         return cell
     }
     

@@ -133,9 +133,11 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         
         let aPlayer = players[indexPath.row]
         
+        let progressFraction: Float = Float(aPlayer.currentWord) / Float(self.gameLobby.prompt.numWords)
+        
         cell.playerNameLabel?.text = aPlayer.displayName
-        cell.playerProgress?.transform.scaledBy(x: 1, y: 5)
-        cell.playerProgress?.progress = Float(aPlayer.currentWord) / Float(self.gameLobby.prompt.numWords)
+        cell.playerProgress?.progressImage = UIImage(named: "icon\(aPlayer.icon)")
+        cell.playerProgress?.setProgress(progressFraction, animated: true)
         
         return cell
     }

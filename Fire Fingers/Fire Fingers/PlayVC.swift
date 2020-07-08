@@ -11,6 +11,7 @@
 import UIKit
 import FirebaseFirestore
 import FirebaseAuth
+import AudioToolbox
 
 class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -36,7 +37,6 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     // database
     private let db = Firestore.firestore()
     
-    
     // listens for changes to lobbies section of database
     private var playersListener: ListenerRegistration?
 
@@ -51,6 +51,11 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         didSet {
             player.currentWord = currWordCount
             playerReference.setData(player.representation)
+            // Rumble if earthquake mode is enabled
+            if gameLobby.gameSettings.earthQuakeModeEnabled {
+                print("*Rumble*")
+                AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+            }
         }
     }
     private var currWordIndex: Int = 0
@@ -103,7 +108,6 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        
         playersListener?.remove()
     }
     
@@ -144,7 +148,10 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         let progressFraction: Float = Float(aPlayer.currentWord) / Float(self.gameLobby.prompt.numWords)
         
         cell.playerNameLabel?.text = aPlayer.displayName
-        cell.playerProgress?.progressImage = UIImage(named: "icon\(aPlayer.icon)")
+        let progressFrame = cell.playerProgress.frame
+        cell.playerProgressImage?.center = CGPoint(x: CGFloat(progressFrame.minX+progressFrame.width*CGFloat(progressFraction)), y: progressFrame.midY)
+        cell.playerProgressImage?.image = UIImage(named: "icon\(aPlayer.icon)")
+        print(String(describing: cell.playerProgressImage?.center))
         cell.playerProgress?.setProgress(progressFraction, animated: true)
         
         return cell
@@ -219,9 +226,9 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         // Upload the game stats iff the user is logged in
         // and it was a standard game
         if !Auth.auth().currentUser!.isAnonymous,
-            gameLobby.gameSettings.earthQuakeModeEnabled,
-            gameLobby.gameSettings.instantDeathModeEnabled,
-            gameLobby.gameSettings.emojisAllowed
+            !gameLobby.gameSettings.earthQuakeModeEnabled,
+            !gameLobby.gameSettings.instantDeathModeEnabled,
+            !gameLobby.gameSettings.emojisAllowed
             {
             let gameStatsReference = db.collection("GameResults")
             gameStatsReference.addDocument(data: GameResult(user: Auth.auth().currentUser!.email!, wordCount: gameLobby.prompt.numWords, time: duration).representation)

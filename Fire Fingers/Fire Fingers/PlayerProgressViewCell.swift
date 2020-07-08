@@ -12,7 +12,10 @@ import UIKit
 
 class PlayerProgressViewCell : UITableViewCell {
     
+    let width: CGFloat = 190
+    
     @IBOutlet weak var playerNameLabel: UILabel!
     @IBOutlet weak var playerProgress: UIProgressView!
-    
+    @IBOutlet weak var playerProgressImage: UIImageView!
+
 }

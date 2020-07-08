@@ -37,7 +37,21 @@ class JoinLobbyVC: UIViewController {
     var gameLobby: GameLobby!
     
     var player: Player!
-    var playerReady = false
+    var playerReady = false {
+        didSet {
+            if playerReady {
+                print("Player ready!")
+                readyButton.setTitleColor(UIColor.lightGray, for: .normal)
+                readyButton.backgroundColor = UIColor.green
+            } else {
+                print("Player not ready.")
+                readyButton.setTitleColor(UIColor.black, for: .normal)
+                readyButton.backgroundColor = UIColor.systemGray4
+            }
+            player.ready = playerReady
+            playerReference.setData(player.representation)
+        }
+    }
     var playerReference: DocumentReference!
     
     @IBOutlet weak var chatContainerView: UIView!
@@ -50,7 +64,6 @@ class JoinLobbyVC: UIViewController {
     @IBOutlet weak var playersReadyLabel: UILabel!
     @IBOutlet weak var readyButton: UIButton!
     
-    // MAKE SURE THIS WORKS EVEN IF LOBBY DELETED
     deinit {
         playersListener?.remove()
     }
@@ -96,18 +109,6 @@ class JoinLobbyVC: UIViewController {
         playerReference.setData(player.representation)
         players.append(player)
         
-        // listen for db changes
-        playersListener = playersReference?.addSnapshotListener { querySnapshot, error in
-            guard let snapshot = querySnapshot else {
-                print("Error listening for players updates: \(error?.localizedDescription ?? "No error")")
-                return
-            }
-            
-            snapshot.documentChanges.forEach { change in
-                self.handlePlayersChange(change)
-            }
-        }
-        
         // set label contents
         lobbyCodeLabel.text = gameLobby.id!
         instantDeathModeLabel.text = gameLobby.gameSettings.instantDeathModeEnabled ? "On" : "Off"
@@ -133,16 +134,40 @@ class JoinLobbyVC: UIViewController {
         chatViewController.view.bottomAnchor.constraint(equalTo: chatContainerView.bottomAnchor).isActive = true
     }
     
-    // TODO: FIX THIS!!! ONLY CALL THIS WHEN BACK SEGUE IS CALLED
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        // delete lobby when leaving the view if only player in lobby
-        if players.count == 1 {
-            deleteChatLobby()
-            deleteGameLobby()
-        } else {
-            playersReference.document(player.uuid).delete()
+        // delete lobby when leaving returning to host/main menu if only player in lobby
+        if self.isMovingFromParent {
+            if players.count == 1 {
+                deleteChatLobby()
+                deleteGameLobby()
+            } else {
+                playersReference.document(player.uuid).delete()
+            }
+        }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        playersListener?.remove()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        playerReady = false
+        // listen for db changes
+        playersListener = playersReference?.addSnapshotListener { querySnapshot, error in
+            guard let snapshot = querySnapshot else {
+                print("Error listening for players updates: \(error?.localizedDescription ?? "No error")")
+                return
+            }
+            
+            snapshot.documentChanges.forEach { change in
+                self.handlePlayersChange(change)
+            }
         }
     }
     
@@ -178,19 +203,7 @@ class JoinLobbyVC: UIViewController {
     }
     
     @IBAction func readyButtonPressed(_ sender: Any) {
-        if playerReady {
-            print("Player not ready.")
-            playerReady = false
-            readyButton.setTitleColor(UIColor.black, for: .normal)
-            readyButton.backgroundColor = UIColor.systemGray4
-        } else {
-            print("Player ready!")
-            playerReady = true
-            readyButton.setTitleColor(UIColor.lightGray, for: .normal)
-            readyButton.backgroundColor = UIColor.green
-        }
-        player.ready = playerReady
-        playerReference.setData(player.representation)
+        playerReady = !playerReady
     }
     
     // handles updates to players from the database
@@ -295,8 +308,8 @@ class JoinLobbyVC: UIViewController {
             let playVC = segue.destination as? PlayVC {
             playVC.gameLobby = gameLobby
             playVC.players = players
-            playVC.player = player
             playVC.playerReference = playerReference
+            playVC.player = player
         }
     }
 }

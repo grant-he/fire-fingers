@@ -29,8 +29,18 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     // Game Lobby and related objects
     var gameLobby: GameLobby!
     var players: [Player]!
-    var player: Player!
     var playerReference: DocumentReference!
+    var player: Player!
+    
+    // database
+    private let db = Firestore.firestore()
+    
+    
+    // listens for changes to lobbies section of database
+    private var playersListener: ListenerRegistration?
+
+    // reference to players collection of lobby
+    private var playersReference: CollectionReference!
     
     // Prompt-related variables
     private var attributedPrompt: NSMutableAttributedString = NSMutableAttributedString()
@@ -61,6 +71,21 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         tableView.delegate = self
         
         print("PlayVC loaded")
+        playersReference = db.collection(["gameLobbies", gameLobby.id!, "players"].joined(separator: "/"))
+        
+        // listen for db changes
+        playersListener = playersReference?.addSnapshotListener { querySnapshot, error in
+            guard let snapshot = querySnapshot else {
+                print("Error listening for players updates: \(error?.localizedDescription ?? "No error")")
+                return
+            }
+            
+            snapshot.documentChanges.forEach { change in
+                self.handlePlayersChange(change)
+            }
+        }
+
+        
         print("Number of players: \(players.count)")
         // Trigger 3 second countdown timer
         showAlert()
@@ -142,10 +167,7 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
                 attributedPrompt.setAttributes(completedAttributes, range: NSRange(location: currWordIndex, length: currWord.count))
                 promptLabel.attributedText = attributedPrompt
                 currWordIndex += currWord.count
-                
-//                player.currentWord += 1
-//                playerReference.setData(player.representation)
-                
+                                
                 inputField.text = ""
                 
                 print("YOU GOT IT")
@@ -197,4 +219,55 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             self.present(controller, animated: true)
         }
     }
+    
+    // handles updates to players from the database
+    private func handlePlayersChange(_ change: DocumentChange) {
+        print("players changed, handling now")
+        guard let player = Player(document: change.document) else {
+            print("player could not be created")
+            print(change.document)
+            return
+        }
+
+        switch change.type {
+        case .added:
+            addPlayer(player)
+        case .removed:
+            removePlayer(player)
+        case .modified:
+            addPlayer(player)
+        default:
+            print("unexpected change type \(change.type)")
+            break
+        }
+    }
+    
+    private func addPlayer(_ player: Player) {
+        if player.uuid == "" {
+            return
+        }
+        
+        if !players.contains(player) {
+            players.append(player)
+            print("\(players.count) current players")
+        } else {
+            print("player already in players")
+            players[players.firstIndex(of: player)!] = player
+        }
+        
+        tableView.reloadData()
+    }
+    
+    private func removePlayer(_ player: Player) {
+        guard players.contains(player), let playerIndex = players.firstIndex(of: player) else {
+            print("player is not currently in players")
+            return
+        }
+        
+        players.remove(at: playerIndex)
+        print("\(players.count) current players")
+        
+        tableView.reloadData()
+    }
+
 }

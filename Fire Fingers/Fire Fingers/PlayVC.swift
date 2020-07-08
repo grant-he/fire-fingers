@@ -10,6 +10,7 @@
 
 import UIKit
 import FirebaseFirestore
+import FirebaseAuth
 
 class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -73,19 +74,6 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         print("PlayVC loaded")
         playersReference = db.collection(["gameLobbies", gameLobby.id!, "players"].joined(separator: "/"))
         
-        // listen for db changes
-        playersListener = playersReference?.addSnapshotListener { querySnapshot, error in
-            guard let snapshot = querySnapshot else {
-                print("Error listening for players updates: \(error?.localizedDescription ?? "No error")")
-                return
-            }
-            
-            snapshot.documentChanges.forEach { change in
-                self.handlePlayersChange(change)
-            }
-        }
-
-        
         print("Number of players: \(players.count)")
         // Trigger 3 second countdown timer
         showAlert()
@@ -97,6 +85,26 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         
         totalPromptCharacters = promptLabel.text!.count
         promptWords = promptLabel.text!.split(separator: " ")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        // listen for db changes
+        playersListener = playersReference?.addSnapshotListener { querySnapshot, error in
+            guard let snapshot = querySnapshot else {
+                print("Error listening for players updates: \(error?.localizedDescription ?? "No error")")
+                return
+            }
+            
+            snapshot.documentChanges.forEach { change in
+                self.handlePlayersChange(change)
+            }
+        }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        playersListener?.remove()
     }
     
     func showAlert() {
@@ -207,6 +215,18 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
     
     func completeRace(duration: Double) {
+        
+        // Upload the game stats iff the user is logged in
+        // and it was a standard game
+        if !Auth.auth().currentUser!.isAnonymous,
+            gameLobby.gameSettings.earthQuakeModeEnabled,
+            gameLobby.gameSettings.instantDeathModeEnabled,
+            gameLobby.gameSettings.emojisAllowed
+            {
+            let gameStatsReference = db.collection("GameResults")
+            gameStatsReference.addDocument(data: GameResult(user: Auth.auth().currentUser!.email!, wordCount: gameLobby.prompt.numWords, time: duration).representation)
+        }
+        
         let controller = UIAlertController(
             title: "You completed the race!",
             message: "It only took \(duration) seconds.",

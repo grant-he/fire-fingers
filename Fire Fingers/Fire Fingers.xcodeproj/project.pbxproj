@@ -11,6 +11,7 @@
 		7A54DFAA24B0564C00279B5D /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A54DFA924B0564C00279B5D /* Player.swift */; };
 		7A54DFAC24B05A4400279B5D /* GameSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A54DFAB24B05A4400279B5D /* GameSettings.swift */; };
 		7A54DFAE24B05EB300279B5D /* DatabaseRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A54DFAD24B05EB300279B5D /* DatabaseRepresentation.swift */; };
+		7A57E58024B5B9640042CA72 /* LeaderboardViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A57E57F24B5B9640042CA72 /* LeaderboardViewCell.swift */; };
 		7A58C00024B466DE00DCB4E0 /* GameResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A58BFFF24B466DE00DCB4E0 /* GameResult.swift */; };
 		7A58C00224B466E700DCB4E0 /* LeaderboardEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A58C00124B466E600DCB4E0 /* LeaderboardEntry.swift */; };
 		7ADD3CC524AD91DF001FDDA3 /* ChatVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADD3CC424AD91DF001FDDA3 /* ChatVC.swift */; };
@@ -47,6 +48,7 @@
 		7A54DFA924B0564C00279B5D /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		7A54DFAB24B05A4400279B5D /* GameSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSettings.swift; sourceTree = "<group>"; };
 		7A54DFAD24B05EB300279B5D /* DatabaseRepresentation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseRepresentation.swift; sourceTree = "<group>"; };
+		7A57E57F24B5B9640042CA72 /* LeaderboardViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardViewCell.swift; sourceTree = "<group>"; };
 		7A58BFFF24B466DE00DCB4E0 /* GameResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameResult.swift; sourceTree = "<group>"; };
 		7A58C00124B466E600DCB4E0 /* LeaderboardEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeaderboardEntry.swift; sourceTree = "<group>"; };
 		7ADD3CC424AD91DF001FDDA3 /* ChatVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatVC.swift; sourceTree = "<group>"; };
@@ -164,6 +166,7 @@
 				F6A7FFE624A7D500002DFD00 /* GoogleService-Info.plist */,
 				F6A7FFCF24A7CFF8002DFD00 /* SceneDelegate.swift */,
 				F68F7C8A24B578BC005E1A96 /* PlayerProgressViewCell.swift */,
+				7A57E57F24B5B9640042CA72 /* LeaderboardViewCell.swift */,
 				F6E0C6DF24AC313C00C9C07A /* LoginScreenVC.swift */,
 				F6A7FFD124A7CFF8002DFD00 /* MainVC.swift */,
 				F6E0C6E124AC315A00C9C07A /* SettingsVC.swift */,
@@ -323,6 +326,7 @@
 				7ADD3CE124AD9DB0001FDDA3 /* UIImage+Additions.swift in Sources */,
 				7A54DFAC24B05A4400279B5D /* GameSettings.swift in Sources */,
 				F68F7C8924B51D93005E1A96 /* Prompt.swift in Sources */,
+				7A57E58024B5B9640042CA72 /* LeaderboardViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

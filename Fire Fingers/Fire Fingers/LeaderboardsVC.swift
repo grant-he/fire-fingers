@@ -118,15 +118,52 @@ extension LeaderboardsVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "LeaderboardCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "LeaderboardCell", for: indexPath) as! LeaderboardViewCell
         let row = indexPath.row
         let leaderboardEntry = orderedPlayerRankings[row]
         
-        cell.textLabel?.text = "\(row + 1)    " + String(format: "%.2f", leaderboardEntry.bestWPM) + "        " + String(format: "%.2f", leaderboardEntry.avgWPM)
+        cell.rankLabel.text = String(row + 1)
+        cell.nameLabel.text = leaderboardEntry.user
+        cell.bestWPMLabel.text = String(format: "%.2f", leaderboardEntry.bestWPM)
+        cell.avgWPMLabel.text = String(format: "%.2f", leaderboardEntry.avgWPM)
         
         return cell
     }
     
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        let header = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.rowHeight))
+        
+        
+        let rankLabel = UILabel()
+        rankLabel.text = "Rank"
+        rankLabel.textAlignment = .left
+        
+        let nameLabel = UILabel()
+        nameLabel.text = "Username"
+        nameLabel.textAlignment = .left
+        
+        let bestWPMLabel = UILabel()
+        bestWPMLabel.text = "   Best WPM"
+        bestWPMLabel.textAlignment = .right
+        
+        let avgWPMLabel = UILabel()
+        avgWPMLabel.text = "Avg WPM"
+        avgWPMLabel.textAlignment = .right
+        
+        let stackView = UIStackView(frame: header.frame)
+        stackView.alignment = .fill
+        stackView.distribution = .fillProportionally
+        
+        stackView.addArrangedSubview(rankLabel)
+        stackView.addArrangedSubview(nameLabel)
+        stackView.addArrangedSubview(bestWPMLabel)
+        stackView.addArrangedSubview(avgWPMLabel)
+        
+        header.addSubview(stackView)
+        
+        return header
+    }
     
 }
 

@@ -23,6 +23,22 @@ let userSettingsVolumeAttribute = "volume"
 let userSettingsIconAttribute = "icon"
 
 class MainVC: UIViewController {
+
+    static var parentNavController: UIViewController!
+    static var isDarkModeEnabled: Bool = false {
+        didSet {
+            UIView.transition(
+                with: parentNavController.view,
+                duration: 0.3,
+                options: [.transitionCrossDissolve],
+                animations: {
+                    parentNavController.overrideUserInterfaceStyle = isDarkModeEnabled ? .dark : .light
+                },
+                completion: nil
+            )
+        }
+    }
+    
     let joinLobbySegue = "JoinLobbySegue"
     
     // database
@@ -33,6 +49,7 @@ class MainVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        MainVC.parentNavController = self.parent
     }
 
     @IBAction func joinLobbyButtonPressed(_ sender: Any) {

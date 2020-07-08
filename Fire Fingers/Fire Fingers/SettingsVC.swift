@@ -25,9 +25,26 @@ class SettingsVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let horizontalPadding = 3
+        let verticalPadding = 2
         iconOneButton.layer.borderWidth = 2
+        iconOneButton.layer.cornerRadius = 2
+        iconOneButton.contentEdgeInsets = UIEdgeInsets(top: iconOneButton.contentEdgeInsets.top + CGFloat(verticalPadding),
+                                                       left: iconOneButton.contentEdgeInsets.left + CGFloat(horizontalPadding),
+                                                       bottom: iconOneButton.contentEdgeInsets.bottom + CGFloat(verticalPadding),
+                                                       right: iconOneButton.contentEdgeInsets.right + CGFloat(horizontalPadding))
         iconTwoButton.layer.borderWidth = 2
+        iconTwoButton.layer.cornerRadius = 4
+        iconTwoButton.contentEdgeInsets = UIEdgeInsets(top: iconTwoButton.contentEdgeInsets.top + CGFloat(verticalPadding),
+                                                       left: iconTwoButton.contentEdgeInsets.left + CGFloat(horizontalPadding),
+                                                       bottom: iconTwoButton.contentEdgeInsets.bottom + CGFloat(verticalPadding),
+                                                       right: iconTwoButton.contentEdgeInsets.right + CGFloat(horizontalPadding))
         iconThreeButton.layer.borderWidth = 2
+        iconThreeButton.layer.cornerRadius = 6
+        iconThreeButton.contentEdgeInsets = UIEdgeInsets(top: iconThreeButton.contentEdgeInsets.top + CGFloat(verticalPadding),
+                                                       left: iconThreeButton.contentEdgeInsets.left + CGFloat(horizontalPadding),
+                                                       bottom: iconThreeButton.contentEdgeInsets.bottom + CGFloat(verticalPadding),
+                                                       right: iconThreeButton.contentEdgeInsets.right + CGFloat(horizontalPadding))
         clearIconSelection()
         if loggedInUserSettings[userSettingsUsernameAttribute] as! String == "guest" {
             logOutButton.setTitle("Log in", for: .normal)
@@ -43,6 +60,7 @@ class SettingsVC: UIViewController {
         // Volume Slider:
         let volumeLevel = loggedInUserSettings[userSettingsVolumeAttribute] as! Float
         volumeSlider.setValue(volumeLevel, animated: false)
+        
         // Icon Buttons:
         switch loggedInUserSettings[userSettingsIconAttribute] as! Int {
         case 0:
@@ -99,6 +117,7 @@ class SettingsVC: UIViewController {
     @IBAction func darkModeUpdated(_ sender: Any) {
         // Update user dark mode setting
         loggedInUserSettings[userSettingsDarkModeAttribute] = darkModeSwitch.isOn
+        MainVC.isDarkModeEnabled = darkModeSwitch.isOn
     }
     
     @IBAction func volumeUpdated(_ sender: Any) {

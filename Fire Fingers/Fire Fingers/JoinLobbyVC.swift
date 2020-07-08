@@ -294,6 +294,9 @@ class JoinLobbyVC: UIViewController {
         if segue.identifier == playSegue,
             let playVC = segue.destination as? PlayVC {
             playVC.gameLobby = gameLobby
+            playVC.players = players
+            playVC.player = player
+            playVC.playerReference = playerReference
         }
     }
 }

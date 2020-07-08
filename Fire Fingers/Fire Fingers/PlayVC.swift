@@ -9,6 +9,7 @@
 //
 
 import UIKit
+import FirebaseFirestore
 
 class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -27,48 +28,60 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     // Game Lobby and related objects
     var gameLobby: GameLobby!
-    private var players: [Player] = []
+    var players: [Player]!
+    var player: Player!
+    var playerReference: DocumentReference!
     
     // Prompt-related variables
     private var attributedPrompt: NSMutableAttributedString = NSMutableAttributedString()
     private var promptWords: Array<Substring> = Array()
     private var currWord: Substring = ""
-    private var currWordCount: Int = 0
+    private var currWordCount: Int = 0 {
+        didSet {
+            player.currentWord = currWordCount
+        }
+    }
     private var currWordIndex: Int = 0
     private var totalPromptCharacters: Int = 0
     
     // Timing Variables
+    private var countdownAlertController: UIAlertController!
+    private var countdownCounter: Int = 3
+    private var countdownTimer: Timer = Timer()
     private var startingTime: DispatchTime = DispatchTime(uptimeNanoseconds: 0)
     private var endingTime: DispatchTime = DispatchTime(uptimeNanoseconds: 0)
     
-    let currWordGroup: DispatchGroup = DispatchGroup()
+    var currWordSemaphore: DispatchSemaphore = DispatchSemaphore(value: 0)
     
     override func viewDidLoad() {
-        print("HII!!")
         super.viewDidLoad()
+        
+        print("PlayVC loaded")
         
         // Check all players are here
         
         // Trigger 3 second countdown timer
+        showAlert()
         
         // Begin game!!
-        startingTime = DispatchTime.now()
         
         promptLabel.text = gameLobby.prompt.prompt
-        // for debugging
-//        promptLabel.text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
         attributedPrompt = NSMutableAttributedString(string: promptLabel.text!)
         
         totalPromptCharacters = promptLabel.text!.count
         promptWords = promptLabel.text!.split(separator: " ")
-        DispatchQueue.global(qos: .userInteractive).async {
-            self.startGame()
-        }
+    }
+    
+    func showAlert() {
+        self.countdownAlertController = UIAlertController(title: "Countdown:", message: String(self.countdownCounter), preferredStyle: .alert)
+        self.countdownTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(self.countdown), userInfo: nil, repeats: true)
+        self.present(self.countdownAlertController, animated: true)
     }
     
     func startGame() {
+        print("Starting Game!")
+        startingTime = DispatchTime.now()
         for promptWord in promptWords {
-            currWordGroup.enter()
             if currWordCount != promptWords.count - 1 {
                 currWord = promptWord + " "
             } else {
@@ -76,11 +89,11 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             }
             attributedPrompt.addAttributes(underlineAttribute, range: NSRange(location: currWordIndex, length: promptWord.count))
             print("New word: \(currWord)")
-            currWordGroup.wait()
+            currWordSemaphore.wait()
         }
         endingTime = DispatchTime.now()
         let difference = Double(endingTime.uptimeNanoseconds - startingTime.uptimeNanoseconds) / 1_000_000_000
-        print("YOU DID IT~!!! It only took \(difference) seconds.")
+        completeRace(duration: difference)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -92,24 +105,43 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         return cell
     }
     
+    @objc func countdown() {
+        print("Counting down!")
+        if self.countdownCounter > 0 {
+            self.countdownAlertController.message = String(self.countdownCounter)
+        } else if self.countdownCounter == 0 {
+            self.countdownAlertController.message = "Go!!!!"
+        } else {
+            self.countdownAlertController.dismiss(animated: true, completion: {
+                self.countdownTimer.invalidate()
+                DispatchQueue.global(qos: .userInteractive).async {
+                    self.startGame()
+                }
+            })
+        }
+        self.countdownCounter -= 1
+    }
+    
     @IBAction func inputFieldChanged(_ sender: Any) {
-        print("Input field changed... still looking for \(currWord)")
-        
         if let inputText = inputField.text {
-            
+            // Calculate number of characters in which input text is equivalent to current word
             let upToCorrect = self.upToCorrect(inputText: inputText)
-            
+            // Is input text equivalent to current word?
             if upToCorrect == currWord.count {
                 currWordCount += 1
                 attributedPrompt.setAttributes(completedAttributes, range: NSRange(location: currWordIndex, length: currWord.count))
                 promptLabel.attributedText = attributedPrompt
                 currWordIndex += currWord.count
                 
-                inputField.text = ""
-                print("LETS'S GO")
-                currWordGroup.leave()
-            } else {
+//                player.currentWord += 1
+//                playerReference.setData(player.representation)
                 
+                inputField.text = ""
+                
+                print("YOU GOT IT")
+                currWordSemaphore.signal()
+            } else {
+                // Calculate constants for attribute marking
                 let currWordToPromptEndLength = totalPromptCharacters - currWordIndex
                 let currWordToLastCorrectLength = upToCorrect
                 let wrongStartIndex = currWordIndex + upToCorrect
@@ -138,5 +170,21 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         }
         
         return index
+    }
+    
+    func completeRace(duration: Double) {
+        let controller = UIAlertController(
+            title: "You completed the race!",
+            message: "It only took \(duration) seconds.",
+            preferredStyle: .alert
+        )
+        controller.addAction(UIAlertAction(
+            title: "OK",
+            style: .default,
+            handler: nil
+        ))
+        DispatchQueue.main.async {
+            self.present(controller, animated: true)
+        }
     }
 }

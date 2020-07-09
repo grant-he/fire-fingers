@@ -62,6 +62,7 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
     private var currWordIndex: Int = 0
     private var totalPromptCharacters: Int = 0
+    private var didFail: Bool = false
     
     // Timing Variables
     private var countdownAlertController: UIAlertController!
@@ -87,19 +88,21 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         
         // Trigger 3 second countdown timer and begin game
         showAlert()
-        // Set up prompt and associated calculations
-        promptLabel.text = gameLobby.prompt.prompt
-        attributedPrompt = NSMutableAttributedString(string: promptLabel.text!)
-        totalPromptCharacters = promptLabel.text!.count
-        promptWords = promptLabel.text!.split(separator: " ")
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
         
         // reload game lobby in case of prompt change
         db.document("GameLobbies/\(gameLobby.id!)").getDocument(completion: { (document, error) in
             self.gameLobby = GameLobby(document: document!)
+
+            // Set up prompt and associated calculations
+            self.promptLabel.text = self.gameLobby.prompt.prompt
+            self.attributedPrompt = NSMutableAttributedString(string: self.promptLabel.text!)
+            self.totalPromptCharacters = self.promptLabel.text!.count
+            self.promptWords = self.promptLabel.text!.split(separator: " ")
         })
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
         
         player.completionTime = nil
         playerReference.setData(player.representation)
@@ -128,7 +131,7 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         if player.completionTime != nil || players.count == 1 {
             player.currentWord = 0
             
-            if isLastPlayerInGame() {
+            if allPlayersCompleted() {
                 print("finding new prompt")
                 findAppropriatePrompt()
             } else {
@@ -141,7 +144,7 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         }
     }
     
-    private func isLastPlayerInGame() -> Bool {
+    private func allPlayersCompleted() -> Bool {
         for aPlayer in players {
             if aPlayer.completionTime == nil, aPlayer != player {
                 return false
@@ -262,6 +265,12 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             print("New word: \(currWord)")
             // Wait until new word has been inputted
             currWordSemaphore.wait()
+            
+            // check if they failed in instant death mode
+            if didFail {
+                print("they failed, breaking")
+                break
+            }
         }
         // All prompt words have been completed. Mark ending time and calculate duration of race.
         endingTime = DispatchTime.now()
@@ -345,6 +354,10 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
                 attributedPrompt.addAttributes(correctLetterAttribute, range: NSRange(location: currWordIndex, length: currWordToLastCorrectLength))
                 if lastCorrectToInputEndLength > 0 {
                     attributedPrompt.addAttributes(wrongLetterAttribute, range: NSRange(location: wrongStartIndex, length: lastCorrectToInputEndLength))
+                    if gameLobby.gameSettings.instantDeathModeEnabled {
+                        didFail = true
+                        currWordSemaphore.signal()
+                    }
                 }
             }
         }
@@ -365,6 +378,11 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
     
     func completeRace(duration: Double) {
+        
+        DispatchQueue.main.async {
+            self.inputField.isUserInteractionEnabled = false
+        }
+        
         // Play victory sound
         SettingsVC.playMP3File(forResource: "positive_tone_001")
         // Upload the game stats if the user is logged in
@@ -380,7 +398,7 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         // Present game completion alert
         DispatchQueue.main.async {
             let controller = UIAlertController(
-                title: "You completed the race!",
+                title: "You \(self.didFail ? "failed" : "completed") the race!",
                 message: "It only took \(duration) seconds.",
                 preferredStyle: .alert
             )

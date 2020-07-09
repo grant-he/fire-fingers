@@ -154,16 +154,6 @@ class JoinLobbyVC: UIViewController {
         
         db.collection("chatLobbies/\(gameLobby.chatLobbyID)/thread").addDocument(data: Message(sender: FireFingersSender(senderId: "System", displayName: "System"), content: "\(player.displayName) joined the lobby.").representation)
         
-        // reload the lobby in case its been written to (new prompt)
-        print("here:  \(gameLobby.id!):")
-        db.document("GameLobbies/\(gameLobby.id!)").getDocument(completion: { (document, error) in
-            if let e = error {
-                print(e)
-                return
-            }
-            self.gameLobby = GameLobby(document: document!)
-        })
-        
         players = []
         
         let appropriateTitleColor: UIColor = MainVC.findAppropriateTitleColor()

@@ -105,6 +105,7 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         
         
         player.completionTime = nil
+        player.currentWord = 0;
         playerReference.setData(player.representation)
         
         
@@ -129,7 +130,6 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         // prompt or you are the only player in the lobby
         // otherwise you will go back to the main menu
         if player.completionTime != nil || players.count == 1 {
-            player.currentWord = 0
             
             if allPlayersCompleted() {
                 print("finding new prompt")

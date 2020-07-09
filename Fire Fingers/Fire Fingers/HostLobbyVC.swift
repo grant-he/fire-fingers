@@ -37,9 +37,15 @@ class HostLobbyVC: UIViewController {
     
     @IBOutlet weak var createLobbyButton: UIButton!
     
-    override func viewWillAppear(_ animated: Bool) {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
         // Initialize number of players
         playersAllowedStepper.value = 2
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
         let appropriateTitleColor: UIColor = MainVC.findAppropriateTitleColor()
         createLobbyButton.setTitleColor(appropriateTitleColor, for: .normal)

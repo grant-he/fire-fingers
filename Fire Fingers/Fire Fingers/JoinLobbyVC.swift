@@ -43,6 +43,7 @@ class JoinLobbyVC: UIViewController {
                 print("Player ready!")
                 readyButton.setTitleColor(UIColor.lightGray, for: .normal)
                 readyButton.backgroundColor = UIColor.green
+                SettingsVC.playMP3File(forResource: "honk_\(player.icon)")
             } else {
                 print("Player not ready.")
                 readyButton.setTitleColor(UIColor.black, for: .normal)

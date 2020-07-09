@@ -25,6 +25,11 @@
 		F68F7C8924B51D93005E1A96 /* Prompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68F7C8824B51D93005E1A96 /* Prompt.swift */; };
 		F68F7C8B24B578BC005E1A96 /* PlayerProgressViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68F7C8A24B578BC005E1A96 /* PlayerProgressViewCell.swift */; };
 		F68F7CB624B6D748005E1A96 /* positive_tone_001.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F68F7CB524B6D748005E1A96 /* positive_tone_001.mp3 */; };
+		F68F7CB924B6DDF7005E1A96 /* honk_0.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F68F7CB724B6DDF7005E1A96 /* honk_0.mp3 */; };
+		F68F7CBA24B6DDF7005E1A96 /* honk_1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F68F7CB824B6DDF7005E1A96 /* honk_1.mp3 */; };
+		F68F7CBC24B6DE48005E1A96 /* honk_2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F68F7CBB24B6DE48005E1A96 /* honk_2.mp3 */; };
+		F68F7CBE24B6E082005E1A96 /* pop.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F68F7CBD24B6E082005E1A96 /* pop.mp3 */; };
+		F68F7CC024B6E3B2005E1A96 /* racing_beep.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F68F7CBF24B6E3B2005E1A96 /* racing_beep.mp3 */; };
 		F6A7FFCE24A7CFF8002DFD00 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A7FFCD24A7CFF8002DFD00 /* AppDelegate.swift */; };
 		F6A7FFD024A7CFF8002DFD00 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A7FFCF24A7CFF8002DFD00 /* SceneDelegate.swift */; };
 		F6A7FFD224A7CFF8002DFD00 /* MainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A7FFD124A7CFF8002DFD00 /* MainVC.swift */; };
@@ -63,6 +68,11 @@
 		F68F7C8824B51D93005E1A96 /* Prompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Prompt.swift; sourceTree = "<group>"; };
 		F68F7C8A24B578BC005E1A96 /* PlayerProgressViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerProgressViewCell.swift; sourceTree = "<group>"; };
 		F68F7CB524B6D748005E1A96 /* positive_tone_001.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = positive_tone_001.mp3; sourceTree = "<group>"; };
+		F68F7CB724B6DDF7005E1A96 /* honk_0.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = honk_0.mp3; sourceTree = "<group>"; };
+		F68F7CB824B6DDF7005E1A96 /* honk_1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = honk_1.mp3; sourceTree = "<group>"; };
+		F68F7CBB24B6DE48005E1A96 /* honk_2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = honk_2.mp3; sourceTree = "<group>"; };
+		F68F7CBD24B6E082005E1A96 /* pop.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = pop.mp3; sourceTree = "<group>"; };
+		F68F7CBF24B6E3B2005E1A96 /* racing_beep.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = racing_beep.mp3; sourceTree = "<group>"; };
 		F6A7FFCA24A7CFF8002DFD00 /* Fire Fingers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fire Fingers.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6A7FFCD24A7CFF8002DFD00 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F6A7FFCF24A7CFF8002DFD00 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -143,6 +153,11 @@
 		F68F7CAE24B6D5CA005E1A96 /* Sound Effects */ = {
 			isa = PBXGroup;
 			children = (
+				F68F7CBF24B6E3B2005E1A96 /* racing_beep.mp3 */,
+				F68F7CBD24B6E082005E1A96 /* pop.mp3 */,
+				F68F7CB724B6DDF7005E1A96 /* honk_0.mp3 */,
+				F68F7CB824B6DDF7005E1A96 /* honk_1.mp3 */,
+				F68F7CBB24B6DE48005E1A96 /* honk_2.mp3 */,
 				F68F7CB524B6D748005E1A96 /* positive_tone_001.mp3 */,
 			);
 			path = "Sound Effects";
@@ -255,10 +270,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F68F7CB924B6DDF7005E1A96 /* honk_0.mp3 in Resources */,
+				F68F7CBE24B6E082005E1A96 /* pop.mp3 in Resources */,
+				F68F7CBA24B6DDF7005E1A96 /* honk_1.mp3 in Resources */,
 				F6A7FFDD24A7CFF9002DFD00 /* LaunchScreen.storyboard in Resources */,
 				F6A7FFE724A7D500002DFD00 /* GoogleService-Info.plist in Resources */,
+				F68F7CBC24B6DE48005E1A96 /* honk_2.mp3 in Resources */,
 				F68F7CB624B6D748005E1A96 /* positive_tone_001.mp3 in Resources */,
 				F6A7FFDA24A7CFF9002DFD00 /* Assets.xcassets in Resources */,
+				F68F7CC024B6E3B2005E1A96 /* racing_beep.mp3 in Resources */,
 				F6A7FFD524A7CFF8002DFD00 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

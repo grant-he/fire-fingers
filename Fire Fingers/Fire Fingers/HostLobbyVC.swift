@@ -37,7 +37,6 @@ class HostLobbyVC: UIViewController {
     
     @IBOutlet weak var createLobbyButton: UIButton!
     
-    
     override func viewWillAppear(_ animated: Bool) {
         // Initialize number of players
         playersAllowedStepper.value = 2

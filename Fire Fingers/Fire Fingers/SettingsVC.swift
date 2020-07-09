@@ -138,6 +138,7 @@ class SettingsVC: UIViewController {
         // Select icon one and update user icon setting
         iconOneButton.layer.borderColor = CGColor(srgbRed: 0, green: 0, blue: 255, alpha: 1)
         loggedInUserSettings[userSettingsIconAttribute] = 0
+        SettingsVC.playMP3File(forResource: "honk_0")
     }
     
     @IBAction func iconTwoSelected(_ sender: Any) {
@@ -146,6 +147,7 @@ class SettingsVC: UIViewController {
         // Select icon two and update user icon setting
         iconTwoButton.layer.borderColor = CGColor(srgbRed: 0, green: 0, blue: 255, alpha: 1)
         loggedInUserSettings[userSettingsIconAttribute] = 1
+        SettingsVC.playMP3File(forResource: "honk_1")
     }
     
     @IBAction func iconThreeSelected(_ sender: Any) {
@@ -154,6 +156,7 @@ class SettingsVC: UIViewController {
         // Select icon three and update user icon setting
         iconThreeButton.layer.borderColor = CGColor(srgbRed: 0, green: 0, blue: 255, alpha: 1)
         loggedInUserSettings[userSettingsIconAttribute] = 2
+        SettingsVC.playMP3File(forResource: "honk_2")
     }
     
     func clearIconSelection() {
@@ -161,7 +164,6 @@ class SettingsVC: UIViewController {
         iconOneButton.layer.borderColor = CGColor(srgbRed: 0, green: 0, blue: 0, alpha: 0)
         iconTwoButton.layer.borderColor = CGColor(srgbRed: 0, green: 0, blue: 0, alpha: 0)
         iconThreeButton.layer.borderColor = CGColor(srgbRed: 0, green: 0, blue: 0, alpha: 0)
-        SettingsVC.playMP3File(forResource: "positive_tone_001")
     }
     
     static func playMP3File(forResource: String) {
@@ -187,7 +189,6 @@ class SettingsVC: UIViewController {
         // If user is guest, immediate proceed to login view
         if loggedInUserSettings[userSettingsUsernameAttribute] as! String == "guest" {
             self.performSegue(withIdentifier: self.goToLoginSegueIdentifier, sender: nil)
-            
         }
         // Otherwise, send alert confirming log out
         else {

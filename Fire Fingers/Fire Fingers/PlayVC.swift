@@ -195,6 +195,9 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         // Alert controller displays different message depending on countdown counter
         if self.countdownCounter > 0 {
             self.countdownAlertController.message = String(self.countdownCounter)
+            if self.countdownCounter > 1 {
+                SettingsVC.playMP3File(forResource: "racing_beep")
+            }
         } else if self.countdownCounter == 0 {
             self.countdownAlertController.message = "Go!!!!"
         } else {
@@ -215,6 +218,8 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             let upToCorrect = self.upToCorrect(inputText: inputText)
             // Is input text equivalent to current word?
             if upToCorrect == currWord.count {
+                // Play correct word sound effect
+                SettingsVC.playMP3File(forResource: "pop")
                 print("YOU GOT IT")
                 currWordCount += 1
                 // Modify prompt to reflect completed word
@@ -258,6 +263,8 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
     
     func completeRace(duration: Double) {
+        // Play victory sound
+        SettingsVC.playMP3File(forResource: "positive_tone_001")
         // Upload the game stats if the user is logged in
         // and it was a standard game
         if !Auth.auth().currentUser!.isAnonymous,

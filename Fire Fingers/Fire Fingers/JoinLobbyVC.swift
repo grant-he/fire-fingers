@@ -136,6 +136,8 @@ class JoinLobbyVC: UIViewController {
             if players.count == 1 {
                 deleteGameLobby()
             } else {
+
+                db.collection("chatLobbies/\(gameLobby.chatLobbyID)/thread").addDocument(data: Message(sender: FireFingersSender(senderId: "System", displayName: "System"), content: "\(player.displayName) left the lobby.").representation)
                 playersReference.document(player.uuid).delete()
             }
         }
@@ -149,6 +151,8 @@ class JoinLobbyVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        db.collection("chatLobbies/\(gameLobby.chatLobbyID)/thread").addDocument(data: Message(sender: FireFingersSender(senderId: "System", displayName: "System"), content: "\(player.displayName) joined the lobby.").representation)
         
         // reload the lobby in case its been written to (new prompt)
         print("here:  \(gameLobby.id!):")
@@ -176,6 +180,7 @@ class JoinLobbyVC: UIViewController {
                 self.handlePlayersChange(change)
             }
         }
+        
     }
     
     // Tool Tips

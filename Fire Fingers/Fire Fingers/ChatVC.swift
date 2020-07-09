@@ -250,7 +250,8 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
     // initiates message send
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
         print("registered send press with '\(text)'")
-        let message = Message(user: user!, content: text)
+        let name = user!.isAnonymous ? "Guest" : user!.email!
+        let message = Message(sender: FireFingersSender(senderId: user!.uid, displayName: name), content: text)
 
         save(message)
         inputBar.inputTextView.text = ""

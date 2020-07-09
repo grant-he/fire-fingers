@@ -56,8 +56,8 @@ class Message: MessageType {
     var image: UIImage? = nil
     var downloadURL: URL? = nil
     
-    init(user: User, content: String) {
-        sender = FireFingersSender(senderId: user.uid, displayName: user.email ?? "Guest")
+    init(sender: FireFingersSender, content: String) {
+        self.sender = sender
         self.content = content
         sentDate = Date()
         id = nil

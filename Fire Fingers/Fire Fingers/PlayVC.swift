@@ -117,8 +117,8 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         if player.completionTime != nil || players.count == 1 {
             navigationController?.popViewController(animated: true)
         } else {
-            navigationController?.popToRootViewController(animated: true)
             playersReference.document(player.uuid).delete()
+            navigationController?.popToRootViewController(animated: true)
         }
     }
     
@@ -344,9 +344,14 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             print("player is not currently in players")
             return
         }
-        // Remove player from players and reload table view data
+        // Remove player from players and reload views
         players.remove(at: playerIndex)
         print("\(players.count) current players")
+        
+        if players.count == 1 {
+            backButton.title = "Back to Lobby"
+        }
         tableView.reloadData()
     }
 }
+

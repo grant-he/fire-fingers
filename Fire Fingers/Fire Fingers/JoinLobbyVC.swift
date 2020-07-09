@@ -88,15 +88,8 @@ class JoinLobbyVC: UIViewController {
             }
         })
         
-        // connect to db
-        guard let id = gameLobby!.id else {
-            navigationController?.popViewController(animated: true)
-            print("failed to find game lobby id")
-            return
-        }
-        
-        // put ourself in the database
-        playersReference = db.collection(["gameLobbies", id, "players"].joined(separator: "/"))
+        // Create ourself in the database
+        playersReference = db.collection(["gameLobbies", gameLobby.id!, "players"].joined(separator: "/"))
         let tempPlayer = Player(
             uuid: "",
             displayName: Auth.auth().currentUser!.isAnonymous ? "Guest" : Auth.auth().currentUser!.email!,
@@ -108,7 +101,6 @@ class JoinLobbyVC: UIViewController {
         }
         player = Player(uuid: playerReference.documentID, displayName: tempPlayer.displayName, icon: tempPlayer.icon)
         playerReference.setData(player.representation)
-        players.append(player)
         
         // set label contents
         lobbyCodeLabel.text = gameLobby.id!
@@ -158,6 +150,7 @@ class JoinLobbyVC: UIViewController {
         super.viewWillAppear(animated)
         
         playerReady = false
+        players = []
         
         let appropriateTitleColor: UIColor = MainVC.findAppropriateTitleColor()
         self.readyButton.setTitleColor(appropriateTitleColor, for: .normal)
@@ -265,6 +258,7 @@ class JoinLobbyVC: UIViewController {
         var numReady: Int = 0
         for aPlayer in players {
             if aPlayer.ready {
+                print("\(aPlayer.displayName) ready")
                 numReady += 1
             }
         }
@@ -315,3 +309,4 @@ class JoinLobbyVC: UIViewController {
         }
     }
 }
+

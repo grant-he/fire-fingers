@@ -30,6 +30,8 @@ class SettingsVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // button setup
         let horizontalPadding = CGFloat(3)
         let verticalPadding = CGFloat(2)
         let borderWidth = CGFloat(2);
@@ -64,6 +66,9 @@ class SettingsVC: UIViewController {
         // Dark Mode Switch:
         let darkModeEnabled = loggedInUserSettings[userSettingsDarkModeAttribute] as! Bool
         darkModeSwitch.setOn(darkModeEnabled, animated: false)
+        iconOneButton.setImage(UIImage(named: "icon0\(darkModeEnabled ? "_dark" : "")"), for: .normal)
+        iconTwoButton.setImage(UIImage(named: "icon1\(darkModeEnabled ? "_dark" : "")"), for: .normal)
+        iconThreeButton.setImage(UIImage(named: "icon2\(darkModeEnabled ? "_dark" : "")"), for: .normal)
         // Volume Slider:
         let volumeLevel = loggedInUserSettings[userSettingsVolumeAttribute] as! Float
         volumeSlider.setValue(volumeLevel, animated: false)
@@ -125,6 +130,9 @@ class SettingsVC: UIViewController {
         // Update user dark mode setting
         loggedInUserSettings[userSettingsDarkModeAttribute] = darkModeSwitch.isOn
         MainVC.isDarkModeEnabled = darkModeSwitch.isOn
+        iconOneButton.setImage(UIImage(named: "icon0\(darkModeSwitch.isOn ? "_dark" : "")"), for: .normal)
+        iconTwoButton.setImage(UIImage(named: "icon1\(darkModeSwitch.isOn ? "_dark" : "")"), for: .normal)
+        iconThreeButton.setImage(UIImage(named: "icon2\(darkModeSwitch.isOn ? "_dark" : "")"), for: .normal)
     }
     
     @IBAction func volumeUpdated(_ sender: Any) {

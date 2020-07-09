@@ -270,7 +270,6 @@
                             </switch>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dbp-uG-gZA">
                                 <rect key="frame" x="252" y="434" width="55" height="30"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="55" id="1Cg-XT-gko"/>
                                     <constraint firstAttribute="height" constant="30" id="T3N-Zy-UGh"/>
@@ -282,7 +281,6 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZD0-9W-zlF">
                                 <rect key="frame" x="319" y="434" width="55" height="30"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="55" id="Asg-Re-ptA"/>
                                     <constraint firstAttribute="height" constant="30" id="Fyb-si-AJf"/>
@@ -294,7 +292,6 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8h1-Ty-25a">
                                 <rect key="frame" x="185" y="434" width="55" height="30"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="3BU-ji-Dmo"/>
                                     <constraint firstAttribute="width" constant="55" id="f2f-af-2G4"/>

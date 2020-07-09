@@ -163,7 +163,7 @@ class HostLobbyVC: UIViewController {
         var numNonEmojis: Int = 0
         for document in documents {
             guard let result = Prompt(document: document) else {
-                print("failed to create Prompt, skipping")
+                print("failed to create Prompt for prompt from [\(document.data())], skipping")
                 continue
             }
             
@@ -178,7 +178,7 @@ class HostLobbyVC: UIViewController {
             var indexRemaining = Int.random(in: 0..<numPrompts)
             for document in documents {
                 guard let result = Prompt(document: document) else {
-                    print("failed to create Prompt, skipping")
+                    print("failed to create Prompt for prompt from [\(document.data())], skipping")
                     continue
                 }
                 if indexRemaining == 0 {
@@ -195,7 +195,7 @@ class HostLobbyVC: UIViewController {
             var indexRemaining = Int.random(in: 0..<numNonEmojis)
             for document in documents {
                 guard let result = Prompt(document: document) else {
-                    print("failed to create Prompt, skipping")
+                    print("failed to create Prompt for prompt from [\(document.data())], skipping")
                     continue
                 }
                 if !result.hasEmojis {

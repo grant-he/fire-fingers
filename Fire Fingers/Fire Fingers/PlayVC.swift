@@ -285,7 +285,7 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         // Image should show player's icon at current prompt progress
         let progressFrame = cell.playerProgress.frame
         cell.playerProgressImage?.center = CGPoint(x: CGFloat(progressFrame.minX+progressFrame.width*CGFloat(progressFraction)), y: progressFrame.midY)
-        cell.playerProgressImage?.image = UIImage(named: "icon\(aPlayer.icon)")
+        cell.playerProgressImage?.image = UIImage(named: "icon\(aPlayer.icon)\(loggedInUserSettings[userSettingsDarkModeAttribute] as! Bool ? "_dark" : "" )")
         // Progress view should show current prompt progress
         cell.playerProgress?.setProgress(progressFraction, animated: true)
         

@@ -24,7 +24,7 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     private let correctLetterAttribute = [NSAttributedString.Key.backgroundColor: UIColor.green]
     private let clearBackgroundLetterAttribute = [NSAttributedString.Key.backgroundColor: UIColor.clear]
     private let wrongLetterAttribute = [NSAttributedString.Key.backgroundColor: UIColor.red]
-    private let underlineAttribute = [NSAttributedString.Key.underlineStyle: NSUnderlineStyle.single.rawValue, NSAttributedString.Key.underlineColor: UIColor.black] as [NSAttributedString.Key : Any]
+    private let underlineAttribute = [NSAttributedString.Key.underlineStyle: NSUnderlineStyle.single.rawValue, NSAttributedString.Key.underlineColor: UIColor.black] as [NSAttributedString.Key: Any]
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var promptLabel: UILabel!

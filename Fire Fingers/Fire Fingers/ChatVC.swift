@@ -65,7 +65,7 @@ final class ChatViewController: MessagesViewController {
     let chatLobby: ChatLobby?
   
     deinit {
-    messageListener?.remove()
+        messageListener?.remove()
     }
 
     init(user: User, chatLobby: ChatLobby) {
@@ -73,62 +73,56 @@ final class ChatViewController: MessagesViewController {
         self.chatLobby = chatLobby
         super.init(nibName: nil, bundle: nil)
     }
-  
-  required init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-  
-  override func viewDidLoad() {
-    super.viewDidLoad()
     
-    // connect to db
-    guard let id = chatLobby!.id else {
-      navigationController?.popViewController(animated: true)
-        print("failed to find chat lobby id")
-      return
-    }
-    reference = db.collection(["chatLobbies", id, "thread"].joined(separator: "/"))
-    
-    // listen for db changes
-    messageListener = reference?.addSnapshotListener { querySnapshot, error in
-      guard let snapshot = querySnapshot else {
-        print("Error listening for lobby updates: \(error?.localizedDescription ?? "No error")")
-        return
-      }
-      
-      snapshot.documentChanges.forEach { change in
-        self.handleDocumentChange(change)
-      }
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
-    // set ourself as necessary delegates
-    messageInputBar.delegate = self
-    messagesCollectionView.messagesDataSource = self
-    messagesCollectionView.messagesLayoutDelegate = self
-    messagesCollectionView.messagesDisplayDelegate = self
-    
-    // When keyboard opened, scroll down so same message is displayed as before
-    maintainPositionOnKeyboardFrameChanged = true
-    
-    // Customize look of messageInputBar
-    messageInputBar.inputTextView.tintColor = sendButtonColor
-    messageInputBar.sendButton.setTitleColor(sendButtonColor, for: .normal)
-    
-    if let layout = messagesCollectionView.collectionViewLayout as? MessagesCollectionViewFlowLayout {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Connect to db
+        guard let id = chatLobby!.id else {
+            navigationController?.popViewController(animated: true)
+            print("failed to find chat lobby id")
+            return
+        }
         
-        // do not display avatars
-        layout.attributedTextMessageSizeCalculator.outgoingAvatarSize = .zero
-        layout.attributedTextMessageSizeCalculator.incomingAvatarSize = .zero
+        reference = db.collection(["chatLobbies", id, "thread"].joined(separator: "/"))
         
-        // for testing - makes bounds of view obvious
-//        layout.collectionView?.backgroundColor = .red
-    }
+        // Listen for db changes
+        messageListener = reference?.addSnapshotListener { querySnapshot, error in
+            guard let snapshot = querySnapshot else {
+                print("Error listening for lobby updates: \(error?.localizedDescription ?? "No error")")
+                return
+            }
+            snapshot.documentChanges.forEach { change in
+                self.handleDocumentChange(change)
+            }
+        }
+        
+        // Set ourself as necessary delegates
+        messageInputBar.delegate = self
+        messagesCollectionView.messagesDataSource = self
+        messagesCollectionView.messagesLayoutDelegate = self
+        messagesCollectionView.messagesDisplayDelegate = self
+        // When keyboard opened, scroll down so same message is displayed as before
+        maintainPositionOnKeyboardFrameChanged = true
+        // Customize look of messageInputBar
+        messageInputBar.inputTextView.tintColor = sendButtonColor
+        messageInputBar.sendButton.setTitleColor(sendButtonColor, for: .normal)
+        
+        if let layout = messagesCollectionView.collectionViewLayout as? MessagesCollectionViewFlowLayout {
+            // Do not display avatars
+            layout.attributedTextMessageSizeCalculator.outgoingAvatarSize = .zero
+            layout.attributedTextMessageSizeCalculator.incomingAvatarSize = .zero
+            // for testing - makes bounds of view obvious
+            // layout.collectionView?.backgroundColor = .red
+        }
 }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        // must be first responder in order for messageInputView to appear
+        // Must be first responder in order for messageInputView to appear
         if !self.isFirstResponder {
             self.becomeFirstResponder()
         }
@@ -147,13 +141,13 @@ final class ChatViewController: MessagesViewController {
         }
     }
   
-    // puts a message into the message container
+    // Put a message into the message container
     private func insertNewMessage(_ message: Message) {
         guard !messages.contains(message) else {
             print("message already in messages")
             return
         }
-
+        
         messages.append(message)
         messages.sort()
 
@@ -169,7 +163,7 @@ final class ChatViewController: MessagesViewController {
         }
     }
   
-    // handles updates from the database
+    // Handle updates from the database
     private func handleDocumentChange(_ change: DocumentChange) {
         guard let message = Message(document: change.document) else {
             print("message could not be created")
@@ -191,7 +185,7 @@ final class ChatViewController: MessagesViewController {
 
 extension ChatViewController: MessagesDisplayDelegate {
   
-    // dictates the style of a message
+    // Dictate the style of a message
     func messageStyle(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageStyle {
         let corner: MessageStyle.TailCorner = isFromCurrentSender(message: message) ? .bottomRight : .bottomLeft
         return .bubbleTail(corner, .curved)
@@ -203,7 +197,7 @@ extension ChatViewController: MessagesDisplayDelegate {
 
 extension ChatViewController: MessagesLayoutDelegate {
   
-    // dictates the height of the cell top (sender name)
+    // Dictate the height of the cell top (sender name)
     func cellTopLabelHeight(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
         return 15
     }
@@ -214,40 +208,39 @@ extension ChatViewController: MessagesLayoutDelegate {
 
 extension ChatViewController: MessagesDataSource {
     
-    // represents the our user as a message sender
+    // Represent the our user as a message sender
     func currentSender() -> SenderType {
         return FireFingersSender(senderId: user!.uid, displayName: user?.email ?? "Guest")
     }
     
-    // each message is its own section
+    // Each message is its own section
     func numberOfSections(in messagesCollectionView: MessagesCollectionView) -> Int {
         return messages.count
     }
   
-    // ordering of messages
+    // Ordering of messages
     func messageForItem(at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageType {
         return messages[indexPath.section]
     }
   
-    // the text to display above each message (sender name)
+    // The text to display above each message (sender name)
     func cellTopLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
         let name = message.sender.displayName
         return NSAttributedString(
-          string: name,
-          attributes: [
-            .font: UIFont.preferredFont(forTextStyle: .caption1),
-            .foregroundColor: UIColor(white: 0.3, alpha: 1)
-          ]
+            string: name,
+            attributes: [
+                .font: UIFont.preferredFont(forTextStyle: .caption1),
+                .foregroundColor: UIColor(white: 0.3, alpha: 1)
+            ]
         )
     }
-  
 }
 
 // MARK: - MessageInputBarDelegate
 
 extension ChatViewController: InputBarAccessoryViewDelegate {
   
-    // initiates message send
+    // Initiate message send
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
         print("registered send press with '\(text)'")
         let name = user!.isAnonymous ? "Guest" : user!.email!
@@ -256,5 +249,4 @@ extension ChatViewController: InputBarAccessoryViewDelegate {
         save(message)
         inputBar.inputTextView.text = ""
     }
-  
 }

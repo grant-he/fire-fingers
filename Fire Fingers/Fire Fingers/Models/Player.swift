@@ -78,7 +78,7 @@ class Player {
 
 extension Player: DatabaseRepresentation {
     
-    var representation: [String : Any] {
+    var representation: [String: Any] {
         return [
             "uuid": uuid,
             "displayName": displayName,

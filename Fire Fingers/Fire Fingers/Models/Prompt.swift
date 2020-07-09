@@ -44,7 +44,7 @@ class Prompt {
         self.prompt = prompt
     }
     
-    init?(data: [String : Any]) {
+    init?(data: [String: Any]) {
         
         guard let hasEmojis = data["hasEmojis"] as? Bool else {
             print("Prompt failed to convert hasEmojis '\(String(describing: data["hasEmojis"]))'")
@@ -67,14 +67,14 @@ class Prompt {
     }
 }
 
-extension Prompt : DatabaseRepresentation {
+extension Prompt: DatabaseRepresentation {
 
-    var representation: [String : Any] {
+    var representation: [String: Any] {
         
         return [
-            "hasEmojis" : hasEmojis,
-            "numWords" : numWords,
-            "prompt" : prompt
+            "hasEmojis": hasEmojis,
+            "numWords": numWords,
+            "prompt": prompt
         ]
     }
 }

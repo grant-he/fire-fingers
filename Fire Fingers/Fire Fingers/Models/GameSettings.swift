@@ -23,7 +23,7 @@ class GameSettings {
         self.playersCount = playersCount
     }
     
-    init?(data: [String : Any]) {
+    init?(data: [String: Any]) {
         guard let instantDeathModeEnabled = (data["instantDeathModeEnabled"] as? Bool) else {
             print("GameSettings failed to convert instantDeathModeEnabled '\(String(describing: data["instantDeathModeEnabled"]))'")
             return nil
@@ -53,11 +53,11 @@ class GameSettings {
 
 extension GameSettings: DatabaseRepresentation {
     
-    var representation: [String : Any] {
-        return ["instantDeathModeEnabled" : instantDeathModeEnabled,
-                "earthQuakeModeEnabled" : earthQuakeModeEnabled,
-                "emojisAllowed" : emojisAllowed,
-                "playersCount" : playersCount
+    var representation: [String: Any] {
+        return ["instantDeathModeEnabled": instantDeathModeEnabled,
+                "earthQuakeModeEnabled": earthQuakeModeEnabled,
+                "emojisAllowed": emojisAllowed,
+                "playersCount": playersCount
         ]
     }
 }

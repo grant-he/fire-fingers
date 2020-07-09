@@ -40,6 +40,7 @@ import MessageKit
 import FirebaseFirestore
 
 class Message: MessageType {
+    
     let id: String?
     let content: String
     let sentDate: Date
@@ -102,8 +103,8 @@ class Message: MessageType {
 
 extension Message: DatabaseRepresentation {
     
-    var representation: [String : Any] {
-        var rep: [String : Any] = [
+    var representation: [String: Any] {
+        var rep: [String: Any] = [
             "created": sentDate,
             "senderID": sender.senderId,
             "senderName": sender.displayName

@@ -10,7 +10,7 @@
 
 import UIKit
 
-class PlayerProgressViewCell : UITableViewCell {
+class PlayerProgressViewCell: UITableViewCell {
     
     let width: CGFloat = 190
     

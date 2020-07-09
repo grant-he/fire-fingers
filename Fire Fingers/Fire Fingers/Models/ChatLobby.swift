@@ -45,7 +45,7 @@ class ChatLobby {
         id = nil
     }
     
-    init?(data: [String : Any]) {
+    init?(data: [String: Any]) {
         
         guard let id = (data["id"] as? String) else {
             print("ChatLobby failed to convert id '\(String(describing: data["id"]))'")
@@ -58,8 +58,8 @@ class ChatLobby {
 
 extension ChatLobby: DatabaseRepresentation {
     
-    var representation: [String : Any] {
-        var rep: [String : Any] = [:]
+    var representation: [String: Any] {
+        var rep: [String: Any] = [:]
         
         if let id = id {
             rep["id"] = id

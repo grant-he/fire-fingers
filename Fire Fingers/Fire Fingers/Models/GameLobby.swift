@@ -35,12 +35,12 @@ class GameLobby {
             return nil
         }
         
-        guard let prompt = Prompt(data: data["prompt"] as! [String : Any]) else {
+        guard let prompt = Prompt(data: data["prompt"] as! [String: Any]) else {
             print("GameLobby failed to convert prompt '\(String(describing: data["prompt"]))'")
             return nil
         }
         
-        guard let gameSettings = GameSettings(data: data["gameSettings"] as! [String : Any]) else {
+        guard let gameSettings = GameSettings(data: data["gameSettings"] as! [String: Any]) else {
             print("GameLobby failed to convert gameSettings '\(String(describing: data["gameSettings"]))'")
             return nil
         }
@@ -54,12 +54,12 @@ class GameLobby {
 
 extension GameLobby: DatabaseRepresentation {
     
-    var representation: [String : Any] {
+    var representation: [String: Any] {
     
-        var rep: [String : Any] = [
-            "chatLobbyID" : chatLobbyID,
-            "prompt" : prompt.representation,
-            "gameSettings" : gameSettings.representation
+        var rep: [String: Any] = [
+            "chatLobbyID": chatLobbyID,
+            "prompt": prompt.representation,
+            "gameSettings": gameSettings.representation
         ]
     
         if let id = id {

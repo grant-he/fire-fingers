@@ -47,12 +47,12 @@ class GameResult {
 
 extension GameResult: DatabaseRepresentation {
 
-    var representation: [String : Any] {
+    var representation: [String: Any] {
         
         return [
-            "user" : user,
-            "wordCount" : wordCount,
-            "time" : time
+            "user": user,
+            "wordCount": wordCount,
+            "time": time
         ]
     }
 }

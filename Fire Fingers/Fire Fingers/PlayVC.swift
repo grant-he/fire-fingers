@@ -78,11 +78,12 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         tableView.delegate = self
         
         // initialize back button text
+        print("PLAYVC view did load for \(player.displayName) players count \(players.count)")
         backButton.title = players.count == 1 ? "Back to Lobby" : "Back to Main Menu"
         
         // Set up players reference
-        playersReference = db.collection(["gameLobbies", gameLobby.id!, "players"].joined(separator: "/"))
-        print("Number of players: \(players.count)")
+        playersReference = db.collection(["GameLobbies", gameLobby.id!, "players"].joined(separator: "/"))
+        print("PLAYVC view did load Number of players: \(players.count)")
         
         // Trigger 3 second countdown timer and begin game
         showAlert()
@@ -94,6 +95,16 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        
+        // reload game lobby in case of prompt change
+        db.document("GameLobbies/\(gameLobby.id!)").getDocument(completion: { (document, error) in
+            self.gameLobby = GameLobby(document: document!)
+        })
+        
+        player.completionTime = nil
+        playerReference.setData(player.representation)
+        
+        
         // Create playersListener to listen for db changes
         playersListener = playersReference?.addSnapshotListener { querySnapshot, error in
             guard let snapshot = querySnapshot else {
@@ -115,23 +126,114 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         // prompt or you are the only player in the lobby
         // otherwise you will go back to the main menu
         if player.completionTime != nil || players.count == 1 {
-            navigationController?.popViewController(animated: true)
+            player.currentWord = 0
+            
+            if isLastPlayerInGame() {
+                print("finding new prompt")
+                findAppropriatePrompt()
+            } else {
+                print("not finding prompt")
+                navigationController?.popViewController(animated: true)
+            }
         } else {
             playersReference.document(player.uuid).delete()
             navigationController?.popToRootViewController(animated: true)
         }
     }
     
-    
-    private func deleteGameLobby() {
-        // delete the chat lobby
-        print("Deleting chat lobby '\(gameLobby.chatLobbyID)'")
-        db.document(["chatLobbies", gameLobby.chatLobbyID].joined(separator: "/")).delete()
-        
-        // delete the game lobby
-        print("Deleting game lobby '\(gameLobby.id!)'")
-        db.document(["gameLobbies", gameLobby.id!].joined(separator: "/")).delete()
+    private func isLastPlayerInGame() -> Bool {
+        for aPlayer in players {
+            if aPlayer.completionTime == nil, aPlayer != player {
+                return false
+            }
+        }
+        return true
     }
+    
+    private func findAppropriatePrompt() {
+        print("Finding appropriate prompt!")
+        // load and process all the prompts data
+        let promptsReference = self.db.collection("prompts")
+        promptsReference.getDocuments() { (querySnapshot, err) in
+            print("Getting documents: \(String(describing: querySnapshot.debugDescription))")
+            if let e = err {
+                print("Error getting documents: \(e)")
+                return
+            } else {
+                print("Processing prompts data")
+                self.processPromptsData(documents: querySnapshot!.documents)
+            }
+        }
+    }
+    
+    // takes all the prompt records in the database
+    func processPromptsData(documents: [QueryDocumentSnapshot]) {
+        // Count up number of prompts and number of prompts without emojis
+        var numPrompts: Int = 0
+        var numNonEmojis: Int = 0
+        for document in documents {
+            guard let result = Prompt(document: document) else {
+                print("failed to create Prompt, skipping")
+                continue
+            }
+            
+            if !result.hasEmojis {
+                numNonEmojis += 1
+            }
+            numPrompts += 1
+        }
+        
+        // If emoji prompts are available select a random prompt
+        if gameLobby.gameSettings.emojisAllowed {
+            var indexRemaining = Int.random(in: 0..<numPrompts)
+            for document in documents {
+                guard let result = Prompt(document: document) else {
+                    print("failed to create Prompt, skipping")
+                    continue
+                }
+                if indexRemaining == 0 {
+                    gameLobby.prompt = result
+                    let reference = db.document("GameLobbies/\(gameLobby.id!)")
+                    reference.setData(gameLobby.representation)
+                    print("Selected prompt \(gameLobby.prompt.prompt)")
+                    navigationController?.popViewController(animated: true)
+                    return
+                }
+                indexRemaining -= 1
+            }
+        }
+        // Otherwise, select a random prompt with no emojis
+        else {
+            var indexRemaining = Int.random(in: 0..<numNonEmojis)
+            for document in documents {
+                guard let result = Prompt(document: document) else {
+                    print("failed to create Prompt, skipping")
+                    continue
+                }
+                if !result.hasEmojis {
+                    if indexRemaining == 0 {
+                        gameLobby.prompt = result
+                        let reference = db.document("GameLobbies/\(gameLobby.id!)")
+                        reference.setData(gameLobby.representation)
+                        print("Selected prompt \(gameLobby.prompt.prompt)")
+                        navigationController?.popViewController(animated: true)
+                        return
+                    }
+                    indexRemaining -= 1
+                }
+            }
+        }
+    }
+    
+//    private func deleteGameLobby() {
+//        // delete the chat lobby
+//        print("Deleting chat lobby '\(gameLobby.chatLobbyID)'")
+//        db.document(["chatLobbies", gameLobby.chatLobbyID].joined(separator: "/")).delete()
+//        
+//        // delete the game lobby
+//        print("Deleting game lobby '\(gameLobby.id!)'")
+//        db.document(["GameLobbies", gameLobby.id!].joined(separator: "/")).delete()
+//    }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
@@ -329,10 +431,13 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         // Add player to players if it doesn't already exist
         if !players.contains(player) {
             players.append(player)
-            print("\(players.count) current players")
+            print("add playvc \(player.displayName): \(players.count) current players")
         } else {
             print("player already in players")
             players[players.firstIndex(of: player)!] = player
+            if player.completionTime != nil {
+                // DO AVG STUFF 
+            }
         }
         // Reload table view data
         tableView.reloadData()
@@ -346,7 +451,7 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         }
         // Remove player from players and reload views
         players.remove(at: playerIndex)
-        print("\(players.count) current players")
+        print("remove playvc \(player.displayName): \(players.count) current players")
         
         if players.count == 1 {
             backButton.title = "Back to Lobby"

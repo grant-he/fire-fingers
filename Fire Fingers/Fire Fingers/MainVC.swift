@@ -99,15 +99,14 @@ class MainVC: UIViewController {
             return
         }
         
-        let gameLobbyRef = db.collection("gameLobbies").document(lobbyCode!)
+        let gameLobbyRef = db.collection("GameLobbies").document(lobbyCode!)
         gameLobbyRef.getDocument { (document, error) in
             if let document = document, document.exists {
-                let dataDescription = document.data()!
-                guard let gameLobbyObj = GameLobby(data: dataDescription) else {
+                guard let gameLobbyObj = GameLobby(document: document) else {
                     print("Failed to create GameLobby for lobby code \(String(describing: lobbyCode))")
                     return
                 }
-                let playersReference = self.db.collection(["gameLobbies", lobbyCode!, "players"].joined(separator: "/"))
+                let playersReference = self.db.collection(["GameLobbies", lobbyCode!, "players"].joined(separator: "/"))
                 playersReference.getDocuments() { (querySnapshot, err) in
                     if let err = err {
                         print("Error getting documents: \(err)")
@@ -121,7 +120,8 @@ class MainVC: UIViewController {
                         
                         for document in querySnapshot!.documents {
                             let player = Player(document: document)
-                            if player?.completionTime != nil {
+                            if player?.currentWord != 0 {
+                                print("\(player?.displayName) still playing")
                                 self.showJoinLobbyAlert(message: "Game in progress")
                                 return
                             }

@@ -22,7 +22,8 @@ class GameLobby {
         self.gameSettings = gameSettings
     }
     
-    init?(data: [String : Any]) {
+    init?(document: DocumentSnapshot) {
+        let data = document.data()!
         
         guard let id = (data["id"] as? String) else {
             print("GameLobby failed to convert id '\(String(describing: data["id"]))'")

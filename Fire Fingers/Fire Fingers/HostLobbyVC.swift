@@ -214,7 +214,7 @@ class HostLobbyVC: UIViewController {
     private func finishGameLobby() {
         let gameSettings = GameSettings(instantDeathModeEnabled: instantDeathModeSwitch.isOn, earthQuakeModeEnabled: earthQuakeModeSwitch.isOn, emojisAllowed: emojiPrompts, playersCount: Int(playersAllowedTextField.text!)!)
         let lobby = GameLobby(chatLobbyID: self.chatLobby!.id!, prompt: self.prompt!, gameSettings: gameSettings)
-        let gameLobbyReference = db.collection("gameLobbies").addDocument(data: lobby.representation) { error in
+        let gameLobbyReference = db.collection("GameLobbies").addDocument(data: lobby.representation) { error in
             if let e = error {
                 print("Error saving chat lobby: \(e.localizedDescription)")
             }

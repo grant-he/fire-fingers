@@ -89,7 +89,7 @@ class JoinLobbyVC: UIViewController {
         })
         
         // Create ourself in the database
-        playersReference = db.collection(["gameLobbies", gameLobby.id!, "players"].joined(separator: "/"))
+        playersReference = db.collection(["GameLobbies", gameLobby.id!, "players"].joined(separator: "/"))
         let tempPlayer = Player(
             uuid: "",
             displayName: Auth.auth().currentUser!.isAnonymous ? "Guest" : Auth.auth().currentUser!.email!,
@@ -132,6 +132,7 @@ class JoinLobbyVC: UIViewController {
         
         // delete lobby when leaving returning to host/main menu if only player in lobby
         if self.isMovingFromParent {
+            print("moving from parent \(player.displayName)")
             if players.count == 1 {
                 deleteGameLobby()
             } else {
@@ -149,7 +150,16 @@ class JoinLobbyVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        playerReady = false
+        // reload the lobby in case its been written to (new prompt)
+        print("here:  \(gameLobby.id!):")
+        db.document("GameLobbies/\(gameLobby.id!)").getDocument(completion: { (document, error) in
+            if let e = error {
+                print(e)
+                return
+            }
+            self.gameLobby = GameLobby(document: document!)
+        })
+        
         players = []
         
         let appropriateTitleColor: UIColor = MainVC.findAppropriateTitleColor()
@@ -284,7 +294,7 @@ class JoinLobbyVC: UIViewController {
         
         // delete the game lobby
         print("Deleting game lobby '\(gameLobby.id!)'")
-        db.document(["gameLobbies", gameLobby.id!].joined(separator: "/")).delete()
+        db.document(["GameLobbies", gameLobby.id!].joined(separator: "/")).delete()
     }
     
     @IBAction func clipboardButtonPressed(_ sender: Any) {
@@ -302,10 +312,13 @@ class JoinLobbyVC: UIViewController {
         // Send game lobby data
         if segue.identifier == playSegue,
             let playVC = segue.destination as? PlayVC {
+            playerReady = false
+            
             playVC.gameLobby = gameLobby
             playVC.players = players
             playVC.playerReference = playerReference
             playVC.player = player
+            
         }
     }
 }

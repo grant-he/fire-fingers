@@ -157,6 +157,10 @@ class JoinLobbyVC: UIViewController {
         super.viewWillAppear(animated)
         
         playerReady = false
+        
+        let appropriateTitleColor: UIColor = MainVC.findAppropriateTitleColor()
+        self.readyButton.setTitleColor(appropriateTitleColor, for: .normal)
+        
         // listen for db changes
         playersListener = playersReference?.addSnapshotListener { querySnapshot, error in
             guard let snapshot = querySnapshot else {

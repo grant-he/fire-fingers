@@ -23,7 +23,17 @@ let userSettingsVolumeAttribute = "volume"
 let userSettingsIconAttribute = "icon"
 
 class MainVC: UIViewController {
-
+    
+    let joinLobbySegue = "JoinLobbySegue"
+    
+    // Database
+    private let db = Firestore.firestore()
+    // Buttons
+    @IBOutlet weak var hostLobbyButton: UIButton!
+    @IBOutlet weak var joinLobbyButton: UIButton!
+    @IBOutlet weak var leaderboardsButton: UIButton!
+    @IBOutlet weak var settingsButton: UIButton!
+    
     static var parentNavController: UIViewController!
     static var isDarkModeEnabled: Bool = false {
         didSet {
@@ -36,13 +46,13 @@ class MainVC: UIViewController {
                 },
                 completion: nil
             )
+            
+            if isDarkModeEnabled {
+                
+            } else {
+            }
         }
     }
-    
-    let joinLobbySegue = "JoinLobbySegue"
-    
-    // database
-    private let db = Firestore.firestore()
     
     var gameLobby: GameLobby!
     var chatLobby: ChatLobby!
@@ -51,21 +61,29 @@ class MainVC: UIViewController {
         super.viewDidLoad()
         MainVC.parentNavController = self.parent
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+        let appropriateTitleColor: UIColor = MainVC.findAppropriateTitleColor()
+        
+        // Set appropriate button title colors based on dark mode setting
+        self.hostLobbyButton.setTitleColor(appropriateTitleColor, for: .normal)
+        self.joinLobbyButton.setTitleColor(appropriateTitleColor, for: .normal)
+        self.leaderboardsButton.setTitleColor(appropriateTitleColor, for: .normal)
+        self.settingsButton.setTitleColor(appropriateTitleColor, for: .normal)
+    }
 
     @IBAction func joinLobbyButtonPressed(_ sender: Any) {
         showJoinLobbyAlert(message: nil)
-        
     }
     
     func showJoinLobbyAlert(message: String?) {
+        // Prompt user for lobby code
         let alert = UIAlertController(title: "Enter Lobby Code", message: message, preferredStyle: .alert)
-
         alert.addTextField { (textField) in
             textField.text = ""
         }
-
-        alert.addAction(UIAlertAction(title: "cancel", style: .cancel, handler: nil))
-        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
             let textField = alert!.textFields![0] // Force unwrapping because we know it exists.
             self.attemptLobbyJoin(lobbyCode: textField.text)
@@ -109,6 +127,15 @@ class MainVC: UIViewController {
                 return
             }
         }
+    }
+    
+    // Find appropriate button title color based on dark mode setting
+    static func findAppropriateTitleColor() -> UIColor {
+        var appropriateTitleColor = UIColor.black
+        if MainVC.isDarkModeEnabled {
+            appropriateTitleColor = UIColor.white
+        }
+        return appropriateTitleColor
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

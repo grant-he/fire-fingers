@@ -134,7 +134,7 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <state key="normal" title="Host Lobby">
-                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
                                     <segue destination="nd0-TT-63a" kind="show" identifier="HostLobbySegue" id="rDz-70-o7h"/>
@@ -149,7 +149,7 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <state key="normal" title="Leaderboards">
-                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
                                     <segue destination="6l6-P2-57d" kind="show" identifier="LeaderboardsSegue" id="W4R-SX-J6e"/>
@@ -164,7 +164,7 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <state key="normal" title="Settings">
-                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
                                     <segue destination="LZJ-mW-UbC" kind="show" identifier="SettingsSegue" id="ncj-0D-IJ1"/>
@@ -179,7 +179,7 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <state key="normal" title="Join Lobby">
-                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
                                     <action selector="joinLobbyButtonPressed:" destination="cUK-Ob-QMG" eventType="touchUpInside" id="fiV-Sk-0Ki"/>
@@ -203,6 +203,10 @@
                     </view>
                     <navigationItem key="navigationItem" id="TaD-Gv-mA9"/>
                     <connections>
+                        <outlet property="hostLobbyButton" destination="OFL-I4-wrK" id="Pom-qL-hPh"/>
+                        <outlet property="joinLobbyButton" destination="e2L-ye-oo6" id="pgF-n8-mK4"/>
+                        <outlet property="leaderboardsButton" destination="5Jo-VY-Hkz" id="6JR-Tl-XVn"/>
+                        <outlet property="settingsButton" destination="VtP-A1-JMF" id="Rwy-d6-x95"/>
                         <segue destination="qHy-l2-5kT" kind="show" identifier="JoinLobbySegue" id="cVD-q0-r4t"/>
                     </connections>
                 </viewController>
@@ -529,8 +533,13 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="r9j-gE-wa7">
+                                <rect key="frame" x="50" y="222" width="330" height="246"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemGray5Color" red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="oGK-9J-9BQ">
-                                <rect key="frame" x="65" y="211.33333333333337" width="299" height="215"/>
+                                <rect key="frame" x="65" y="237.33333333333337" width="299" height="215"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="M36-FQ-lil">
                                         <rect key="frame" x="0.0" y="0.0" width="299" height="31"/>
@@ -608,7 +617,10 @@
                                                 </connections>
                                             </button>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="2" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ytl-IM-AOe">
-                                                <rect key="frame" x="160" y="0.0" width="37" height="32"/>
+                                                <rect key="frame" x="157" y="0.0" width="40" height="32"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="40" id="JjJ-1v-seh"/>
+                                                </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                                 <connections>
@@ -626,13 +638,13 @@
                                 </subviews>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WMz-y6-f6B">
-                                <rect key="frame" x="315" y="451.33333333333331" width="65" height="30"/>
+                                <rect key="frame" x="315" y="482.33333333333331" width="65" height="29.999999999999943"/>
                                 <color key="backgroundColor" systemColor="systemGray4Color" red="0.81960784310000001" green="0.81960784310000001" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="65" id="EcF-Qh-N0F"/>
                                 </constraints>
                                 <state key="normal" title="Create">
-                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
                                     <action selector="createLobbyButtonPressed:" destination="nd0-TT-63a" eventType="touchUpInside" id="HcY-6w-AZw"/>
@@ -643,16 +655,17 @@
                         <constraints>
                             <constraint firstItem="oGK-9J-9BQ" firstAttribute="leading" secondItem="4cg-Hx-TP3" secondAttribute="leading" constant="65" id="5b5-Rr-Pgh"/>
                             <constraint firstItem="rfE-Hz-xJz" firstAttribute="top" secondItem="4cg-Hx-TP3" secondAttribute="top" constant="89" id="8q6-pE-IXL"/>
-                            <constraint firstItem="oGK-9J-9BQ" firstAttribute="top" secondItem="rfE-Hz-xJz" secondAttribute="bottom" constant="14" id="PM9-uG-htz"/>
+                            <constraint firstItem="oGK-9J-9BQ" firstAttribute="top" secondItem="rfE-Hz-xJz" secondAttribute="bottom" constant="40" id="PM9-uG-htz"/>
                             <constraint firstItem="4cg-Hx-TP3" firstAttribute="trailing" secondItem="oGK-9J-9BQ" secondAttribute="trailing" constant="50" id="S1D-fI-uEX"/>
                             <constraint firstItem="WMz-y6-f6B" firstAttribute="leading" secondItem="4cg-Hx-TP3" secondAttribute="leading" constant="315" id="UIa-Zo-dWw"/>
                             <constraint firstItem="rfE-Hz-xJz" firstAttribute="leading" secondItem="4cg-Hx-TP3" secondAttribute="leading" constant="50" id="kZ9-Ow-QRs"/>
-                            <constraint firstItem="WMz-y6-f6B" firstAttribute="top" secondItem="oGK-9J-9BQ" secondAttribute="bottom" constant="25" id="lop-xT-9NA"/>
+                            <constraint firstItem="WMz-y6-f6B" firstAttribute="top" secondItem="oGK-9J-9BQ" secondAttribute="bottom" constant="30" id="lop-xT-9NA"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="4cg-Hx-TP3"/>
                     </view>
                     <navigationItem key="navigationItem" id="5Hq-cV-CPx"/>
                     <connections>
+                        <outlet property="createLobbyButton" destination="WMz-y6-f6B" id="tFo-VF-E2q"/>
                         <outlet property="earthQuakeModeSwitch" destination="3vq-Gv-l4n" id="x6e-gL-tD9"/>
                         <outlet property="emojiPromptsSwitch" destination="Hxx-LP-D3c" id="Qxd-kY-t6x"/>
                         <outlet property="instantDeathModeSwitch" destination="1Yv-rw-Hfr" id="r3E-go-z5X"/>
@@ -693,7 +706,7 @@
                                                     </constraints>
                                                 </progressView>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon0" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YhH-Mq-2Sf">
-                                                    <rect key="frame" x="130" y="10.999999999999972" width="190" height="17"/>
+                                                    <rect key="frame" x="130" y="3" width="190" height="33"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bBw-da-8oE">
@@ -785,6 +798,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7LX-5m-jWP">
+                                <rect key="frame" x="54" y="170" width="320" height="137"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemGray5Color" red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lobby code:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gfD-mm-Y8I">
                                 <rect key="frame" x="49.999999999999993" y="111" width="94.333333333333314" height="20.333333333333343"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -1025,7 +1043,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="cVD-q0-r4t"/>
+        <segue reference="bwe-HN-Ypn"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="icon0" width="630" height="630"/>

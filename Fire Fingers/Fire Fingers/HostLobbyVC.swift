@@ -16,7 +16,7 @@ class HostLobbyVC: UIViewController {
     
     private let joinLobbySegue = "JoinLobbySegue"
     
-    // database
+    // Database
     private let db = Firestore.firestore()
     
     // Lobby stuff
@@ -35,9 +35,15 @@ class HostLobbyVC: UIViewController {
     @IBOutlet weak var playersAllowedTextField: UITextField!
     @IBOutlet weak var playersAllowedStepper: UIStepper!
     
+    @IBOutlet weak var createLobbyButton: UIButton!
+    
+    
     override func viewWillAppear(_ animated: Bool) {
-        // initialize number of players
+        // Initialize number of players
         playersAllowedStepper.value = 2
+        
+        let appropriateTitleColor: UIColor = MainVC.findAppropriateTitleColor()
+        createLobbyButton.setTitleColor(appropriateTitleColor, for: .normal)
     }
     
     @IBAction func playersAllowedTextFieldUpdated(_ sender: Any) {

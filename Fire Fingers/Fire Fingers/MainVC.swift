@@ -117,7 +117,14 @@ class MainVC: UIViewController {
                             self.showJoinLobbyAlert(message: "Lobby full")
                             return
                         }
-//                        checkPlayers()
+                        
+                        for document in querySnapshot!.documents {
+                            let player = Player(document: document)
+                            if player?.completionTime != nil {
+                                self.showJoinLobbyAlert(message: "Game in progress")
+                                return
+                            }
+                        }
                         self.gameLobby = gameLobbyObj
                         self.performSegue(withIdentifier: self.joinLobbySegue, sender: self)
                     }

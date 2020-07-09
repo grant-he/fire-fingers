@@ -25,26 +25,28 @@ class SettingsVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let horizontalPadding = 3
-        let verticalPadding = 2
-        iconOneButton.layer.borderWidth = 2
-        iconOneButton.layer.cornerRadius = 2
-        iconOneButton.contentEdgeInsets = UIEdgeInsets(top: iconOneButton.contentEdgeInsets.top + CGFloat(verticalPadding),
-                                                       left: iconOneButton.contentEdgeInsets.left + CGFloat(horizontalPadding),
-                                                       bottom: iconOneButton.contentEdgeInsets.bottom + CGFloat(verticalPadding),
-                                                       right: iconOneButton.contentEdgeInsets.right + CGFloat(horizontalPadding))
-        iconTwoButton.layer.borderWidth = 2
-        iconTwoButton.layer.cornerRadius = 4
-        iconTwoButton.contentEdgeInsets = UIEdgeInsets(top: iconTwoButton.contentEdgeInsets.top + CGFloat(verticalPadding),
-                                                       left: iconTwoButton.contentEdgeInsets.left + CGFloat(horizontalPadding),
-                                                       bottom: iconTwoButton.contentEdgeInsets.bottom + CGFloat(verticalPadding),
-                                                       right: iconTwoButton.contentEdgeInsets.right + CGFloat(horizontalPadding))
-        iconThreeButton.layer.borderWidth = 2
-        iconThreeButton.layer.cornerRadius = 6
-        iconThreeButton.contentEdgeInsets = UIEdgeInsets(top: iconThreeButton.contentEdgeInsets.top + CGFloat(verticalPadding),
-                                                       left: iconThreeButton.contentEdgeInsets.left + CGFloat(horizontalPadding),
-                                                       bottom: iconThreeButton.contentEdgeInsets.bottom + CGFloat(verticalPadding),
-                                                       right: iconThreeButton.contentEdgeInsets.right + CGFloat(horizontalPadding))
+        let horizontalPadding = CGFloat(3)
+        let verticalPadding = CGFloat(2)
+        let borderWidth = CGFloat(2);
+        let cornerRadius = CGFloat(4);
+        iconOneButton.layer.borderWidth = borderWidth
+        iconOneButton.layer.cornerRadius = cornerRadius
+        iconOneButton.contentEdgeInsets = UIEdgeInsets(top: iconOneButton.contentEdgeInsets.top + verticalPadding,
+                                                       left: iconOneButton.contentEdgeInsets.left + horizontalPadding,
+                                                       bottom: iconOneButton.contentEdgeInsets.bottom + verticalPadding,
+                                                       right: iconOneButton.contentEdgeInsets.right + horizontalPadding)
+        iconTwoButton.layer.borderWidth = borderWidth
+        iconTwoButton.layer.cornerRadius = cornerRadius
+        iconTwoButton.contentEdgeInsets = UIEdgeInsets(top: iconTwoButton.contentEdgeInsets.top + verticalPadding,
+                                                       left: iconTwoButton.contentEdgeInsets.left + horizontalPadding,
+                                                       bottom: iconTwoButton.contentEdgeInsets.bottom + verticalPadding,
+                                                       right: iconTwoButton.contentEdgeInsets.right + horizontalPadding)
+        iconThreeButton.layer.borderWidth = borderWidth
+        iconThreeButton.layer.cornerRadius = cornerRadius
+        iconThreeButton.contentEdgeInsets = UIEdgeInsets(top: iconThreeButton.contentEdgeInsets.top + verticalPadding,
+                                                       left: iconThreeButton.contentEdgeInsets.left + horizontalPadding,
+                                                       bottom: iconThreeButton.contentEdgeInsets.bottom + verticalPadding,
+                                                       right: iconThreeButton.contentEdgeInsets.right + horizontalPadding)
         clearIconSelection()
         if loggedInUserSettings[userSettingsUsernameAttribute] as! String == "guest" {
             logOutButton.setTitle("Log in", for: .normal)

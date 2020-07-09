@@ -129,42 +129,6 @@ extension LeaderboardsVC: UITableViewDelegate, UITableViewDataSource {
         
         return cell
     }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        
-        let header = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.rowHeight))
-        
-        
-        let rankLabel = UILabel()
-        rankLabel.text = "Rank"
-        rankLabel.textAlignment = .left
-        
-        let nameLabel = UILabel()
-        nameLabel.text = "Username"
-        nameLabel.textAlignment = .left
-        
-        let bestWPMLabel = UILabel()
-        bestWPMLabel.text = "   Best WPM"
-        bestWPMLabel.textAlignment = .right
-        
-        let avgWPMLabel = UILabel()
-        avgWPMLabel.text = "Avg WPM"
-        avgWPMLabel.textAlignment = .right
-        
-        let stackView = UIStackView(frame: header.frame)
-        stackView.alignment = .fill
-        stackView.distribution = .fillProportionally
-        
-        stackView.addArrangedSubview(rankLabel)
-        stackView.addArrangedSubview(nameLabel)
-        stackView.addArrangedSubview(bestWPMLabel)
-        stackView.addArrangedSubview(avgWPMLabel)
-        
-        header.addSubview(stackView)
-        
-        return header
-    }
-    
 }
 
 // inserting stuff

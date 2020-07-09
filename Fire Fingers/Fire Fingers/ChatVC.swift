@@ -230,7 +230,7 @@ extension ChatViewController: MessagesDataSource {
             string: name,
             attributes: [
                 .font: UIFont.preferredFont(forTextStyle: .caption1),
-                .foregroundColor: UIColor(white: 0.3, alpha: 1)
+                .foregroundColor: UIColor(white: MainVC.isDarkModeEnabled ? 0.7 : 0.3, alpha: 1)
             ]
         )
     }

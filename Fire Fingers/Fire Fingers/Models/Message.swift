@@ -47,7 +47,7 @@ class Message: MessageType {
     let sender: SenderType
     
     var kind: MessageKind {
-        return .attributedText(NSAttributedString(string: content))
+        return .attributedText(NSAttributedString(string: content, attributes: [NSAttributedString.Key.foregroundColor : MainVC.isDarkModeEnabled ? UIColor.white : UIColor.black as Any]))
     }
     
     var messageId: String {

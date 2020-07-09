@@ -16,6 +16,8 @@ import AudioToolbox
 class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     private let playerCellIdentifier = "PlayerProgessCell"
+    private let returnToLobbySegue = "ReturnToLobbySegue"
+    private let quitGameSegue = "QuitGameSegue"
     
     // Attributes
     private let completedAttributes = [NSAttributedString.Key.backgroundColor: UIColor.green, NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.underlineColor: UIColor.clear]
@@ -27,6 +29,8 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var promptLabel: UILabel!
     @IBOutlet weak var inputField: UITextField!
+    @IBOutlet weak var backButton: UIBarButtonItem!
+    
     
     // Game Lobby and associated objects
     var gameLobby: GameLobby!
@@ -72,6 +76,10 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         // Set up table view
         tableView.dataSource = self
         tableView.delegate = self
+        
+        // initialize back button text
+        backButton.title = players.count == 1 ? "Back to Lobby" : "Back to Main Menu"
+        
         // Set up players reference
         playersReference = db.collection(["gameLobbies", gameLobby.id!, "players"].joined(separator: "/"))
         print("Number of players: \(players.count)")
@@ -97,6 +105,32 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
                 self.handlePlayersChange(change)
             }
         }
+    }
+    
+    
+    @IBAction func backButtonPressed(_ sender: Any) {
+        print("backButton clicked")
+        
+        // can only return to the lobby if you are done with the
+        // prompt or you are the only player in the lobby
+        // otherwise you will go back to the main menu
+        if player.completionTime != nil || players.count == 1 {
+            navigationController?.popViewController(animated: true)
+        } else {
+            navigationController?.popToRootViewController(animated: true)
+            playersReference.document(player.uuid).delete()
+        }
+    }
+    
+    
+    private func deleteGameLobby() {
+        // delete the chat lobby
+        print("Deleting chat lobby '\(gameLobby.chatLobbyID)'")
+        db.document(["chatLobbies", gameLobby.chatLobbyID].joined(separator: "/")).delete()
+        
+        // delete the game lobby
+        print("Deleting game lobby '\(gameLobby.id!)'")
+        db.document(["gameLobbies", gameLobby.id!].joined(separator: "/")).delete()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -248,6 +282,13 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             ))
             self.present(controller, animated: true)
         }
+        
+        // send our time to the other players
+        player.completionTime = duration
+        playerReference.setData(player.representation)
+        
+        // allow returning to lobby
+        backButton.title = "Back to Lobby"
     }
     
     // Handle updates to players from the database
@@ -301,5 +342,4 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         print("\(players.count) current players")
         tableView.reloadData()
     }
-
 }

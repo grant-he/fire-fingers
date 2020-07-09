@@ -27,12 +27,16 @@ class Player {
     // player is ready
     var ready: Bool
     
+    // player is ready
+    var completionTime: Double?
+    
     init(uuid: String, displayName: String, icon: Int) {
         self.uuid = uuid
         self.displayName = displayName
         self.currentWord = 0
         self.icon = icon
         self.ready = false
+        self.completionTime = nil
     }
     
     init?(document: QueryDocumentSnapshot) {
@@ -68,6 +72,7 @@ class Player {
         self.currentWord = currentWord
         self.icon = icon
         self.ready = ready
+        self.completionTime = data["completionTime"] as? Double
     }
 }
 
@@ -79,7 +84,8 @@ extension Player: DatabaseRepresentation {
             "displayName": displayName,
             "currentWord": currentWord,
             "icon": icon,
-            "ready": ready
+            "ready": ready,
+            "completionTime": completionTime as Any
         ]
     }
 }

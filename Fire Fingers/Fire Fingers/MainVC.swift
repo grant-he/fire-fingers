@@ -99,6 +99,7 @@ class MainVC: UIViewController {
                             self.showJoinLobbyAlert(message: "Lobby full")
                             return
                         }
+//                        checkPlayers()
                         self.gameLobby = gameLobbyObj
                         self.performSegue(withIdentifier: self.joinLobbySegue, sender: self)
                     }

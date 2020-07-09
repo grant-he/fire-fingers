@@ -140,7 +140,6 @@ class JoinLobbyVC: UIViewController {
         // delete lobby when leaving returning to host/main menu if only player in lobby
         if self.isMovingFromParent {
             if players.count == 1 {
-                deleteChatLobby()
                 deleteGameLobby()
             } else {
                 playersReference.document(player.uuid).delete()
@@ -279,14 +278,12 @@ class JoinLobbyVC: UIViewController {
         playerReference.setData(player.representation)
     }
     
-    // delete the chat lobby
-    private func deleteChatLobby() {
+    private func deleteGameLobby() {
+        // delete the chat lobby
         print("Deleting chat lobby '\(gameLobby.chatLobbyID)'")
         db.document(["chatLobbies", gameLobby.chatLobbyID].joined(separator: "/")).delete()
-    }
-    
-    // delete the game lobby
-    private func deleteGameLobby() {
+        
+        // delete the game lobby
         print("Deleting game lobby '\(gameLobby.id!)'")
         db.document(["gameLobbies", gameLobby.id!].joined(separator: "/")).delete()
     }

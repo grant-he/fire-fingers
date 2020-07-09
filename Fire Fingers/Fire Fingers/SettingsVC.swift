@@ -11,17 +11,22 @@
 import CoreData
 import FirebaseAuth
 import UIKit
+import AVFoundation
 
 class SettingsVC: UIViewController {
     
     private let goToLoginSegueIdentifier = "GoToLoginSegue"
 
     @IBOutlet weak var darkModeSwitch: UISwitch!
+    // Sound effects from https://www.zapsplat.com
     @IBOutlet weak var volumeSlider: UISlider!
     @IBOutlet weak var iconOneButton: UIButton!
     @IBOutlet weak var iconTwoButton: UIButton!
     @IBOutlet weak var iconThreeButton: UIButton!
     @IBOutlet weak var logOutButton: UIButton!
+    
+    // Audio Player
+    static var audioPlayer: AVAudioPlayer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -156,6 +161,26 @@ class SettingsVC: UIViewController {
         iconOneButton.layer.borderColor = CGColor(srgbRed: 0, green: 0, blue: 0, alpha: 0)
         iconTwoButton.layer.borderColor = CGColor(srgbRed: 0, green: 0, blue: 0, alpha: 0)
         iconThreeButton.layer.borderColor = CGColor(srgbRed: 0, green: 0, blue: 0, alpha: 0)
+        SettingsVC.playMP3File(forResource: "positive_tone_001")
+    }
+    
+    static func playMP3File(forResource: String) {
+        guard let url = Bundle.main.url(forResource: forResource, withExtension: "mp3") else {
+            return }
+
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback, mode: .default)
+            try AVAudioSession.sharedInstance().setActive(true)
+
+            SettingsVC.audioPlayer = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.mp3.rawValue)
+
+            guard let aPlayer = SettingsVC.audioPlayer else { return }
+            aPlayer.volume = loggedInUserSettings[userSettingsVolumeAttribute] as! Float
+            aPlayer.play()
+            
+        } catch let error {
+            print(error.localizedDescription)
+        }
     }
     
     @IBAction func logOutButtonPressed(_ sender: Any) {

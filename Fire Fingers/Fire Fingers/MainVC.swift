@@ -11,6 +11,7 @@
 import UIKit
 import FirebaseAuth
 import FirebaseFirestore
+import AVFoundation
 
 // Current user settings
 var loggedInUserSettings: Dictionary<String, Any> = [:]

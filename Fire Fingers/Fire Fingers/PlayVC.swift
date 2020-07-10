@@ -139,6 +139,7 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
                 navigationController?.popViewController(animated: true)
             }
         } else {
+            db.collection("chatLobbies/\(gameLobby.chatLobbyID)/thread").addDocument(data: Message(sender: FireFingersSender(senderId: "System", displayName: "System"), content: "\(player.displayName) left the lobby.").representation)
             playersReference.document(player.uuid).delete()
             navigationController?.popToRootViewController(animated: true)
         }

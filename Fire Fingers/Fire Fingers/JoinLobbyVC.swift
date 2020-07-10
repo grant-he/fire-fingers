@@ -152,7 +152,10 @@ class JoinLobbyVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        db.collection("chatLobbies/\(gameLobby.chatLobbyID)/thread").addDocument(data: Message(sender: FireFingersSender(senderId: "System", displayName: "System"), content: "\(player.displayName) joined the lobby.").representation)
+        // anounce your join if new to lobby
+        if self.isMovingToParent {
+            db.collection("chatLobbies/\(gameLobby.chatLobbyID)/thread").addDocument(data: Message(sender: FireFingersSender(senderId: "System", displayName: "System"), content: "\(player.displayName) joined the lobby.").representation)
+        }
         
         players = []
         

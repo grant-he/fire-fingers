@@ -293,6 +293,16 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         cell.playerNameLabel?.text = aPlayer.displayName
         // Image should show player's icon at current prompt progress
         let progressFrame = cell.playerProgress.frame
+        
+        // status
+        if aPlayer.completionTime == nil {
+            cell.playerWPMLabel.text = "still typing..."
+        } else if aPlayer.currentWord < gameLobby.prompt.numWords {
+                assert(gameLobby.gameSettings.instantDeathModeEnabled)
+                cell.playerWPMLabel.text = "failed"
+        } else {
+            cell.playerWPMLabel.text = String(format: "%.2f wpm", (Double(gameLobby.prompt.numWords) / aPlayer.completionTime!) * 60.0)
+        }
         cell.playerProgressImage?.center = CGPoint(x: CGFloat(progressFrame.minX+progressFrame.width*CGFloat(progressFraction)), y: progressFrame.midY)
         cell.playerProgressImage?.image = UIImage(named: "icon\(aPlayer.icon)\(loggedInUserSettings[userSettingsDarkModeAttribute] as! Bool ? "_dark" : "" )")
         // Progress view should show current prompt progress
@@ -453,9 +463,6 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         } else {
             print("player already in players")
             players[players.firstIndex(of: player)!] = player
-            if player.completionTime != nil {
-                // DO AVG STUFF 
-            }
         }
         // Reload table view data
         tableView.reloadData()

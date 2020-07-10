@@ -17,5 +17,6 @@ class PlayerProgressViewCell: UITableViewCell {
     @IBOutlet weak var playerNameLabel: UILabel!
     @IBOutlet weak var playerProgress: UIProgressView!
     @IBOutlet weak var playerProgressImage: UIImageView!
-
+    @IBOutlet weak var playerWPMLabel: UILabel!
+    
 }

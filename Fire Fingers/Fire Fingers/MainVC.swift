@@ -61,6 +61,8 @@ class MainVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         MainVC.parentNavController = self.parent
+        
+        MainVC.isDarkModeEnabled = loggedInUserSettings[userSettingsDarkModeAttribute] as! Bool
     }
     
     override func viewWillAppear(_ animated: Bool) {

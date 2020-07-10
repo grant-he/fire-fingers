@@ -47,8 +47,8 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     // Prompt-related variables
     private var attributedPrompt: NSMutableAttributedString = NSMutableAttributedString()
-    private var promptWords: Array<Substring> = Array()
-    private var currWord: Substring = ""
+    private var promptWords: Array<NSMutableAttributedString> = Array()
+    private var currWord: NSMutableAttributedString = NSMutableAttributedString()
     private var currWordCount: Int = 0 {
         didSet {
             player.currentWord = currWordCount
@@ -94,10 +94,20 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             self.gameLobby = GameLobby(document: document!)
 
             // Set up prompt and associated calculations
-            self.promptLabel.text = self.gameLobby.prompt.prompt
+            self.promptLabel.attributedText = NSAttributedString(string: "👉🏼 👂🏼 👁 👅 👁 👂🏼 👈🏼")
+//            self.promptLabel.text = self.gameLobby.prompt.prompt
             self.attributedPrompt = NSMutableAttributedString(string: self.promptLabel.text!)
-            self.totalPromptCharacters = self.promptLabel.text!.count
-            self.promptWords = self.promptLabel.text!.split(separator: " ")
+            self.totalPromptCharacters = self.promptLabel.attributedText!.length
+            
+            self.promptWords = []
+//            NSMutableAttributedString(attributedString: self.promptLabel.attributedText!).components(separatedBy: " ")
+            let promptWordsStrings = self.promptLabel.text!.split(separator: " ")
+            for promptWordString in promptWordsStrings {
+                self.promptWords.append(NSMutableAttributedString(string: String(promptWordString)))
+            }
+            
+//            print("label text length \(promptLabel.text?.count)")
+//            print("attributedPrompt length \(promptLabel.text?.count)")
         })
     }
     
@@ -256,14 +266,18 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         print("Starting Game!")
         startingTime = DispatchTime.now()
         for promptWord in promptWords {
+            print("promptWord is \(promptWord.string)")
             // New word should have space appended unless it's the final word
             if currWordCount != promptWords.count - 1 {
-                currWord = promptWord + " "
+                currWord = promptWord
+                currWord.append(NSAttributedString(string: " "))
             } else {
                 currWord = promptWord
             }
-            attributedPrompt.addAttributes(underlineAttribute, range: NSRange(location: currWordIndex, length: promptWord.count))
-            print("New word: \(currWord)")
+            print("promptWord count is \(promptWord.length)")
+            print("currWordIndex is \(currWordIndex)")
+            attributedPrompt.addAttributes(underlineAttribute, range: NSRange(location: currWordIndex, length: promptWord.length))
+            print("New word: \(currWord.string)")
             // Wait until new word has been inputted
             currWordSemaphore.wait()
             
@@ -335,19 +349,21 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
     
     @IBAction func inputFieldChanged(_ sender: Any) {
+        
         if let inputText = inputField.text {
             // Calculate number of characters in which input text is equivalent to current word
-            let upToCorrect = self.upToCorrect(inputText: inputText)
+        let upToCorrect = self.upToCorrect(inputText: inputText)
+            print("up to correct \(upToCorrect)")
             // Is input text equivalent to current word?
-            if upToCorrect == currWord.count {
+            if upToCorrect == currWord.length {
                 // Play correct word sound effect
                 SettingsVC.playMP3File(forResource: "pop")
                 print("YOU GOT IT")
                 currWordCount += 1
                 // Modify prompt to reflect completed word
-                attributedPrompt.setAttributes(completedAttributes, range: NSRange(location: currWordIndex, length: currWord.count))
+                attributedPrompt.setAttributes(completedAttributes, range: NSRange(location: currWordIndex, length: currWord.length))
                 promptLabel.attributedText = attributedPrompt
-                currWordIndex += currWord.count
+                currWordIndex += currWord.length
                 // Clear input field
                 inputField.text = ""
                 // Release next word.
@@ -364,7 +380,11 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
                 attributedPrompt.addAttributes(clearBackgroundLetterAttribute, range: NSRange(location: currWordIndex, length: currWordToPromptEndLength))
                 attributedPrompt.addAttributes(correctLetterAttribute, range: NSRange(location: currWordIndex, length: currWordToLastCorrectLength))
                 if lastCorrectToInputEndLength > 0 {
-                    attributedPrompt.addAttributes(wrongLetterAttribute, range: NSRange(location: wrongStartIndex, length: lastCorrectToInputEndLength))
+                    
+                    // its too bad
+                    if !gameLobby.gameSettings.emojisAllowed {
+                        attributedPrompt.addAttributes(wrongLetterAttribute, range: NSRange(location: wrongStartIndex, length: lastCorrectToInputEndLength))
+                    }
                     if gameLobby.gameSettings.instantDeathModeEnabled {
                         didFail = true
                         currWordSemaphore.signal()
@@ -380,8 +400,7 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     func upToCorrect(inputText: String) -> Int {
         
         var index: Int = 0
-        
-        while index < inputText.count && index < currWord.count && currWord[index] == inputText[index] {
+        while index < inputText.count && index < currWord.string.count && currWord.string[index] == inputText[index] {
             index += 1
         }
         
@@ -486,3 +505,17 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
 }
 
+private extension NSMutableAttributedString {
+    func components(separatedBy separator: String) -> [NSMutableAttributedString] {
+        var result = [NSMutableAttributedString]()
+        let separatedStrings = string.components(separatedBy: separator)
+        var range = NSRange(location: 0, length: 0)
+        for string in separatedStrings {
+            range.length = string.count
+            let attributedString = NSMutableAttributedString(attributedString: attributedSubstring(from: range))
+            result.append(attributedString)
+            range.location += range.length + separator.count
+        }
+        return result
+    }
+}

@@ -25,17 +25,17 @@ class Prompt {
         let data = document.data()
         
         guard let hasEmojis = data["hasEmojis"] as? Bool else {
-            print("Prompt failed to convert hasEmojis '\(String(describing: data["hasEmojis"]))'")
+            NSLog("Prompt failed to convert hasEmojis '\(String(describing: data["hasEmojis"]))'")
             return nil
         }
         
         guard let numWords = data["numWords"] as? Int else {
-            print("Prompt failed to convert numWords '\(String(describing: data["numWords"]))'")
+            NSLog("Prompt failed to convert numWords '\(String(describing: data["numWords"]))'")
             return nil
         }
         
         guard let prompt = data["prompt"] as? String else {
-            print("Prompt failed to convert prompt '\(String(describing: data["prompt"]))'")
+            NSLog("Prompt failed to convert prompt '\(String(describing: data["prompt"]))'")
             return nil
         }
         
@@ -47,17 +47,17 @@ class Prompt {
     init?(data: [String: Any]) {
         
         guard let hasEmojis = data["hasEmojis"] as? Bool else {
-            print("Prompt failed to convert hasEmojis '\(String(describing: data["hasEmojis"]))'")
+            NSLog("Prompt failed to convert hasEmojis '\(String(describing: data["hasEmojis"]))'")
             return nil
         }
         
         guard let numWords = data["numWords"] as? Int else {
-            print("Prompt failed to convert numWords '\(String(describing: data["numWords"]))'")
+            NSLog("Prompt failed to convert numWords '\(String(describing: data["numWords"]))'")
             return nil
         }
         
         guard let prompt = data["prompt"] as? String else {
-            print("Prompt failed to convert prompt '\(String(describing: data["prompt"]))'")
+            NSLog("Prompt failed to convert prompt '\(String(describing: data["prompt"]))'")
             return nil
         }
         

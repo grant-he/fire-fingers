@@ -48,7 +48,7 @@ class ChatLobby {
     init?(data: [String: Any]) {
         
         guard let id = (data["id"] as? String) else {
-            print("ChatLobby failed to convert id '\(String(describing: data["id"]))'")
+            NSLog("ChatLobby failed to convert id '\(String(describing: data["id"]))'")
             return nil
         }
         

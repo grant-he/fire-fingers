@@ -43,7 +43,7 @@ class LeaderboardsVC: UIViewController {
         let gamesReference = self.db.collection("GameResults")
         gamesReference.getDocuments() { (querySnapshot, err) in
             if let err = err {
-                print("Error getting documents: \(err)")
+                NSLog("Error getting documents: \(err)")
                 return
             } else {
                 self.processGamesData(documents: querySnapshot!.documents);
@@ -55,7 +55,7 @@ class LeaderboardsVC: UIViewController {
     func processGamesData(documents: [QueryDocumentSnapshot]) {
         for document in documents {
             guard let result = GameResult(document: document) else {
-                print("failed to create GameResult for leaderboards, skipping")
+                NSLog("Failed to create GameResult for leaderboards, skipping")
                 continue
             }
             
@@ -146,7 +146,7 @@ extension LeaderboardsVC {
         let gamesReference = db.collection("GameResults")
         gamesReference.addDocument(data: results.representation) { error in
             if let e = error {
-                print("Error saving player: \(e.localizedDescription)")
+                NSLog("Error saving player: \(e.localizedDescription)")
             }
         }
     }

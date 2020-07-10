@@ -105,13 +105,13 @@ class MainVC: UIViewController {
         gameLobbyRef.getDocument { (document, error) in
             if let document = document, document.exists {
                 guard let gameLobbyObj = GameLobby(document: document) else {
-                    print("Failed to create GameLobby for lobby code \(String(describing: lobbyCode))")
+                    NSLog("Failed to create GameLobby for lobby code \(String(describing: lobbyCode))")
                     return
                 }
                 let playersReference = self.db.collection(["GameLobbies", lobbyCode!, "players"].joined(separator: "/"))
                 playersReference.getDocuments() { (querySnapshot, err) in
                     if let err = err {
-                        print("Error getting documents: \(err)")
+                        NSLog("Error getting documents: \(err)")
                         return
                     } else {
                         let playersInLobby = querySnapshot!.count
@@ -123,7 +123,6 @@ class MainVC: UIViewController {
                         for document in querySnapshot!.documents {
                             let player = Player(document: document)
                             if player?.currentWord != 0 {
-                                print("\(player?.displayName) still playing")
                                 self.showJoinLobbyAlert(message: "Game in progress")
                                 return
                             }

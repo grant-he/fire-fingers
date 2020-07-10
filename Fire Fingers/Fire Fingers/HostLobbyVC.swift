@@ -134,23 +134,20 @@ class HostLobbyVC: UIViewController {
     // create a new game lobby
     private func createGameLobby() {
         createChatLobby()
-        print("Creating game lobby")
+        NSLog("Creating game lobby")
         // Find appropriate prompt
         self.emojiPrompts = emojiPromptsSwitch.isOn
         findAppropriatePrompt()
     }
     
     private func findAppropriatePrompt() {
-        print("Finding appropriate prompt!")
         // load and process all the prompts data
         let promptsReference = self.db.collection("prompts")
         promptsReference.getDocuments() { (querySnapshot, err) in
-            print("Getting documents: \(String(describing: querySnapshot.debugDescription))")
             if let e = err {
-                print("Error getting documents: \(e)")
+                NSLog("Error getting documents: \(e)")
                 return
             } else {
-                print("Processing prompts data")
                 self.processPromptsData(documents: querySnapshot!.documents)
             }
         }
@@ -163,7 +160,7 @@ class HostLobbyVC: UIViewController {
         var numNonEmojis: Int = 0
         for document in documents {
             guard let result = Prompt(document: document) else {
-                print("failed to create Prompt for prompt from [\(document.data())], skipping")
+                NSLog("Failed to create Prompt for prompt from [\(document.data())], skipping")
                 continue
             }
             
@@ -178,12 +175,11 @@ class HostLobbyVC: UIViewController {
             var indexRemaining = Int.random(in: 0..<numPrompts)
             for document in documents {
                 guard let result = Prompt(document: document) else {
-                    print("failed to create Prompt for prompt from [\(document.data())], skipping")
+                    NSLog("Failed to create Prompt for prompt from [\(document.data())], skipping")
                     continue
                 }
                 if indexRemaining == 0 {
                     prompt = result
-                    print("Selected prompt \(String(describing: prompt))")
                     finishGameLobby()
                     return
                 }
@@ -195,13 +191,12 @@ class HostLobbyVC: UIViewController {
             var indexRemaining = Int.random(in: 0..<numNonEmojis)
             for document in documents {
                 guard let result = Prompt(document: document) else {
-                    print("failed to create Prompt for prompt from [\(document.data())], skipping")
+                    NSLog("Failed to create Prompt for prompt from [\(document.data())], skipping")
                     continue
                 }
                 if !result.hasEmojis {
                     if indexRemaining == 0 {
                         prompt = result
-                        print("Selected prompt \(String(describing: prompt))")
                         finishGameLobby()
                         return
                     }
@@ -216,23 +211,21 @@ class HostLobbyVC: UIViewController {
         let lobby = GameLobby(chatLobbyID: self.chatLobby!.id!, prompt: self.prompt!, gameSettings: gameSettings)
         let gameLobbyReference = db.collection("GameLobbies").addDocument(data: lobby.representation) { error in
             if let e = error {
-                print("Error saving chat lobby: \(e.localizedDescription)")
+                NSLog("Error saving chat lobby: \(e.localizedDescription)")
             }
         }
         lobby.id = gameLobbyReference.documentID
         gameLobbyReference.setData(lobby.representation)
         self.gameLobby = lobby
-        print("game lobby id: \(String(describing: lobby.id))")
         performSegue(withIdentifier: joinLobbySegue, sender: self)
     }
     
-    // create a new chat lobby
+    // Create a new chat lobby
     private func createChatLobby() {
-        print("Creating chat lobby")
         let lobby = ChatLobby()
         let chatLobbyReference = db.collection("chatLobbies").addDocument(data: lobby.representation) { error in
             if let e = error {
-                print("Error saving chat lobby: \(e.localizedDescription)")
+                NSLog("Error saving chat lobby: \(e.localizedDescription)")
             }
         }
         lobby.id = chatLobbyReference.documentID

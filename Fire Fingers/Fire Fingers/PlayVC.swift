@@ -79,12 +79,10 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         tableView.delegate = self
         
         // initialize back button text
-        print("PLAYVC view did load for \(player.displayName) players count \(players.count)")
         backButton.title = players.count == 1 ? "Back to Lobby" : "Back to Main Menu"
         
         // Set up players reference
         playersReference = db.collection(["GameLobbies", gameLobby.id!, "players"].joined(separator: "/"))
-        print("PLAYVC view did load Number of players: \(players.count)")
         
         // Trigger 3 second countdown timer and begin game
         showAlert()
@@ -94,20 +92,15 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             self.gameLobby = GameLobby(document: document!)
 
             // Set up prompt and associated calculations
-            self.promptLabel.attributedText = NSAttributedString(string: "👉🏼 👂🏼 👁 👅 👁 👂🏼 👈🏼")
-//            self.promptLabel.text = self.gameLobby.prompt.prompt
+            self.promptLabel.text = self.gameLobby.prompt.prompt
             self.attributedPrompt = NSMutableAttributedString(string: self.promptLabel.text!)
             self.totalPromptCharacters = self.promptLabel.attributedText!.length
             
             self.promptWords = []
-//            NSMutableAttributedString(attributedString: self.promptLabel.attributedText!).components(separatedBy: " ")
             let promptWordsStrings = self.promptLabel.text!.split(separator: " ")
             for promptWordString in promptWordsStrings {
                 self.promptWords.append(NSMutableAttributedString(string: String(promptWordString)))
             }
-            
-//            print("label text length \(promptLabel.text?.count)")
-//            print("attributedPrompt length \(promptLabel.text?.count)")
         })
     }
     
@@ -122,7 +115,7 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         // Create playersListener to listen for db changes
         playersListener = playersReference?.addSnapshotListener { querySnapshot, error in
             guard let snapshot = querySnapshot else {
-                print("Error listening for players updates: \(error?.localizedDescription ?? "No error")")
+                NSLog("Error listening for players updates: \(error?.localizedDescription ?? "No error")")
                 return
             }
             // Handle all player changes
@@ -134,18 +127,14 @@ class PlayVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     
     @IBAction func backButtonPressed(_ sender: Any) {
-        print("backButton clicked")
-        
         // can only return to the lobby if you are done with the
         // prompt or you are the only player in the lobby
         // otherwise you will go back to the main menu
         if player.completionTime != nil || players.count == 1 {
             
             if allPlayersCompleted() {
-                print("finding new prompt")
                 findAppropriatePrompt()
             } else {
-                print("not finding prompt")
                 navigationController?.popViewController(animated: true)
             }
         } else {

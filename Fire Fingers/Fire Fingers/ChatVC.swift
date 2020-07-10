@@ -83,7 +83,7 @@ final class ChatViewController: MessagesViewController {
         // Connect to db
         guard let id = chatLobby!.id else {
             navigationController?.popViewController(animated: true)
-            print("failed to find chat lobby id")
+            NSLog("failed to find chat lobby id")
             return
         }
         
@@ -92,7 +92,7 @@ final class ChatViewController: MessagesViewController {
         // Listen for db changes
         messageListener = reference?.addSnapshotListener { querySnapshot, error in
             guard let snapshot = querySnapshot else {
-                print("Error listening for lobby updates: \(error?.localizedDescription ?? "No error")")
+                NSLog("Error listening for lobby updates: \(error?.localizedDescription ?? "No error")")
                 return
             }
             snapshot.documentChanges.forEach { change in
@@ -134,7 +134,7 @@ final class ChatViewController: MessagesViewController {
     private func save(_ message: Message) {
         reference?.addDocument(data: message.representation) { error in
             if let e = error {
-                print("Error sending message: \(e.localizedDescription)")
+                NSLog("Error sending message: \(e.localizedDescription)")
                 return
             }
             self.messagesCollectionView.scrollToBottom()
@@ -144,7 +144,6 @@ final class ChatViewController: MessagesViewController {
     // Put a message into the message container
     private func insertNewMessage(_ message: Message) {
         guard !messages.contains(message) else {
-            print("message already in messages")
             return
         }
         
@@ -166,8 +165,8 @@ final class ChatViewController: MessagesViewController {
     // Handle updates from the database
     private func handleDocumentChange(_ change: DocumentChange) {
         guard let message = Message(document: change.document) else {
-            print("message could not be created")
-            print(change.document)
+            NSLog("Message could not be created")
+            NSLog(String(describing: change.document))
             return
         }
 

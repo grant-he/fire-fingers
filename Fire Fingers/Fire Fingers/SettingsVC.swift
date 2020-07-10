@@ -61,7 +61,6 @@ class SettingsVC: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        print("Changing setting objects")
         // Update objects to match user settings
         // Dark Mode Switch:
         let darkModeEnabled = loggedInUserSettings[userSettingsDarkModeAttribute] as! Bool
@@ -82,7 +81,7 @@ class SettingsVC: UIViewController {
         case 2:
             iconThreeButton.layer.borderColor = CGColor(srgbRed: 0, green: 0, blue: 255, alpha: 1)
         default:
-            print("Icon Selection Error")
+            NSLog("Icon Selection Error")
         }
     }
     
@@ -105,16 +104,10 @@ class SettingsVC: UIViewController {
                     settings = NSEntityDescription.insertNewObject(forEntityName: userSettingsEntityName, into: context)
                     settings?.setValue(loggedInUserSettings[userSettingsUsernameAttribute], forKey: userSettingsUsernameAttribute)
                 }
-                
                 // Set attribute values to new setting values
-                print("Overriding stored user data for", loggedInUserSettings[userSettingsUsernameAttribute] as! String)
                 settings?.setValue(loggedInUserSettings[userSettingsDarkModeAttribute], forKey: userSettingsDarkModeAttribute)
                 settings?.setValue(loggedInUserSettings[userSettingsVolumeAttribute], forKey: userSettingsVolumeAttribute)
                 settings?.setValue(loggedInUserSettings[userSettingsIconAttribute], forKey: userSettingsIconAttribute)
-                
-                print(loggedInUserSettings[userSettingsDarkModeAttribute] as! Bool)
-                print(loggedInUserSettings[userSettingsVolumeAttribute] as! Float)
-                print(loggedInUserSettings[userSettingsIconAttribute] as! Int)
                 // Commit the changes
                 try context.save()
             } catch {
@@ -189,7 +182,7 @@ class SettingsVC: UIViewController {
             aPlayer.play()
             
         } catch let error {
-            print(error.localizedDescription)
+            NSLog(error.localizedDescription)
         }
     }
     

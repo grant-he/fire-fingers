@@ -69,17 +69,17 @@ class Message: MessageType {
         let data = document.data()
         
         guard let sentDate = (data["created"] as? Timestamp)?.dateValue() else {
-            print("message failed to convert created date '\(String(describing: data["created"]))'")
+            NSLog("message failed to convert created date '\(String(describing: data["created"]))'")
             return nil
         }
         
         guard let senderID = data["senderID"] as? String else {
-            print("message failed to convert sender id '\(String(describing: data["senderID"]))'")
+            NSLog("message failed to convert sender id '\(String(describing: data["senderID"]))'")
             return nil
         }
         
         guard let senderName = data["senderName"] as? String else {
-            print("message failed to convert sender name '\(String(describing: data["senderName"]))'")
+            NSLog("message failed to convert sender name '\(String(describing: data["senderName"]))'")
             return nil
         }
         
@@ -95,7 +95,7 @@ class Message: MessageType {
             downloadURL = url
             content = ""
         } else {
-            print("message failed to convert content '\(String(describing: data["content"]))'")
+            NSLog("message failed to convert content '\(String(describing: data["content"]))'")
             return nil
         }
     }

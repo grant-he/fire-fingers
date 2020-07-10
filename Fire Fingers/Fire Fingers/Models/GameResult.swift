@@ -25,17 +25,17 @@ class GameResult {
         let data = document.data()
         
         guard let user = data["user"] as? String else {
-            print("GameResult failed to convert user '\(String(describing: data["user"]))'")
+            NSLog("GameResult failed to convert user '\(String(describing: data["user"]))'")
             return nil
         }
         
         guard let wordCount = data["wordCount"] as? Int else {
-            print("GameResult failed to convert wordCount '\(String(describing: data["wordCount"]))'")
+            NSLog("GameResult failed to convert wordCount '\(String(describing: data["wordCount"]))'")
             return nil
         }
         
         guard let time = data["time"] as? Double else {
-            print("GameResult failed to convert time '\(String(describing: data["time"]))'")
+            NSLog("GameResult failed to convert time '\(String(describing: data["time"]))'")
             return nil
         }
         

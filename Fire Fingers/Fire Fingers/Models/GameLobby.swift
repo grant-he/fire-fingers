@@ -26,22 +26,22 @@ class GameLobby {
         let data = document.data()!
         
         guard let id = (data["id"] as? String) else {
-            print("GameLobby failed to convert id '\(String(describing: data["id"]))'")
+            NSLog("GameLobby failed to convert id '\(String(describing: data["id"]))'")
             return nil
         }
         
         guard let chatLobbyID = data["chatLobbyID"] as? String else {
-            print("GameLobby failed to convert chatLobbyID '\(String(describing: data["chatLobbyID"]))'")
+            NSLog("GameLobby failed to convert chatLobbyID '\(String(describing: data["chatLobbyID"]))'")
             return nil
         }
         
         guard let prompt = Prompt(data: data["prompt"] as! [String: Any]) else {
-            print("GameLobby failed to convert prompt '\(String(describing: data["prompt"]))'")
+            NSLog("GameLobby failed to convert prompt '\(String(describing: data["prompt"]))'")
             return nil
         }
         
         guard let gameSettings = GameSettings(data: data["gameSettings"] as! [String: Any]) else {
-            print("GameLobby failed to convert gameSettings '\(String(describing: data["gameSettings"]))'")
+            NSLog("GameLobby failed to convert gameSettings '\(String(describing: data["gameSettings"]))'")
             return nil
         }
         

@@ -100,7 +100,7 @@ class LoginScreenVC: UIViewController {
                         self.performSegue(withIdentifier: self.loginSegue, sender: nil)
                     }
                     else {
-                        print(error!.localizedDescription)
+                        NSLog(error!.localizedDescription)
                     }
                 })
             }
@@ -116,7 +116,6 @@ class LoginScreenVC: UIViewController {
     // Retrieve user settings data from core data
     func retrieveUserSettings() {
         if let username = Auth.auth().currentUser?.email {
-            print("Retrieving data for", username)
             // Set username to user email
             loggedInUserSettings[userSettingsUsernameAttribute] = username
             
@@ -133,7 +132,7 @@ class LoginScreenVC: UIViewController {
                 try fetchedResults = context.fetch(request) as? [NSManagedObject]
                 
                 if fetchedResults!.count > 0 {
-                    print("Fetching stored setting for", username)
+                    NSLog("Fetching stored setting for", username)
                     let settings = fetchedResults?.first
                     // Set user settings to new fetched values
                     loggedInUserSettings[userSettingsDarkModeAttribute] = settings?.value(forKeyPath: userSettingsDarkModeAttribute)
@@ -154,7 +153,6 @@ class LoginScreenVC: UIViewController {
                 abort()
             }
         } else {
-            print("retrieving info as guest")
             loggedInUserSettings[userSettingsUsernameAttribute] = "guest"
             loggedInUserSettings[userSettingsDarkModeAttribute] = false
             loggedInUserSettings[userSettingsVolumeAttribute] = Float(1.0)
@@ -177,7 +175,7 @@ class LoginScreenVC: UIViewController {
                 // Delete all fetched results
                 for result:AnyObject in fetchedResults {
                     context.delete(result as! NSManagedObject)
-                    print("\(result.value(forKey: userSettingsEntityName)!) has been deleted")
+                    NSLog("\(result.value(forKey: userSettingsEntityName)!) has been deleted")
                 }
             }
             try context.save()

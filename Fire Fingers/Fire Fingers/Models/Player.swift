@@ -43,27 +43,27 @@ class Player {
         let data = document.data()
         
         guard let uuid = (data["uuid"] as? String) else {
-            print("Player failed to convert uuid '\(String(describing: data["uuid"]))'")
+            NSLog("Player failed to convert uuid '\(String(describing: data["uuid"]))'")
             return nil
         }
         
         guard let displayName = data["displayName"] as? String else {
-            print("Player failed to convert displayName '\(String(describing: data["displayName"]))'")
+            NSLog("Player failed to convert displayName '\(String(describing: data["displayName"]))'")
             return nil
         }
         
         guard let currentWord = data["currentWord"] as? Int else {
-            print("Player failed to convert currentWord '\(String(describing: data["currentWord"]))'")
+            NSLog("Player failed to convert currentWord '\(String(describing: data["currentWord"]))'")
             return nil
         }
         
         guard let icon = data["icon"] as? Int else {
-            print("Player failed to convert icon '\(String(describing: data["icon"]))'")
+            NSLog("Player failed to convert icon '\(String(describing: data["icon"]))'")
             return nil
         }
         
         guard let ready = data["ready"] as? Bool else {
-            print("Player failed to convert ready '\(String(describing: data["ready"]))'")
+            NSLog("Player failed to convert ready '\(String(describing: data["ready"]))'")
             return nil
         }
         
